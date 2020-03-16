@@ -3,7 +3,6 @@ import { Filter, FilterProperties } from '@models/filter/filter.model';
 import { Pokemon } from '@models/pokemon';
 import { Subject } from 'rxjs/internal/Subject';
 import pokemon from '@resources/pokemon';
-// import pokemon from '@mocks/pokemon.mock';
 import { PokemonList } from '@models/list/pokemon-list.model';
 import { TeamService } from '@shared/services/team/team.service';
 import defaultFilters from '@resources/default-filters';

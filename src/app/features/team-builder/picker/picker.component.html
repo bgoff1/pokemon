@@ -1,0 +1,11 @@
+<virtual-scroller
+  #scroll
+  [items]="pokemon"
+  class="virtual-scroller">
+  <span
+    *ngFor="let mon of scroll.viewPortItems"
+    class="pokemon-container"
+    (click)="addPokemon(mon)">
+    <pokemon [pokemon]="mon"></pokemon>
+  </span>
+</virtual-scroller>

@@ -1,0 +1,13 @@
+@import 'variables.scss';
+
+.virtual-scroller {
+  height: 44vh;
+  width: 100%;
+  text-align: center;
+}
+
+.pokemon-container {
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+}

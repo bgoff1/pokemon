@@ -1,0 +1,21 @@
+<div
+  class="sprite inline-block {{pokemon.cssClasses}}"
+  title="{{pokemon.displayName | titlecase}}">
+  <img
+    [src]="imageUrl"
+    [alt]="imageAlt">
+  <span
+    *ngIf="row === 1 || row === 2"
+    class="name-type-container">
+    <span [ngClass]="nameStyle">{{pokemon.displayName | titlecase }}</span>
+    <span [ngClass]="typeStyle">
+      <div>
+        <div
+          *ngFor="let type of types"
+          class="{{ type }}-type type inline-block">
+          &nbsp;
+        </div>
+      </div>
+    </span>
+  </span>
+</div>

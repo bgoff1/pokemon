@@ -11,6 +11,10 @@ jest.mock('@shared/models/list/pokemon-list.model', () => ({
   }))
 }));
 jest.mock('@models/filter/filter.model');
+jest.mock('@resources/default-filters', () => ({
+  __esModule: true,
+  default: [{ a: 'a' }]
+}));
 import { FilterService } from './filter.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { FilterProperties } from '@models/filter/filter.model';
@@ -28,6 +32,12 @@ describe('Filter Service', () => {
 
   test('should not set filters if they are already set', () => {
     expect(service.filterChange$).toBeTruthy();
+  });
+
+  test('should reset filters to be default filters', () => {
+    service.filters = [];
+    service.resetFilters();
+    expect(service.filters).toEqual([{ a: 'a' }]);
   });
 
   test('should get pokemon based on filters', () => {

@@ -24,6 +24,22 @@ describe('Filter Options Component', () => {
     expect(component.filters.length).toBe(1);
   });
 
+  test('should not add filter on search if search is empty', () => {
+    component.filters = [{ property: FilterProperties.Search, value: '' }];
+    component.handleSearch('');
+    expect(component.filters.length).toBe(0);
+  });
+
+  test('should reset filters', () => {
+    filterServiceMock.resetFilters = jest.fn();
+    component.initializeFilters = jest.fn();
+    component.saveFilters = jest.fn();
+    component.resetFilters();
+    expect(filterServiceMock.resetFilters).toHaveBeenCalled();
+    expect(component.saveFilters).toHaveBeenCalled();
+    expect(component.initializeFilters).toHaveBeenCalled();
+  });
+
   test('should get search filter if it exists', () => {
     component.filters = [{ property: FilterProperties.Search, value: '' }];
     const result = component.searchFilter;
@@ -181,16 +197,30 @@ describe('Filter Options Component', () => {
     expect(root.checked).toBe(false);
   });
 
-  test('should set service value on destroy', () => {
-    filterServiceMock.filters = [];
+  test('should tell if team has no members', () => {
+    filterServiceMock.isTeamMembers = true;
+    expect(component.hasNoMembers()).toBe(false);
+  });
+
+  test('should handle coverage', () => {
+    component.checkingCoverage = true;
+    filterServiceMock.checkingCoverage = true;
     component.filters = [
-      {
-        property: FilterProperties.Coverage,
-        value: ''
-      }
+      { property: FilterProperties.Extras, value: '' },
+      { property: FilterProperties.Coverage, value: '' }
     ];
-    component.ngOnDestroy();
-    expect(filterServiceMock.filters).toBe(component.filters);
+    filterServiceMock.checkCoverage = jest.fn(() => ({
+      name: 'a'
+    }));
+    component.handleCoverage();
+    expect(component.checkingCoverage).toBe(false);
+  });
+
+  test('should not add if coverage returns null', () => {
+    filterServiceMock.checkCoverage = jest.fn(() => null);
+    component.filters = [];
+    component.handleCoverage();
+    expect(component.filters.length).toBe(0);
   });
 
   test('should tell if team has no members', () => {

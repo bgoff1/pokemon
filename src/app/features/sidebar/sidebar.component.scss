@@ -1,0 +1,49 @@
+.container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 64px;
+  bottom: 48px;
+}
+
+mat-sidenav-content {
+  height: calc(100vh - 48px - 64px);
+}
+
+@media (max-width: 599px) {
+  .container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 56px;
+  }
+  mat-sidenav-content {
+    height: calc(100vh - 48px - 56px);
+  }
+}
+
+mat-icon {
+  position: relative;
+  top: 5px;
+}
+
+.sidebar {
+  min-width: 200px;
+  font-size: large;
+}
+
+.link {
+  height: 5vh;
+  padding-top: 2.5vh;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+button {
+  margin: 3px;
+}

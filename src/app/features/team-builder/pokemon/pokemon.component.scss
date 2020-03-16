@@ -1,0 +1,28 @@
+.pokemon-name {
+  position: relative;
+  bottom: 13vh;
+}
+.pokemon-type {
+  position: relative;
+  bottom: 18vh;
+}
+
+.name-type-container {
+  display: inline-grid;
+}
+
+.type {
+  border-radius: 10%;
+  margin: 0 1px;
+  text-shadow: 1px 1px #000000;
+  background-size: 100%;
+  background-position: center;
+  width: 32px;
+  height: 16px;
+}
+
+img {
+  width: 70px;
+  height: 70px;
+  display: inline-block;
+}

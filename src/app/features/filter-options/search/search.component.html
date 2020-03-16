@@ -1,0 +1,10 @@
+<div class="text-center">
+  <mat-form-field>
+    <input
+      type="text"
+      placeholder="Search Pokemon..."
+      matInput
+      [value]="filter?.value"
+      (keyup)="onKeyUp($event)">
+  </mat-form-field>
+</div>

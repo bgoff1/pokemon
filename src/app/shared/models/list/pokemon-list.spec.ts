@@ -2,7 +2,7 @@ jest.mock('@models/type-coverage/coverage.model');
 import { PokemonList } from './pokemon-list.model';
 import pokemonMocks from '@mocks/pokemon.mock';
 import { Pokemon } from '@models/pokemon';
-import { FilterProperties } from '@models/filter/filter.model';
+import { FilterProperties } from '@models/filter';
 import { Region } from '@models/pokemon/region';
 
 describe('Pokemon List', () => {
@@ -19,42 +19,40 @@ describe('Pokemon List', () => {
   });
 
   test('should do nothing by calling call filters with no filters', () => {
-    expect(pokemon).toEqual(list.callFilters([]));
+    expect(pokemon).toEqual(list.callFilters([], []));
   });
 
   test('should filter search', () => {
-    list.filterSearch([{ property: FilterProperties.Search, value: 'bulb' }]);
+    list.filterSearch([{ filter: FilterProperties.Search, value: 'bulb' }]);
     expect(list.filteredPokemon).toContain(pokemon[0]);
   });
 
   test('should filter types', () => {
-    list.filterTypes([{ property: FilterProperties.Types, value: 'Fire' }]);
+    list.filterTypes([{ filter: FilterProperties.Types, value: 'Fire' }]);
     expect(list.filteredPokemon).toContain(pokemon[1]);
   });
 
   test('should filter regions', () => {
-    list.filterRegions([
-      { property: FilterProperties.Regions, value: 'Kanto' }
-    ]);
+    list.filterRegions([{ filter: FilterProperties.Regions, value: 'Kanto' }]);
     expect(list.filteredPokemon).toContain(pokemon[1]);
   });
 
   test('should filter generations', () => {
     list.filterGenerations([
-      { property: FilterProperties.Generations, value: 'Generation IV' }
+      { filter: FilterProperties.Generations, value: 'Generation IV' }
     ]);
     expect(list.filteredPokemon).toContain(pokemon[2]);
   });
 
   test('should filter extras', () => {
-    list.filterExtras([{ property: FilterProperties.Extras, value: 'mega' }]);
+    list.filterExtras([{ filter: FilterProperties.Extras, value: 'mega' }]);
     expect(list.filteredPokemon).toContain(pokemon[1]);
   });
 
   test('should filter by coverage', () => {
     list.filterCoverage([
       {
-        property: FilterProperties.Coverage,
+        filter: FilterProperties.Coverage,
         value: JSON.stringify(pokemon)
       }
     ]);

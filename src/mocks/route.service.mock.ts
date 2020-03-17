@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
 
 export default {
   links: [],

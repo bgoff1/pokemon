@@ -10,13 +10,12 @@ jest.mock('@models/pokemon/type', () => ({
   typeNames: ['Unknown']
 }));
 import { FilterOptionsService } from './filter-options.service';
-import romanServiceMock from '@mocks/roman.service.mock';
 
 describe('Filter Options Service', () => {
   let service: FilterOptionsService;
 
   beforeEach(() => {
-    service = new FilterOptionsService(romanServiceMock);
+    service = new FilterOptionsService();
   });
 
   test('should be created', () => {

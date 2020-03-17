@@ -1,7 +1,7 @@
 import { FilterOptionsComponent } from './filter-options.component';
 import filterOptionsServiceMock from '@mocks/filter-options.service.mock';
 import filterServiceMock from '@mocks/filter.service.mock';
-import { FilterProperties } from '@models/filter/filter.model';
+import { FilterProperties } from '@models/filter';
 import { TreeNode } from '../models/tree-node.model';
 
 describe('Filter Options Component', () => {
@@ -19,13 +19,13 @@ describe('Filter Options Component', () => {
   });
 
   test('should add filter on search', () => {
-    component.filters = [{ property: FilterProperties.Search, value: '' }];
+    component.filters = [{ filter: FilterProperties.Search, value: '' }];
     component.handleSearch('abc');
     expect(component.filters.length).toBe(1);
   });
 
   test('should not add filter on search if search is empty', () => {
-    component.filters = [{ property: FilterProperties.Search, value: '' }];
+    component.filters = [{ filter: FilterProperties.Search, value: '' }];
     component.handleSearch('');
     expect(component.filters.length).toBe(0);
   });
@@ -41,9 +41,9 @@ describe('Filter Options Component', () => {
   });
 
   test('should get search filter if it exists', () => {
-    component.filters = [{ property: FilterProperties.Search, value: '' }];
+    component.filters = [{ filter: FilterProperties.Search, value: '' }];
     const result = component.searchFilter;
-    expect(result).toEqual({ property: FilterProperties.Search, value: '' });
+    expect(result).toEqual({ filter: FilterProperties.Search, value: '' });
   });
 
   test('should return undefined if no search filter', () => {
@@ -87,7 +87,7 @@ describe('Filter Options Component', () => {
   });
 
   test('should update filters properly', () => {
-    component.filters = [{ property: FilterProperties.Extras, value: '' }];
+    component.filters = [{ filter: FilterProperties.Extras, value: '' }];
     component.updateFilters({
       name: 'Coverage',
       value: '',
@@ -160,7 +160,7 @@ describe('Filter Options Component', () => {
     };
     component.treeData.data = [root] as TreeNode[];
     component.updateTreeValues({
-      property: FilterProperties.Coverage,
+      filter: FilterProperties.Coverage,
       value: ''
     });
     expect(child.checked).toBe(false);
@@ -176,7 +176,7 @@ describe('Filter Options Component', () => {
     };
     component.treeData.data = [root] as TreeNode[];
     component.updateTreeValues({
-      property: FilterProperties.Coverage,
+      filter: FilterProperties.Coverage,
       value: 'a'
     });
     expect(child.checked).toBe(true);
@@ -191,7 +191,7 @@ describe('Filter Options Component', () => {
     };
     component.treeData.data = [root] as TreeNode[];
     component.updateTreeValues({
-      property: FilterProperties.Extras,
+      filter: FilterProperties.Extras,
       value: ''
     });
     expect(root.checked).toBe(false);
@@ -206,8 +206,8 @@ describe('Filter Options Component', () => {
     component.checkingCoverage = true;
     filterServiceMock.checkingCoverage = true;
     component.filters = [
-      { property: FilterProperties.Extras, value: '' },
-      { property: FilterProperties.Coverage, value: '' }
+      { filter: FilterProperties.Extras, value: '' },
+      { filter: FilterProperties.Coverage, value: '' }
     ];
     filterServiceMock.checkCoverage = jest.fn(() => ({
       name: 'a'
@@ -232,8 +232,8 @@ describe('Filter Options Component', () => {
     component.checkingCoverage = true;
     filterServiceMock.checkingCoverage = true;
     component.filters = [
-      { property: FilterProperties.Extras, value: '' },
-      { property: FilterProperties.Coverage, value: '' }
+      { filter: FilterProperties.Extras, value: '' },
+      { filter: FilterProperties.Coverage, value: '' }
     ];
     filterServiceMock.checkCoverage = jest.fn(() => ({
       name: 'a'

@@ -2,57 +2,57 @@ export default {
   gifts: [
     {
       location: 'Starter',
-      pokemon: ['Bulbasaur', 'Charmander', 'Squirtle']
+      pokemon: ['bulbasaur', 'charmander', 'squirtle']
     },
     {
       location: 'Route 4',
-      pokemon: ['Magikarp']
+      pokemon: ['magikarp']
     },
     {
       location: 'Mt. Moon Fossil',
-      pokemon: ['Omantye', 'Kabuto']
+      pokemon: ['omantye', 'kabuto']
     },
     {
       location: 'Old Amber Fossil',
-      pokemon: ['Aerodactyl']
+      pokemon: ['aerodactyl']
     },
     {
       location: 'Celadon City',
-      pokemon: ['Eevee']
+      pokemon: ['eevee']
     },
     {
       location: 'Saffron City',
-      pokemon: ['Hitmonchan', 'Hitmonlee']
+      pokemon: ['hitmonchan', 'hitmonlee']
     },
     {
       location: 'Silph Co.',
-      pokemon: ['Lapras']
+      pokemon: ['lapras']
     }
   ],
   statics: [
     {
       location: 'Route 12',
-      pokemon: ['Snorlax']
+      pokemon: ['snorlax']
     },
     {
       location: 'Route 16',
-      pokemon: ['Snorlax']
+      pokemon: ['snorlax']
     },
     {
       location: 'Berry Forest',
-      pokemon: ['Hypno']
+      pokemon: ['hypno']
     },
     {
       location: 'Seafoam Islands',
-      pokemon: ['Articuno']
+      pokemon: ['articuno']
     },
     {
       location: 'Power Plant',
-      pokemon: ['Zapdos']
+      pokemon: ['zapdos']
     },
     {
       location: 'Mt. Ember',
-      pokemon: ['Moltres']
+      pokemon: ['moltres']
     }
   ],
   encounters: [

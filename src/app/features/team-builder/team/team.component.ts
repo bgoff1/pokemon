@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TeamService } from '@services/team/team.service';
 import { Pokemon } from '@models/pokemon';
-import { TeamService } from '@shared/services/team/team.service';
 
 @Component({
   selector: 'team',

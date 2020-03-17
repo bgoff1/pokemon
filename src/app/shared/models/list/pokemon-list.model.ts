@@ -1,22 +1,24 @@
 import { Pokemon } from '@models/pokemon/';
-import { Filter, FilterProperties } from '@models/filter/filter.model';
+import { Filter, FilterProperties } from '@models/filter';
 import { Type } from '@models/pokemon/type';
 import { Coverage } from '@models/type-coverage/coverage.model';
 import { Pokedex } from '@models/pokemon/pokedex';
-import { NameReplacementUtility } from '@models/util/name-util.model';
+import { NameReplacementUtility } from '@models/util/name/name-util.model';
 import { Region } from '@models/pokemon/region';
+import pokemon from '@resources/pokemon';
 
 export class PokemonList {
   pokemon: Pokemon[];
   filteredPokemon: Pokemon[];
   coverage: Coverage;
 
-  constructor(pokemon: Pokemon[]) {
-    this.pokemon = pokemon;
+  constructor() {
+    this.pokemon = pokemon.map(mon => new Pokemon(mon));
     this.coverage = new Coverage();
   }
 
-  callFilters(filters: Filter[]) {
+  callFilters(filters: Filter[], team: Pokemon[]) {
+    filters = filters.filter(filter => filter.enabled);
     this.filteredPokemon = this.pokemon;
 
     this.filterSearch(filters);
@@ -31,7 +33,7 @@ export class PokemonList {
 
   filterCoverage(filters: Filter[]) {
     const coverage = filters.find(
-      filter => filter.property === FilterProperties.Coverage
+      filter => filter.filter === FilterProperties.Coverage
     );
     if (coverage) {
       const team = JSON.parse(coverage.value) as Pokemon[];
@@ -48,26 +50,24 @@ export class PokemonList {
 
   filterSearch(filters: Filter[]) {
     const search = filters.filter(
-      filter => filter.property === FilterProperties.Search
+      filter => filter.filter === FilterProperties.Search
     );
     if (search.length) {
       this.filteredPokemon = this.filteredPokemon.filter(mon =>
         search
           .map(filter => filter.value)
-          .some(searchValue => this.nameIncludesSearch(mon, searchValue))
+          .some(searchValue =>
+            NameReplacementUtility.characterReplace(mon.name)
+              .toLowerCase()
+              .includes(searchValue.trim().toLowerCase())
+          )
       );
     }
   }
 
-  nameIncludesSearch(pokemon: Pokemon, searchValue: string) {
-    return NameReplacementUtility.characterReplace(pokemon.name)
-      .toLowerCase()
-      .includes(searchValue.trim().toLowerCase());
-  }
-
   filterRegions(filters: Filter[]) {
     const regionFilters = filters.filter(
-      filter => filter.property === FilterProperties.Regions
+      filter => filter.filter === FilterProperties.Regions
     );
     if (regionFilters.length) {
       const regions = regionFilters.map(
@@ -82,7 +82,7 @@ export class PokemonList {
 
   filterTypes(filters: Filter[]) {
     const typeFilters = filters.filter(
-      filter => filter.property === FilterProperties.Types
+      filter => filter.filter === FilterProperties.Types
     );
     if (typeFilters.length) {
       const types = typeFilters.map(
@@ -97,7 +97,7 @@ export class PokemonList {
 
   filterGenerations(filters: Filter[]) {
     const generationFilters = filters.filter(
-      filter => filter.property === FilterProperties.Generations
+      filter => filter.filter === FilterProperties.Generations
     );
     if (generationFilters.length) {
       this.filterByGeneration(generationFilters.map(filter => filter.value));
@@ -106,14 +106,15 @@ export class PokemonList {
 
   filterExtras(filters: Filter[]) {
     const extraFilters = filters.filter(
-      filter => filter.property === FilterProperties.Extras
+      filter => filter.filter === FilterProperties.Extras
     );
 
     if (extraFilters.length) {
+      console.log(extraFilters);
       this.filteredPokemon = this.filteredPokemon.filter(mon => {
         return extraFilters
           .map(filter => NameReplacementUtility.trimRegionName(filter.value))
-          .every(filter => !mon.name.includes(filter));
+          .every(filter => !mon.name.includes(filter.toLowerCase()));
       });
     }
   }

@@ -1,15 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import './css/helper.min.css', './css/type-colorings.min.css',
   './css/type-sprites.min.css';
-@import './assets/style/variables.scss';
 
 .sprite {
-  width: $mobile;
-  height: $mobile;
+  width: 74px;
+  height: 74px;
   background-size: 100%;
   background-position: center;
   border-radius: 50%;
-  margin: $mobile_spacing;
+  margin: 5px;
 }
 
 .sprite:hover {

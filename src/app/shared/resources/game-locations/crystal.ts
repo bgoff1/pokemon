@@ -2,77 +2,77 @@ export default {
   gifts: [
     {
       location: 'Starter',
-      pokemon: ['Chikorita', 'Cyndaquil', 'Totodile']
+      pokemon: ['chikorita', 'cyndaquil', 'totodile']
     },
     {
       location: 'Violet City Egg',
-      pokemon: ['Togepi']
+      pokemon: ['togepi']
     },
     {
       location: 'Odd Egg',
       pokemon: [
-        'Pichu',
-        'Cleffa',
-        'Igglybuff',
-        'Tyrogue',
-        'Smoochum',
-        'Elekid',
-        'Magby'
+        'pichu',
+        'cleffa',
+        'igglybuff',
+        'tyrogue',
+        'smoochum',
+        'elekid',
+        'magby'
       ]
     },
     {
       location: 'Goldenrod City',
-      pokemon: ['Eevee']
+      pokemon: ['eevee']
     },
     {
       location: 'Route 35',
-      pokemon: ['Spearow']
+      pokemon: ['spearow']
     },
     {
       location: 'Cianwood City',
-      pokemon: ['Shuckle']
+      pokemon: ['shuckle']
     },
     {
       location: 'Mt. Mortar',
-      pokemon: ['Tyrogue']
+      pokemon: ['tyrogue']
     }
   ],
   statics: [
     {
       location: 'Union Cave',
-      pokemon: ['Lapras']
+      pokemon: ['lapras']
     },
 
     {
       location: 'Route 36',
-      pokemon: ['Sudowoodo']
+      pokemon: ['sudowoodo']
     },
     {
       location: 'Lake of Rage',
-      pokemon: ['Gyarados']
+      pokemon: ['gyarados']
     },
     {
       location: 'Vermillion City',
-      pokemon: ['Snorlax']
+      pokemon: ['snorlax']
     },
     {
       location: 'Roaming',
-      pokemon: ['Raikou']
+      pokemon: ['raikou']
     },
     {
       location: 'Roaming',
-      pokemon: ['Entei']
+      pokemon: ['entei']
     },
     {
       location: 'Whirl Islands',
-      pokemon: ['Lugia']
+      pokemon: ['lugia']
     },
     {
       location: 'Tin Tower - Ho-Oh',
-      pokemon: ['Ho-Oh']
+      pokemon: ['ho-oh']
     },
-    { location: 'Tin Tower - Suicune', pokemon: ['Suicune'] },
-    { location: "Dragon's Den", pokemon: ['Dratini'] }
+    { location: 'Tin Tower - Suicune', pokemon: ['suicune'] },
+    { location: "Dragon's Den", pokemon: ['dratini'] }
   ],
   encounters: [
     { location: 'Celadon City', pokemon: ['grimer', 'muk'] },

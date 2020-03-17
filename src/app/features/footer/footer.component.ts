@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouteService } from '@shared/services/routes/route.service';
+import { RouteService } from '@services/routes/route.service';
 import { Route } from '@models/view-mode.model';
 import { Link } from '@models/link.model';
 

@@ -1,10 +1,4 @@
-import {
-  getChild,
-  TreeNode,
-  descendantsAllChecked,
-  descendantsPartiallyChecked,
-  hasChild
-} from './tree-node.model';
+import { TreeNode } from './tree-node.model';
 
 describe('Tree Node Model', () => {
   test('should get child', () => {

@@ -23,4 +23,4 @@ export enum Type {
 }
 
 export const types = enumKeys(Type);
-export const typeNames = enumValues(Type);
+export const typeNames = enumValues(Type).filter(name => name !== 'Unknown');

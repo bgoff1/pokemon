@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FilterProperties, Filter } from '@models/filter/filter.model';
+import { FilterProperties, Filter } from '@models/filter';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import {
-  TreeNode,
-  getChild,
-  descendantsAllChecked,
-  hasChild,
-  descendantsPartiallyChecked
-} from '../models/tree-node.model';
+import { TreeNode } from '../models/tree-node.model';
 import { FilterOptionsService } from '../service/filter-options.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { FilterService } from '@shared/services/filter/filter.service';
+import { FilterService } from '@services/filter/filter.service';
+import { TeamService } from '@services/team/team.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'filter-options',
@@ -19,19 +15,21 @@ import { FilterService } from '@shared/services/filter/filter.service';
   styleUrls: ['./filter-options.component.scss']
 })
 export class FilterOptionsComponent implements OnInit {
-  treeControl = new NestedTreeControl<TreeNode>(getChild);
-  descendantsAllChecked = descendantsAllChecked;
-  descendantsPartiallyChecked = descendantsPartiallyChecked;
-  hasChild = hasChild;
+  treeControl = new NestedTreeControl<TreeNode>(this.optionsService.getChild);
+  descendantsAllChecked = this.optionsService.descendantsAllChecked;
+  descendantsPartiallyChecked = this.optionsService.descendantsPartiallyChecked;
+  hasChild = this.optionsService.hasChild;
 
   treeData = new MatTreeNestedDataSource<TreeNode>();
 
   filters: Filter[] = [];
+  searchFilter: Observable<Filter>;
   checkingCoverage = false;
 
   constructor(
     private readonly optionsService: FilterOptionsService,
-    private readonly filterService: FilterService
+    private readonly filterService: FilterService,
+    private readonly teamService: TeamService
   ) {}
 
   ngOnInit(): void {
@@ -40,31 +38,11 @@ export class FilterOptionsComponent implements OnInit {
 
   initializeFilters() {
     this.filters = this.filterService.filters;
-    this.treeData.data = this.optionsService.treeData;
-    for (const filter of this.filters) {
-      this.updateTreeValues(filter);
-    }
-    this.checkingCoverage = !!this.filters.find(
-      filter => filter.property === FilterProperties.Coverage
-    );
-  }
-
-  saveFilters() {
-    this.filterService.filters = this.filters;
-  }
-
-  updateTreeValues(filter: Filter): void {
-    const parent = this.treeData.data.find(
-      node => node.name === FilterProperties[filter.property]
-    );
-    if (parent) {
-      for (const child of parent.children) {
-        if (child.value === filter.value) {
-          child.checked = true;
-          return;
-        }
-      }
-    }
+    this.filterService.getAllFilters().then(filters => {
+      this.treeData.data = this.optionsService.generateTree(filters);
+    });
+    this.searchFilter = this.filterService.getSearchFilter();
+    this.checkingCoverage = this.filterService.checkingCoverage;
   }
 
   selectionToggle(node: TreeNode, event: MatCheckboxChange): void {
@@ -86,16 +64,15 @@ export class FilterOptionsComponent implements OnInit {
       child => child.checked
     );
     const filters = this.filters.filter(
-      filter => filter.property !== FilterProperties[parent.name]
+      filter => filter.filter !== FilterProperties[parent.name]
     );
     this.filters = [
       ...filters,
       ...checkedSiblingsAndSelf.map(node => ({
         value: node.value,
-        property: FilterProperties[node.name]
+        filter: FilterProperties[node.name]
       }))
     ];
-    this.saveFilters();
   }
 
   handleNodeChange(node: TreeNode): void {
@@ -111,25 +88,18 @@ export class FilterOptionsComponent implements OnInit {
 
   handleCoverage() {
     this.filters = this.filters.filter(
-      filter => filter.property !== FilterProperties.Coverage
+      filter => filter.filter !== FilterProperties.Coverage
     );
-    this.filterService.checkingCoverage = this.checkingCoverage = !this
-      .checkingCoverage;
-    const coverageFilter = this.filterService.checkCoverage();
-    if (coverageFilter) {
-      this.filters.push(coverageFilter);
-    }
-    this.saveFilters();
+    this.checkingCoverage = !this.checkingCoverage;
   }
 
   hasNoMembers() {
-    return !this.filterService.isTeamMembers;
+    return !this.teamService.nonEmptyMembers.length;
   }
 
   resetFilters() {
     this.filterService.resetFilters();
     this.initializeFilters();
-    this.saveFilters();
   }
 
   get coverageText() {
@@ -138,19 +108,12 @@ export class FilterOptionsComponent implements OnInit {
       : 'Check Coverage';
   }
 
-  get searchFilter() {
-    return this.filters.find(
-      filter => filter.property === FilterProperties.Search
-    );
-  }
-
   handleSearch(value: string) {
     this.filters = this.filters.filter(
-      filter => filter.property !== FilterProperties.Search
+      filter => filter.filter !== FilterProperties.Search
     );
     if (value !== '') {
-      this.filters.push({ property: FilterProperties.Search, value });
+      this.filters.push({ filter: FilterProperties.Search, value });
     }
-    this.saveFilters();
   }
 }

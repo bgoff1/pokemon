@@ -1,18 +1,18 @@
 export default {
   gifts: [
-    { location: 'Starter', pokemon: ['Turtwig', 'Piplup', 'Chimchar'] },
-    { location: 'Hearthome City', pokemon: ['Eevee'] },
-    { location: 'Veilstone City', pokemon: ['Porygon'] },
-    { location: 'Eterna City Egg', pokemon: ['Togepi'] },
-    { location: 'Iron Island Egg', pokemon: ['Riolu'] }
+    { location: 'Starter', pokemon: ['turtwig', 'piplup', 'chimchar'] },
+    { location: 'Hearthome City', pokemon: ['eevee'] },
+    { location: 'Veilstone City', pokemon: ['porygon'] },
+    { location: 'Eterna City Egg', pokemon: ['togepi'] },
+    { location: 'Iron Island Egg', pokemon: ['riolu'] }
   ],
   statics: [
-    { location: 'Valley Windworks', pokemon: ['Drifloon'] },
-    { location: 'Hallowed Tower', pokemon: ['Spiritomb'] },
-    { location: 'Old Chateau', pokemon: ['Rotom'] },
-    { location: 'Lake Acuity', pokemon: ['Uxie'] },
-    { location: 'Roaming Lake Guardian', pokemon: ['Mesprit'] },
-    { location: 'Distortion World', pokemon: ['Giratina'] }
+    { location: 'Valley Windworks', pokemon: ['drifloon'] },
+    { location: 'Hallowed Tower', pokemon: ['spiritomb'] },
+    { location: 'Old Chateau', pokemon: ['rotom'] },
+    { location: 'Lake Acuity', pokemon: ['uxie'] },
+    { location: 'Roaming Lake Guardian', pokemon: ['mesprit'] },
+    { location: 'Distortion World', pokemon: ['giratina'] }
   ],
   encounters: [
     {

@@ -2,65 +2,65 @@ export default {
   gifts: [
     {
       location: 'Starter',
-      pokemon: ['Chikorita', 'Cyndaquil', 'Totodile']
+      pokemon: ['chikorita', 'cyndaquil', 'totodile']
     },
     {
       location: 'Violet City Egg',
-      pokemon: ['Togepi']
+      pokemon: ['togepi']
     },
     {
       location: 'Goldenrod City',
-      pokemon: ['Eevee']
+      pokemon: ['eevee']
     },
     {
       location: 'Route 35',
-      pokemon: ['Spearow']
+      pokemon: ['spearow']
     },
     {
       location: 'Cianwood City',
-      pokemon: ['Shuckle']
+      pokemon: ['shuckle']
     },
     {
       location: 'Mt. Mortar',
-      pokemon: ['Tyrogue']
+      pokemon: ['tyrogue']
     }
   ],
   statics: [
     {
       location: 'Union Cave',
-      pokemon: ['Lapras']
+      pokemon: ['lapras']
     },
     {
       location: 'Route 36',
-      pokemon: ['Sudowoodo']
+      pokemon: ['sudowoodo']
     },
     {
       location: 'Lake of Rage',
-      pokemon: ['Gyarados']
+      pokemon: ['gyarados']
     },
     {
       location: 'Vermillion City',
-      pokemon: ['Snorlax']
+      pokemon: ['snorlax']
     },
     {
       location: 'Roaming (Raikou)',
-      pokemon: ['Raikou']
+      pokemon: ['raikou']
     },
     {
       location: 'Roaming (Entei)',
-      pokemon: ['Entei']
+      pokemon: ['entei']
     },
     {
       location: 'Roaming (Suicune)',
-      pokemon: ['Suicune']
+      pokemon: ['suicune']
     },
     {
       location: 'Whirl Islands',
-      pokemon: ['Lugia']
+      pokemon: ['lugia']
     },
     {
       location: 'Tin Tower',
-      pokemon: ['Ho-Oh']
+      pokemon: ['ho-oh']
     }
   ],
   encounters: [

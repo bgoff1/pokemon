@@ -2,13 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { AppComponent } from './app.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HeaderModule } from '@features/header/header.module';
 import { FooterModule } from '@features/footer/footer.module';
 import { SidebarModule } from '@features/sidebar/sidebar.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
+
+import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 
 @NgModule({

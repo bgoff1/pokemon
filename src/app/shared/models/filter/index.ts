@@ -1,6 +1,7 @@
 export interface Filter {
-  property: FilterProperties;
+  filter: FilterProperties;
   value: string;
+  enabled?: boolean;
 }
 
 export enum FilterProperties {

@@ -1,5 +1,6 @@
-import { Subject } from 'rxjs';
 import { NavigationEnd } from '@angular/router';
+
+import { Subject } from 'rxjs/internal/Subject';
 
 const sub = new Subject<NavigationEnd>();
 export default {

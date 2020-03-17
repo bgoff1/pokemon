@@ -44,7 +44,7 @@
 </mat-tree>
 <search
   (search)="handleSearch($event)"
-  [filter]="searchFilter"></search>
+  [filter]="searchFilter | async"></search>
 <div class="text-center">
   <button
     mat-raised-button

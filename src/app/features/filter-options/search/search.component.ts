@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Filter } from '@models/filter/filter.model';
+import { Filter } from '@models/filter';
 
 @Component({
   selector: 'search',

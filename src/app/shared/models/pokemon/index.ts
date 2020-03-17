@@ -1,5 +1,5 @@
+import { NameReplacementUtility } from '@models/util/name/name-util.model';
 import { PokemonInterface, AbstractPokemon } from './pokemon';
-import { NameReplacementUtility } from '@models/util/name-util.model';
 import { Type } from './type';
 export * from './pokemon';
 

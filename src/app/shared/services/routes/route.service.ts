@@ -1,10 +1,10 @@
-import { Route } from '@models/view-mode.model';
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import links from '@shared/resources/links';
+import { Route } from '@models/view-mode.model';
 import { Link } from '@models/link.model';
+import links from '@resources/links';
 
 @Injectable({
   providedIn: 'root'

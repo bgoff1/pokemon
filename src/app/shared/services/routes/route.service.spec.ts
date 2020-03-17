@@ -1,5 +1,5 @@
-import { RouteService } from './route.service';
 import routerMock from '@mocks/router.mock';
+import { RouteService } from './route.service';
 
 describe('Route Service', () => {
   let service: RouteService;

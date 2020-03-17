@@ -20,18 +20,18 @@ export class NameReplacementUtility {
   }
 
   static removeHide(text: string): string {
-    return text.replace('hide', '').trim();
+    return text.replace(/(hide|Hide)/, '').trim();
   }
 
   static removeForms(text: string): string {
-    return text.replace('forms', '').trim();
+    return text.replace(/(forms|Forms)/, '').trim();
   }
 
   static trimRegionName(text: string): string {
     return this.removeHide(this.removeForms(text))
-      .replace(/(mega)s/, '$1')
-      .replace(/(alola)n/, '$1')
-      .replace(/(galar)ian/, '$1')
+      .replace(/(mega|Mega)s/, '$1')
+      .replace(/(alola|Alola)n/, '$1')
+      .replace(/(galar|Galar)ian/, '$1')
       .trim();
   }
 
@@ -42,7 +42,7 @@ export class NameReplacementUtility {
         : 'extended-sinnoh';
     }
     return regionName
-      .replace(/^(johto|unova)$/, 'original-$1')
+      .replace(/^(johto|Johto|Unova|unova)$/, 'original-$1')
       .replace(/\s+/g, '-')
       .trim();
   }

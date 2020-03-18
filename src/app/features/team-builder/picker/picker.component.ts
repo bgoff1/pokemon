@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
-import { FilterService } from '@services/filter/filter.service';
 import { TeamService } from '@services/team/team.service';
 
 @Component({
@@ -10,11 +9,8 @@ import { TeamService } from '@services/team/team.service';
 })
 export class PickerComponent implements OnInit {
   team: Pokemon[] = [];
-  pokemon: Pokemon[] = [];
-  constructor(
-    private readonly filterService: FilterService,
-    private readonly teamService: TeamService
-  ) {}
+  pokemon: Promise<Pokemon[]>;
+  constructor(private readonly teamService: TeamService) {}
 
   ngOnInit(): void {
     this.teamService.teamChange$.subscribe(team => {

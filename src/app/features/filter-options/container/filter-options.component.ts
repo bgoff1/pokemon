@@ -8,6 +8,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FilterService } from '@services/filter/filter.service';
 import { TeamService } from '@services/team/team.service';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'filter-options',
@@ -27,22 +28,23 @@ export class FilterOptionsComponent implements OnInit {
   checkingCoverage = false;
 
   constructor(
-    private readonly optionsService: FilterOptionsService,
     private readonly filterService: FilterService,
+    private readonly optionsService: FilterOptionsService,
     private readonly teamService: TeamService
   ) {}
 
   ngOnInit(): void {
-    this.initializeFilters();
+    this.initializeFilters(this.filterService.createDatabase());
   }
 
-  initializeFilters() {
-    this.filters = this.filterService.filters;
-    this.filterService.getAllFilters().then(filters => {
-      this.treeData.data = this.optionsService.generateTree(filters);
+  initializeFilters(observer: Observable<any>) {
+    observer.pipe(take(1)).subscribe(() => {
+      this.filterService.getAllFilters().then(filters => {
+        this.treeData.data = this.optionsService.generateTree(filters);
+      });
+      this.searchFilter = this.filterService.getSearchFilter();
+      this.checkingCoverage = this.filterService.checkingCoverage;
     });
-    this.searchFilter = this.filterService.getSearchFilter();
-    this.checkingCoverage = this.filterService.checkingCoverage;
   }
 
   selectionToggle(node: TreeNode, event: MatCheckboxChange): void {
@@ -98,8 +100,7 @@ export class FilterOptionsComponent implements OnInit {
   }
 
   resetFilters() {
-    this.filterService.resetFilters();
-    this.initializeFilters();
+    this.initializeFilters(this.filterService.resetFilters());
   }
 
   get coverageText() {
@@ -109,11 +110,6 @@ export class FilterOptionsComponent implements OnInit {
   }
 
   handleSearch(value: string) {
-    this.filters = this.filters.filter(
-      filter => filter.filter !== FilterProperties.Search
-    );
-    if (value !== '') {
-      this.filters.push({ filter: FilterProperties.Search, value });
-    }
+    this.filterService.addSearchFilter(value);
   }
 }

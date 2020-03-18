@@ -110,7 +110,6 @@ export class PokemonList {
     );
 
     if (extraFilters.length) {
-      console.log(extraFilters);
       this.filteredPokemon = this.filteredPokemon.filter(mon => {
         return extraFilters
           .map(filter => NameReplacementUtility.trimRegionName(filter.value))

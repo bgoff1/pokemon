@@ -32,6 +32,7 @@ export class FilterOptionsService {
       value: filterType,
       name: filterType
     });
+    console.log(result);
     return result;
   }
 

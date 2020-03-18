@@ -7,8 +7,8 @@ export interface Filter {
 export enum FilterProperties {
   Coverage,
   Search,
-  Regions,
   Types,
+  Regions,
   Generations,
   Extras
 }

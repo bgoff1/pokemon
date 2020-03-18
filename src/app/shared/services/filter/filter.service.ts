@@ -4,46 +4,40 @@ import { Filter, FilterProperties } from '@models/filter';
 import PouchDB from '@models/pouchdb.model';
 import defaultFilters from '@resources/default-filters';
 import { Observable } from 'rxjs/internal/Observable';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
+import { take } from 'rxjs/internal/operators/take';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
   checkingCoverage: boolean;
-  filters: Filter[];
   private filterDB: PouchDB.Database<Filter>;
 
-  constructor() {
-    this.createDatabase();
-  }
+  constructor() {}
 
   createDatabase() {
     this.filterDB = new PouchDB<Filter>('filters');
     this.filterDB.createIndex({
       index: { fields: ['enabled', 'filter'] }
     });
-    this.filterDB.allDocs().then(docs => {
-      if (!docs.total_rows) {
-        this.filterDB.bulkDocs(defaultFilters).then(() => {
-          this.filters = defaultFilters.filter(filter => filter.enabled);
-        });
-      } else {
-        this.filters = docs.rows
-          .map(doc => doc.doc)
-          .filter(filter => filter && filter.enabled);
-      }
-    });
+    return from(
+      this.filterDB.allDocs().then(docs => {
+        if (!docs.total_rows) {
+          return this.filterDB.bulkDocs(defaultFilters);
+        }
+        return null;
+      })
+    );
   }
 
   resetFilters() {
-    this.filterDB.destroy().then(() => {
-      this.createDatabase();
-    });
+    return from(this.filterDB.destroy().then(() => this.createDatabase()));
   }
 
-  getAllFilters(): Promise<Filter[]> {
-    return this.filterDB.allDocs({ include_docs: true }).then(docs => {
+  async getAllFilters(): Promise<Filter[]> {
+    try {
+      const docs = await this.filterDB.allDocs({ include_docs: true });
       return docs.rows
         .map(document => document.doc)
         .filter(
@@ -54,18 +48,49 @@ export class FilterService {
         )
         .sort((a, b) => Number(a._id) - Number(b._id))
         .sort((a, b) => a.filter - b.filter);
-    });
+    } catch {
+      return [];
+    }
   }
 
-  getSearchFilter(): Observable<Filter> {
+  getFilters(): Promise<Filter[]> {
+    try {
+      return this.filterDB
+        .find({
+          selector: { enabled: true }
+        })
+        .then(result => result.docs);
+    } catch {
+      return Promise.resolve([]);
+    }
+  }
+
+  getSearchFilter() {
     return from(
       this.filterDB
         .find({
-          selector: { filter: 'search' },
+          selector: { filter: FilterProperties.Search },
           limit: 1
         })
         .then(result => result.docs[0])
     );
+  }
+
+  addSearchFilter(searchQuery: string) {
+    console.log('in add search', searchQuery);
+    this.getSearchFilter()
+      .pipe(take(1))
+      .subscribe(doc => {
+        if (doc) {
+          this.filterDB.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            filter: FilterProperties.Search,
+            value: searchQuery,
+            enabled: searchQuery.trim().length > 0
+          });
+        }
+      });
   }
 
   private changeCoverageDocument(value: string) {

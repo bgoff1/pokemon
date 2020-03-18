@@ -4,9 +4,21 @@ import { typeNames } from '@models/pokemon/type';
 
 import extras from './extras';
 import regions from './regions';
-let id = 1;
+let id = 0;
 
 export default [
+  {
+    filter: FilterProperties.Coverage,
+    value: '',
+    enabled: false,
+    _id: (id++).toString()
+  },
+  {
+    filter: FilterProperties.Search,
+    value: '',
+    enabled: false,
+    _id: (id++).toString()
+  },
   ...extras.map(value => ({
     filter: FilterProperties.Extras,
     value,
@@ -30,11 +42,5 @@ export default [
     value,
     enabled: false,
     _id: (id++).toString()
-  })),
-  {
-    filter: FilterProperties.Coverage,
-    value: '',
-    enabled: false,
-    _id: '0'
-  }
+  }))
 ];

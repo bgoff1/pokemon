@@ -65,11 +65,10 @@ export class TeamService {
     );
   }
 
-  get pokemon(): Pokemon[] {
-    console.log(this.filterService.filters, this.nonEmptyMembers);
-    return this.pokemonList.callFilters(
-      this.filterService.filters,
-      this.nonEmptyMembers
-    );
+  get pokemon(): Promise<Pokemon[]> {
+    return this.filterService.getFilters().then(filters => {
+      console.log(filters);
+      return this.pokemonList.callFilters(filters, this.nonEmptyMembers);
+    });
   }
 }

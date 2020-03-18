@@ -1,6 +1,6 @@
 <virtual-scroller
   #scroll
-  [items]="pokemon"
+  [items]="pokemon | async"
   class="virtual-scroller">
   <span
     *ngFor="let mon of scroll.viewPortItems"

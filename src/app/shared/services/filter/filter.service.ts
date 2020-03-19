@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
+import { Region } from '@models/pokemon/region';
 import { Filter, FilterProperties } from '@models/filter';
 import PouchDB from '@models/pouchdb.model';
 import defaultFilters from '@resources/default-filters';
@@ -12,7 +13,7 @@ export class FilterService {
   checkingCoverage: boolean;
   filterDB: PouchDB.Database<Filter> = new PouchDB<Filter>('filters');
 
-  async createDatabase() {
+  async createDatabase(): Promise<void> {
     this.filterDB.createIndex({
       index: { fields: ['enabled', 'filter'] }
     });
@@ -25,7 +26,7 @@ export class FilterService {
     });
   }
 
-  async resetFilters() {
+  async resetFilters(): Promise<void> {
     await this.filterDB.destroy();
     return this.createDatabase();
   }
@@ -39,7 +40,11 @@ export class FilterService {
           doc =>
             !isNaN(Number(doc._id)) &&
             doc.filter !== FilterProperties.Coverage &&
-            doc.filter !== FilterProperties.Search
+            doc.filter !== FilterProperties.Search &&
+            !(
+              doc.filter === FilterProperties.Regions &&
+              doc.value === Region[Region.National]
+            )
         )
         .sort((a, b) => Number(a._id) - Number(b._id))
         .sort((a, b) => a.filter - b.filter);
@@ -59,7 +64,7 @@ export class FilterService {
     }
   }
 
-  async getSearchFilter() {
+  async getSearchFilter(): Promise<Filter | null> {
     try {
       const searchDocs = await this.filterDB.find({
         selector: { filter: FilterProperties.Search },
@@ -71,7 +76,7 @@ export class FilterService {
     }
   }
 
-  async addSearchFilter(searchQuery: string) {
+  async addSearchFilter(searchQuery: string): Promise<void> {
     const doc = await this.getSearchFilter();
     if (doc) {
       this.filterDB.put({
@@ -84,7 +89,7 @@ export class FilterService {
     }
   }
 
-  async getCoverageFilter() {
+  async getCoverageFilter(): Promise<Filter | null> {
     try {
       const searchDocs = await this.filterDB.find({
         selector: { filter: FilterProperties.Coverage },
@@ -96,9 +101,9 @@ export class FilterService {
     }
   }
 
-  async changeCoverageDocument(value: string) {
+  async changeCoverageDocument(value: string): Promise<void> {
     const doc = await this.getCoverageFilter();
-    return this.filterDB.put({
+    this.filterDB.put({
       _id: FilterProperties.Coverage.toString(),
       _rev: doc._rev,
       filter: doc.filter,
@@ -107,7 +112,7 @@ export class FilterService {
     });
   }
 
-  checkCoverage(team: Pokemon[]) {
+  checkCoverage(team: Pokemon[]): void {
     this.checkingCoverage = !this.checkingCoverage;
     if (this.checkingCoverage && team.length) {
       this.changeCoverageDocument(JSON.stringify(team));
@@ -116,13 +121,13 @@ export class FilterService {
     }
   }
 
-  updateFilter(filter: Filter) {
-    return this.filterDB.get(filter._id).then(doc => {
-      return this.filterDB.put({ ...doc, enabled: doc.enabled ? false : true });
-    });
+  async updateFilter(filter: Filter): Promise<void> {
+    const doc = await this.filterDB.get(filter._id);
+    this.filterDB.put({ ...doc, enabled: !doc.enabled });
   }
 
-  updateFilters(filters: UpdateFilter[]) {
-    this.filterDB.bulkDocs(filters);
+  async updateFilters(filters: UpdateFilter[]): Promise<Filter[]> {
+    await this.filterDB.bulkDocs(filters);
+    return filters;
   }
 }

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Subject } from 'rxjs';
 import { FilterService } from '@services/filter/filter.service';
-import { Pokemon } from '@models/pokemon';
-import { PokemonInterface } from '@models/pokemon/pokemon';
+import { Pokemon, PokemonInterface } from '@models/pokemon';
 import { PokemonList } from '@models/list/pokemon-list.model';
 
 @Injectable({
@@ -21,7 +20,7 @@ export class PokemonService {
     this.teamChange = new BehaviorSubject(this.team);
   }
 
-  async fetchFilters() {
+  async fetchFilters(): Promise<void> {
     await this.filterService.createDatabase();
     this.filterService.getFilters().then(filters => {
       this.pokemonChange.next(
@@ -37,7 +36,7 @@ export class PokemonService {
     return this.team;
   }
 
-  private updateTeam() {
+  private updateTeam(): void {
     this.teamChange.next(this.team);
     if (this.filterService.checkingCoverage) {
       this.filterService.checkCoverage(this.nonEmptyMembers);
@@ -50,7 +49,7 @@ export class PokemonService {
     });
   }
 
-  addToTeam(pokemon: Pokemon) {
+  addToTeam(pokemon: Pokemon): void {
     if (this.nonEmptyMembers.length < 6) {
       this.team.pop();
       this.team.unshift(pokemon);
@@ -59,13 +58,13 @@ export class PokemonService {
     this.updateTeam();
   }
 
-  addEmptyMembers() {
+  addEmptyMembers(): void {
     while (this.team.length < 6) {
       this.team.push(new Pokemon());
     }
   }
 
-  removeFromTeam(pokemon: Pokemon) {
+  removeFromTeam(pokemon: Pokemon): void {
     if (this.nonEmptyMembers.length > 0) {
       this.team = this.team.filter(
         teamMember => pokemon.name !== teamMember.name

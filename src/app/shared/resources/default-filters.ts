@@ -1,9 +1,12 @@
 import { FilterProperties } from '@models/filter';
 import { romanize } from '@models/util/roman/roman';
 import { typeNames } from '@models/pokemon/type';
+import { Region } from '@models/pokemon/region';
+import { enumValues } from '@models/util/enum';
 
 import extras from './extras';
-import regions from './regions';
+const regions = enumValues(Region);
+
 let id = 0;
 
 export default [

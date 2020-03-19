@@ -1,9 +1,15 @@
 .pokemon-name {
   position: relative;
+  @media (max-height: 700px) {
+    bottom: 15vh;
+  }
   bottom: 13vh;
 }
 .pokemon-type {
   position: relative;
+  @media (max-height: 700px) {
+    bottom: 20vh;
+  }
   bottom: 18vh;
 }
 

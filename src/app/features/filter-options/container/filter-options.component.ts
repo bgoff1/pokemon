@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
@@ -13,7 +13,7 @@ import { FilterOptionsService } from '../service/filter-options.service';
   templateUrl: './filter-options.component.html',
   styleUrls: ['./filter-options.component.scss']
 })
-export class FilterOptionsComponent {
+export class FilterOptionsComponent implements OnInit {
   treeControl = new NestedTreeControl<TreeNode>(this.optionsService.getChild);
   descendantsAllChecked = this.optionsService.descendantsAllChecked;
   descendantsPartiallyChecked = this.optionsService.descendantsPartiallyChecked;
@@ -28,32 +28,26 @@ export class FilterOptionsComponent {
     private readonly filterService: FilterService,
     private readonly optionsService: FilterOptionsService,
     private readonly pokemonService: PokemonService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.filterService.createDatabase().then(() => this.initializeFilters());
   }
 
-  initializeFilters() {
-    this.filterService.getAllFilters().then(filters => {
-      this.treeData.data = this.optionsService.generateTree(filters);
-      for (const item of this.treeData.data) {
-        if (item.expanded) {
-          this.treeControl.expand(item);
-        }
-      }
-    });
+  async initializeFilters(): Promise<void> {
     this.searchFilter = this.filterService.getSearchFilter();
     this.checkingCoverage = this.filterService.checkingCoverage;
+    const filters = await this.filterService.getAllFilters();
+    this.treeData.data = this.optionsService.generateTree(filters);
+    for (const item of this.treeData.data) {
+      if (item.expanded) {
+        this.treeControl.expand(item);
+      }
+    }
   }
 
   get treeHasData() {
-    return this.treeData.data.length;
-  }
-
-  expand(node: TreeNode) {
-    const previousValue =
-      localStorage.getItem(node.name + 'expanded') === 'true';
-
-    localStorage.setItem(node.name + 'expanded', String(!previousValue));
+    return !!this.treeData.data.length;
   }
 
   selectionToggle(node: TreeNode, event: MatCheckboxChange): void {
@@ -88,13 +82,13 @@ export class FilterOptionsComponent {
     });
   }
 
-  handleCoverage() {
+  handleCoverage(): void {
     this.filterService.checkCoverage(this.pokemonService.nonEmptyMembers);
     this.checkingCoverage = !this.checkingCoverage;
   }
 
-  resetFilters() {
-    this.filterService.resetFilters().then(this.initializeFilters);
+  resetFilters(): Promise<void> {
+    return this.filterService.resetFilters().then(this.initializeFilters);
   }
 
   get coverageText() {
@@ -103,11 +97,11 @@ export class FilterOptionsComponent {
       : 'Check Coverage';
   }
 
-  get hasTeamMembers() {
-    return this.pokemonService.nonEmptyMembers.length;
+  get hasTeamMembers(): boolean {
+    return !!this.pokemonService.nonEmptyMembers.length;
   }
 
-  handleSearch(value: string) {
-    this.filterService.addSearchFilter(value);
+  handleSearch(value: string): Promise<void> {
+    return this.filterService.addSearchFilter(value);
   }
 }

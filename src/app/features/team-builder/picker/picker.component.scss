@@ -1,4 +1,7 @@
 .virtual-scroller {
+  @media (max-height: 700px) {
+    height: 41.5vh;
+  }
   height: 44vh;
   width: 100%;
   text-align: center;

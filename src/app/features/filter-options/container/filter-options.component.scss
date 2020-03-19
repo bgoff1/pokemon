@@ -16,3 +16,6 @@ div.text-center > button {
 .spinner {
   width: 100%;
 }
+.mat-icon-button[disabled] {
+  width: 25px;
+}

@@ -1,10 +1,12 @@
 import { of } from 'rxjs/internal/observable/of';
 
 export default {
+  open: false,
   links: [],
   menuClick$: of(true),
+  route$: of('/nuzlocke'),
+  isCurrentRoute: jest.fn(() => true),
   clickMenu: jest.fn(),
-  route$: of('abc'),
-  isCurrentRoute: jest.fn(),
-  changeRoute: jest.fn()
+  changeRoute: jest.fn(),
+  formatLink: jest.fn(() => ({ label: '', path: '' }))
 } as any;

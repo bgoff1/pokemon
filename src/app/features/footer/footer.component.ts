@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouteService } from '@services/routes/route.service';
-import { Route } from '@models/view-mode.model';
 import { Link } from '@models/link.model';
 
 @Component({
@@ -18,11 +17,11 @@ export class FooterComponent {
   ];
   constructor(private readonly routeService: RouteService) {}
 
-  navigate(path: Route) {
+  navigate(path: string) {
     this.routeService.changeRoute(path);
   }
 
-  isActive(path: Route) {
+  isActive(path: string) {
     return this.routeService.isCurrentRoute(path);
   }
 }

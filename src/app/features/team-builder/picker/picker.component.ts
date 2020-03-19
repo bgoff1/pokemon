@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
 import { PokemonService } from '@services/pokemon/pokemon.service';
 
@@ -8,12 +8,14 @@ import { PokemonService } from '@services/pokemon/pokemon.service';
   styleUrls: ['./picker.component.scss']
 })
 export class PickerComponent implements OnInit {
+  filtersLoading = true;
   pokemon: Pokemon[] = [];
   constructor(private readonly pokemonService: PokemonService) {}
 
   ngOnInit(): void {
     this.pokemonService.fetchFilters().then(() => {
       this.pokemonService.pokemonChange$.subscribe(all => {
+        this.filtersLoading = false;
         this.pokemon = all;
       });
     });

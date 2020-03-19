@@ -32,9 +32,15 @@ describe('Filter Service', () => {
     expect(service.filterDB.bulkDocs).not.toBeCalled();
   });
 
-  test('should destroy db and rebuild on reset', () => {
+  test('should destroy db and rebuild on reset', async () => {
     service.createDatabase = jest.fn(() => 1) as any;
-    expect(service.resetFilters()).resolves.toBe(1);
+    let error = false;
+    try {
+      await service.resetFilters();
+    } catch {
+      error = true;
+    }
+    expect(error).toBe(false);
   });
 
   test('should get all filters and sort them', () => {
@@ -48,41 +54,40 @@ describe('Filter Service', () => {
         ]
       })
     ) as any;
-    expect(service.getAllFilters()).resolves.toEqual([
-      { _id: 1 },
-      { _id: 2, filter: 2 }
-    ]);
+    service.getAllFilters().then(filters => {
+      expect(filters).toEqual([{ _id: 1 }, { _id: 2, filter: 2 }]);
+    });
   });
 
   test('should return [] if allDocs throws', () => {
     service.filterDB.allDocs = jest.fn(() => {
       throw new Error();
     });
-    expect(service.getAllFilters()).resolves.toEqual([]);
+    service.getAllFilters().then(filters => expect(filters).toEqual([]));
   });
 
   test('should get filters', () => {
     service.filterDB.find = jest.fn(() => ({ docs: null })) as any;
-    expect(service.getFilters()).resolves.toBe(null);
+    service.getFilters().then(filters => expect(filters).toBe(null));
   });
 
   test('should return [] if find throws for active filters', () => {
     service.filterDB.find = jest.fn(() => {
       throw new Error();
     });
-    expect(service.getFilters()).resolves.toEqual([]);
+    service.getFilters().then(filters => expect(filters).toEqual([]));
   });
 
   test('should get search filter', () => {
     service.filterDB.find = jest.fn(() => ({ docs: [null] })) as any;
-    expect(service.getSearchFilter()).resolves.toBe(null);
+    service.getSearchFilter().then(search => expect(search).toBe(null));
   });
 
   test('should return [] if find throws for search filter', () => {
     service.filterDB.find = jest.fn(() => {
       throw new Error();
     });
-    expect(service.getSearchFilter()).resolves.toBe(null);
+    service.getSearchFilter().then(search => expect(search).toBe(null));
   });
 
   test('should add search filter', async () => {
@@ -99,14 +104,14 @@ describe('Filter Service', () => {
 
   test('should get coverage filter', () => {
     service.filterDB.find = jest.fn(() => ({ docs: [null] })) as any;
-    expect(service.getCoverageFilter()).resolves.toBe(null);
+    service.getCoverageFilter().then(coverage => expect(coverage).toBe(null));
   });
 
   test('should return [] if find throws for coverage filter', () => {
     service.filterDB.find = jest.fn(() => {
       throw new Error();
     });
-    expect(service.getCoverageFilter()).resolves.toBe(null);
+    service.getCoverageFilter().then(coverage => expect(coverage).toBe(null));
   });
 
   test('should update coverage document', async () => {
@@ -116,8 +121,14 @@ describe('Filter Service', () => {
     service.filterDB.put = jest.fn(
       (arg: { enabled: boolean }) => arg.enabled
     ) as any;
-    expect(service.changeCoverageDocument('')).resolves.toBe(false);
-    expect(service.changeCoverageDocument('a')).resolves.toBe(true);
+    let error = false;
+    try {
+      await service.changeCoverageDocument('');
+      await service.changeCoverageDocument('a');
+    } catch {
+      error = true;
+    }
+    expect(error).toBe(false);
   });
 
   test('should check coverage properly', () => {

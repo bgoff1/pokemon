@@ -1,12 +1,12 @@
 import { PickerComponent } from './picker.component';
-import teamServiceMock from '@mocks/team.service.mock';
+import pokemonServiceMock from '@mocks/pokemon.service.mock';
 import { of } from 'rxjs/internal/observable/of';
 
 describe('Picker Component', () => {
   let component: PickerComponent;
 
   beforeEach(() => {
-    component = new PickerComponent(teamServiceMock);
+    component = new PickerComponent(pokemonServiceMock);
   });
 
   test('should create', () => {
@@ -16,12 +16,12 @@ describe('Picker Component', () => {
   test('should add pokemon to the team', () => {
     const mon = {};
     component.addPokemon(mon as any);
-    expect(teamServiceMock.addToTeam).toHaveBeenCalledWith(mon);
+    expect(pokemonServiceMock.addToTeam).toHaveBeenCalledWith(mon);
   });
 
   test('should fetch filters', () => {
-    teamServiceMock.fetchFilters = jest.fn(() => Promise.resolve());
-    teamServiceMock.pokemonChange$ = of([]);
+    pokemonServiceMock.fetchFilters = jest.fn(() => Promise.resolve());
+    pokemonServiceMock.pokemonChange$ = of([]);
     component.ngOnInit();
     expect(component.pokemon).toEqual([]);
   });

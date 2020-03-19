@@ -127,7 +127,6 @@ describe('Filter Options Service', () => {
     service.createChild = jest.fn(() => true) as any;
     localStorage.getItem = jest.fn(() => 'a');
 
-    console.log(service.generateTree(filters));
     expect(service.generateTree(filters)).toEqual([
       {
         checked: null,

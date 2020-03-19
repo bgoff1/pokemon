@@ -2,6 +2,8 @@ import { SidebarComponent } from './sidebar.component';
 import routeServiceMock from '@mocks/route.service.mock';
 import elementRefMock from '@mocks/element-ref.mock';
 import { Link } from '@models/link.model';
+import 'hammerjs';
+
 describe('Sidebar Component', () => {
   let component: SidebarComponent;
 

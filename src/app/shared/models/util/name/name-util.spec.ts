@@ -1,60 +1,34 @@
-import { NameReplacementUtility } from './name-util.model';
+import { NameUtility } from './name-util.model';
 
 describe('Name Replacement Utility', () => {
   test('should replace characters in an image', () => {
-    expect(NameReplacementUtility.replaceImageCharacters('nidoran ♂')).toEqual(
+    expect(NameUtility.replaceImageCharacters('nidoran ♂')).toEqual(
       'nidoran-m'
     );
   });
 
   test('should remove extras', () => {
-    expect(
-      NameReplacementUtility.trimRegionName('hide galarian meowth')
-    ).toEqual('galar meowth');
-  });
-
-  test('should parse the region name (original-sinnoh)', () => {
-    expect(NameReplacementUtility.parseRegionName('(diamond')).toEqual(
-      'original-sinnoh'
-    );
-  });
-
-  test('should parse region name (extended-sinnoh)', () => {
-    expect(NameReplacementUtility.parseRegionName('(platinum')).toEqual(
-      'extended-sinnoh'
-    );
-  });
-
-  test('should parse region name (original-johto)', () => {
-    expect(NameReplacementUtility.parseRegionName('johto')).toEqual(
-      'original-johto'
-    );
-  });
-
-  test('should replace spaces with -', () => {
-    expect(NameReplacementUtility.parseRegionName('long name')).toEqual(
-      'long-name'
+    expect(NameUtility.trimRegionName('hide galarian meowth')).toEqual(
+      'galar meowth'
     );
   });
 
   test('should strip extras', () => {
-    expect(NameReplacementUtility.stripExtras('mega meowth')).toEqual('meowth');
+    expect(NameUtility.stripExtras('mega meowth')).toEqual('meowth');
   });
 
   test('should remove hide', () => {
-    expect(NameReplacementUtility.removeHide('hide me')).toEqual('me');
+    expect(NameUtility.removeHide('hide me')).toEqual('me');
   });
 
   test('should remove forms', () => {
-    expect(NameReplacementUtility.removeForms('forms 222')).toEqual('222');
+    expect(NameUtility.removeForms('forms 222')).toEqual('222');
   });
 
   test('should get display name', () => {
-    NameReplacementUtility.stripExtras = jest.fn(arg => arg);
-    expect(NameReplacementUtility.getDisplayName('Empty Team Member')).toEqual(
-      ' '
-    );
-    expect(NameReplacementUtility.getDisplayName('Empty Team aMember')).toEqual(
+    NameUtility.stripExtras = jest.fn(arg => arg);
+    expect(NameUtility.getDisplayName('Empty Team Member')).toEqual(' ');
+    expect(NameUtility.getDisplayName('Empty Team aMember')).toEqual(
       'Empty Team aMember'
     );
   });

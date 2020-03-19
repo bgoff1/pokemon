@@ -1,10 +1,10 @@
-import { Pokemon } from '@models/pokemon/';
-import { Filter, FilterProperties } from '@models/filter';
-import { Type } from '@models/pokemon/type';
-import { Coverage } from '@models/type-coverage/coverage.model';
+import { Pokemon } from '@models/pokemon';
 import { Pokedex } from '@models/pokemon/pokedex';
-import { NameReplacementUtility } from '@models/util/name/name-util.model';
 import { Region } from '@models/pokemon/region';
+import { Type } from '@models/pokemon/type';
+import { Filter, FilterProperties } from '@models/filter';
+import { Coverage } from '@models/type-coverage/coverage.model';
+import { NameUtility } from '@models/util/name/name-util.model';
 import pokemon from '@resources/pokemon';
 
 export class PokemonList {
@@ -41,11 +41,11 @@ export class PokemonList {
       this.filteredPokemon = this.filteredPokemon.filter(mon =>
         search
           .map(filter => filter.value)
-          .some(searchValue => {
-            return NameReplacementUtility.characterReplace(mon.name)
+          .some(searchValue =>
+            NameUtility.characterReplace(mon.name)
               .toLowerCase()
-              .includes(searchValue.trim().toLowerCase());
-          })
+              .includes(searchValue.trim().toLowerCase())
+          )
       );
     }
   }
@@ -97,7 +97,7 @@ export class PokemonList {
     if (extraFilters.length) {
       this.filteredPokemon = this.filteredPokemon.filter(mon => {
         return extraFilters
-          .map(filter => NameReplacementUtility.trimRegionName(filter.value))
+          .map(filter => NameUtility.trimRegionName(filter.value))
           .every(filter => !mon.name.includes(filter.toLowerCase()));
       });
     }

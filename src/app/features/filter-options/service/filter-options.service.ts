@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Filter, FilterProperties } from '@models/filter';
+import { getRegionName, Region } from '@models/pokemon/region';
 import { TreeNode } from '../models/tree-node.model';
 
 @Injectable({
@@ -46,7 +47,7 @@ export class FilterOptionsService {
     return {
       id: filter._id,
       checked: filter.enabled ? true : false,
-      value: filter.value,
+      value: getRegionName(filter.value as keyof typeof Region),
       name: filterType,
       rev: filter._rev
     };

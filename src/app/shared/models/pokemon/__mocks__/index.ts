@@ -1,5 +1,5 @@
 let i = 1;
-export const Pokemon = jest.fn((name?: any) => {
+export const Pokemon = jest.fn((name?) => {
   if (name && typeof name === 'string') {
     return { name, getNationalPokedex: jest.fn() };
   } else if (name) {

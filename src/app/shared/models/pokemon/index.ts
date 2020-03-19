@@ -1,4 +1,4 @@
-import { NameReplacementUtility } from '@models/util/name/name-util.model';
+import { NameUtility } from '@models/util/name/name-util.model';
 import { PokemonInterface, AbstractPokemon } from './pokemon';
 import { Type } from './type';
 export * from './pokemon';
@@ -22,11 +22,11 @@ export class Pokemon extends AbstractPokemon {
   }
 
   get imageName() {
-    return NameReplacementUtility.replaceImageCharacters(this.name);
+    return NameUtility.replaceImageCharacters(this.name);
   }
 
   get displayName() {
-    return NameReplacementUtility.getDisplayName(this.name);
+    return NameUtility.getDisplayName(this.name);
   }
 
   equals(other: Pokemon) {

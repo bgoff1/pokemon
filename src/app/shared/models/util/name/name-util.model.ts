@@ -1,4 +1,4 @@
-export class NameReplacementUtility {
+export class NameUtility {
   static replaceImageCharacters(pokemon: string) {
     return this.imageReplace(this.characterReplace(pokemon));
   }
@@ -35,18 +35,6 @@ export class NameReplacementUtility {
       .trim();
   }
 
-  static parseRegionName(regionName: string) {
-    if (regionName.includes('(')) {
-      return regionName.includes('diamond')
-        ? 'original-sinnoh'
-        : 'extended-sinnoh';
-    }
-    return regionName
-      .replace(/^(johto|Johto|Unova|unova)$/, 'original-$1')
-      .replace(/\s+/g, '-')
-      .trim();
-  }
-
   static stripExtras(name: string): string {
     let result = name.toLowerCase();
     for (const extra of ['mega', 'alola', 'galar']) {
@@ -56,8 +44,6 @@ export class NameReplacementUtility {
   }
 
   static getDisplayName(name: string): string {
-    return name === 'Empty Team Member'
-      ? ' '
-      : NameReplacementUtility.stripExtras(name);
+    return name === 'Empty Team Member' ? ' ' : NameUtility.stripExtras(name);
   }
 }

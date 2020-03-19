@@ -1,6 +1,6 @@
 import { Pokemon } from './index';
 import { Type } from './type';
-import { NameReplacementUtility } from '@models/util/name/name-util.model';
+import { NameUtility } from '@models/util/name/name-util.model';
 import { Region } from './region';
 
 describe('Pokemon Model', () => {
@@ -17,12 +17,12 @@ describe('Pokemon Model', () => {
   });
 
   test('should get display name (empty member)', () => {
-    NameReplacementUtility.getDisplayName = jest.fn(arg => arg);
+    NameUtility.getDisplayName = jest.fn(arg => arg);
     expect(pokemon.displayName).toEqual(pokemon.name);
   });
 
   test('should get image name', () => {
-    NameReplacementUtility.replaceImageCharacters = jest.fn(arg => arg);
+    NameUtility.replaceImageCharacters = jest.fn(arg => arg);
     expect(pokemon.imageName).toEqual(pokemon.name);
   });
 
@@ -60,7 +60,7 @@ describe('Pokemon Model', () => {
   });
 
   test('should see equal', () => {
-    NameReplacementUtility.replaceImageCharacters = jest.fn(a => a);
+    NameUtility.replaceImageCharacters = jest.fn(a => a);
     pokemon = new Pokemon({
       name: 'a',
       pokedexNumbers: [],

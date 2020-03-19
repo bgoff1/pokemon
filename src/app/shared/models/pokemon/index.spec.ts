@@ -7,8 +7,6 @@ describe('Pokemon Model', () => {
   let pokemon: Pokemon;
 
   beforeEach(() => {
-    NameReplacementUtility.getDisplayName = jest.fn(arg => arg);
-    NameReplacementUtility.replaceImageCharacters = jest.fn(arg => arg);
     pokemon = new Pokemon();
   });
 
@@ -19,15 +17,12 @@ describe('Pokemon Model', () => {
   });
 
   test('should get display name (empty member)', () => {
+    NameReplacementUtility.getDisplayName = jest.fn(arg => arg);
     expect(pokemon.displayName).toEqual(pokemon.name);
-  });
-
-  test('should get display name (has name)', () => {
-    expect(pokemon.displayName).toEqual(pokemon.name);
-    expect(NameReplacementUtility.getDisplayName).toHaveBeenCalled();
   });
 
   test('should get image name', () => {
+    NameReplacementUtility.replaceImageCharacters = jest.fn(arg => arg);
     expect(pokemon.imageName).toEqual(pokemon.name);
   });
 
@@ -40,5 +35,46 @@ describe('Pokemon Model', () => {
       name: Region.National,
       entryNumber: 444
     });
+  });
+
+  test('should create and set equal', () => {
+    pokemon = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1],
+      generation: '1',
+      evolutionChain: 2
+    });
+    expect(pokemon).toBeTruthy();
+  });
+
+  test('should create and set equal with multiple types', () => {
+    pokemon = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1, 2],
+      generation: '1',
+      evolutionChain: 2
+    });
+    expect(pokemon).toBeTruthy();
+  });
+
+  test('should see equal', () => {
+    NameReplacementUtility.replaceImageCharacters = jest.fn(a => a);
+    pokemon = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1],
+      generation: '1',
+      evolutionChain: 2
+    });
+    const pokemonB = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1, 2],
+      generation: '1',
+      evolutionChain: 2
+    });
+    expect(pokemon.equals(pokemonB)).toBe(true);
   });
 });

@@ -1,3 +1,6 @@
+<div [class.hidden]="treeHasData">
+  <mat-spinner></mat-spinner>
+</div>
 <mat-tree
   [dataSource]="treeData"
   [treeControl]="treeControl"
@@ -23,10 +26,11 @@
       <div class="mat-tree-node">
         <button
           mat-icon-button
+          (click)="expand(node)"
           matTreeNodeToggle
           [attr.aria-label]="'toggle ' + node.name">
           <mat-icon>
-            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            {{node.expanded ? 'expand_more' : 'chevron_right'}}
           </mat-icon>
         </button>
         <mat-checkbox
@@ -42,20 +46,24 @@
     </li>
   </mat-nested-tree-node>
 </mat-tree>
-<search
-  (search)="handleSearch($event)"
-  [filter]="searchFilter | async"></search>
-<div class="text-center">
-  <button
-    mat-raised-button
-    class="w-80"
-    [disabled]="hasNoMembers()"
-    (click)="handleCoverage()">
-    {{coverageText}}
-  </button>
-</div>
 
-<div class="text-center reset">
+<div class="search">
+  <search
+    (search)="handleSearch($event)"
+    [filter]="searchFilter | async"></search>
+</div>
+<div>
+  <div class="text-center">
+    <button
+      mat-raised-button
+      [disabled]="!hasTeamMembers"
+      class="w-80"
+      (click)="handleCoverage()">
+      {{coverageText}}
+    </button>
+  </div>
+</div>
+<div class="text-center">
   <button
     mat-raised-button
     class="w-80"

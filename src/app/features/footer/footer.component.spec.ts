@@ -13,12 +13,12 @@ describe('Footer Component', () => {
   });
 
   test('should navigate on navigate', () => {
-    component.navigate('nuzlocke');
-    expect(routeServiceMock.changeRoute).toHaveBeenCalledWith('nuzlocke');
+    component.navigate('/nuzlocke');
+    expect(routeServiceMock.changeRoute).toHaveBeenCalledWith('/nuzlocke');
   });
 
   test('should tell if it is the current route', () => {
     routeServiceMock.isCurrentRoute = jest.fn(() => true);
-    expect(component.isActive('nuzlocke')).toBe(true);
+    expect(component.isActive('/nuzlocke')).toBe(true);
   });
 });

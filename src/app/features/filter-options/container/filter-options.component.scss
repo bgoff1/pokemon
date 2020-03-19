@@ -7,9 +7,12 @@
 .w-80 {
   width: 80vw;
 }
-.reset {
-  position: absolute;
-  bottom: 0;
+.search {
+  margin: 1vh 0;
+}
+div.text-center > button {
+  margin: 1vh 0;
+}
+.spinner {
   width: 100%;
-  margin-bottom: 2vh;
 }

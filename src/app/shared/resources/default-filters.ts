@@ -23,24 +23,28 @@ export default [
     filter: FilterProperties.Extras,
     value,
     enabled: true,
-    _id: (id++).toString()
+    _id: (id++).toString(),
+    expanded: false
   })),
   ...regions.map(value => ({
     filter: FilterProperties.Regions,
     value,
     enabled: false,
-    _id: (id++).toString()
+    _id: (id++).toString(),
+    expanded: false
   })),
   ...Array.from(Array(8).keys()).map(value => ({
     filter: FilterProperties.Generations,
     value: `Generation ${romanize(value + 1)}`,
     enabled: false,
-    _id: (id++).toString()
+    _id: (id++).toString(),
+    expanded: false
   })),
   ...typeNames.map(value => ({
     filter: FilterProperties.Types,
     value,
     enabled: false,
-    _id: (id++).toString()
+    _id: (id++).toString(),
+    expanded: false
   }))
 ];

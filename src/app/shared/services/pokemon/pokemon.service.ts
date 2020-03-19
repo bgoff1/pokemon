@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Subject } from 'rxjs';
 import { FilterService } from '@services/filter/filter.service';
 import { Pokemon } from '@models/pokemon';
 import { PokemonInterface } from '@models/pokemon/pokemon';
@@ -8,13 +9,26 @@ import { PokemonList } from '@models/list/pokemon-list.model';
 @Injectable({
   providedIn: 'root'
 })
-export class TeamService {
+export class PokemonService {
   team: Pokemon[] = this.loadTeam();
-  private teamChange = new BehaviorSubject(this.team);
+  pokemon: Pokemon[] = [];
+  private pokemonChange = new Subject<Pokemon[]>();
+  private teamChange: BehaviorSubject<Pokemon[]>;
 
   private pokemonList: PokemonList = new PokemonList();
 
-  constructor(private readonly filterService: FilterService) {}
+  constructor(private readonly filterService: FilterService) {
+    this.teamChange = new BehaviorSubject(this.team);
+  }
+
+  async fetchFilters() {
+    await this.filterService.createDatabase();
+    this.filterService.getFilters().then(filters => {
+      this.pokemonChange.next(
+        this.pokemonList.callFilters(filters, this.nonEmptyMembers)
+      );
+    });
+  }
 
   private loadTeam(): Pokemon[] {
     const team = JSON.parse(localStorage.getItem('team')) || [];
@@ -29,11 +43,17 @@ export class TeamService {
       this.filterService.checkCoverage(this.nonEmptyMembers);
     }
     localStorage.setItem('team', JSON.stringify(this.nonEmptyMembers));
+    this.filterService.getFilters().then(filters => {
+      this.pokemonChange.next(
+        this.pokemonList.callFilters(filters, this.nonEmptyMembers)
+      );
+    });
   }
 
   addToTeam(pokemon: Pokemon) {
     if (this.nonEmptyMembers.length < 6) {
-      this.team.push(pokemon);
+      this.team.pop();
+      this.team.unshift(pokemon);
     }
     this.addEmptyMembers();
     this.updateTeam();
@@ -59,16 +79,13 @@ export class TeamService {
     return this.teamChange.asObservable();
   }
 
+  get pokemonChange$() {
+    return this.pokemonChange.asObservable();
+  }
+
   get nonEmptyMembers() {
     return this.team.filter(
       teamMember => teamMember.name !== 'Empty Team Member'
     );
-  }
-
-  get pokemon(): Promise<Pokemon[]> {
-    return this.filterService.getFilters().then(filters => {
-      console.log(filters);
-      return this.pokemonList.callFilters(filters, this.nonEmptyMembers);
-    });
   }
 }

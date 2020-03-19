@@ -39,7 +39,7 @@ export class RouteService {
   }
 
   isCurrentRoute(route: Route): boolean {
-    return this.currentRoute === route;
+    return this.router.url === route;
   }
 
   changeRoute(route: Route): void {

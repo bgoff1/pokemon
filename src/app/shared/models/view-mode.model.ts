@@ -1,1 +1,1 @@
-export type Route = 'team-builder' | 'nuzlocke' | 'options';
+export type Route = '/team-builder' | '/nuzlocke' | '/options';

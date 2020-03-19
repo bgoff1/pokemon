@@ -5,8 +5,6 @@ export * from './pokemon';
 
 export class Pokemon extends AbstractPokemon {
   cssClasses: string;
-  imageName: string;
-  displayName: string;
   constructor(pokemon?: PokemonInterface) {
     if (pokemon) {
       super(pokemon);
@@ -21,7 +19,17 @@ export class Pokemon extends AbstractPokemon {
       this.types = [Type.Unknown, Type.Unknown];
       this.cssClasses = 'empty-team-member';
     }
-    this.imageName = NameReplacementUtility.replaceImageCharacters(this.name);
-    this.displayName = NameReplacementUtility.getDisplayName(this.name);
+  }
+
+  get imageName() {
+    return NameReplacementUtility.replaceImageCharacters(this.name);
+  }
+
+  get displayName() {
+    return NameReplacementUtility.getDisplayName(this.name);
+  }
+
+  equals(other: Pokemon) {
+    return this.imageName === other.imageName;
   }
 }

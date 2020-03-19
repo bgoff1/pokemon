@@ -19,7 +19,9 @@ export class PokemonList {
 
   callFilters(filters: Filter[], team: Pokemon[]) {
     filters = filters.filter(filter => filter.enabled);
-    this.filteredPokemon = this.pokemon;
+    this.filteredPokemon = this.pokemon.filter(mon =>
+      team.every(teamMember => !teamMember.equals(mon))
+    );
 
     this.filterSearch(filters);
     this.filterTypes(filters);
@@ -31,23 +33,6 @@ export class PokemonList {
     return this.filteredPokemon;
   }
 
-  filterCoverage(filters: Filter[]) {
-    const coverage = filters.find(
-      filter => filter.filter === FilterProperties.Coverage
-    );
-    if (coverage) {
-      const team = JSON.parse(coverage.value) as Pokemon[];
-      const teamMembers = team.filter(mon => mon.name !== 'Empty Team Member');
-      const teamTypes: Type[] = Array.from(
-        new Set([].concat(...teamMembers.map(member => member.types)))
-      );
-
-      this.filteredPokemon = this.filteredPokemon.filter(
-        mon => !this.coverage.isCovered(teamTypes, mon.types)
-      );
-    }
-  }
-
   filterSearch(filters: Filter[]) {
     const search = filters.filter(
       filter => filter.filter === FilterProperties.Search
@@ -56,11 +41,11 @@ export class PokemonList {
       this.filteredPokemon = this.filteredPokemon.filter(mon =>
         search
           .map(filter => filter.value)
-          .some(searchValue =>
-            NameReplacementUtility.characterReplace(mon.name)
+          .some(searchValue => {
+            return NameReplacementUtility.characterReplace(mon.name)
               .toLowerCase()
-              .includes(searchValue.trim().toLowerCase())
-          )
+              .includes(searchValue.trim().toLowerCase());
+          })
       );
     }
   }
@@ -115,6 +100,23 @@ export class PokemonList {
           .map(filter => NameReplacementUtility.trimRegionName(filter.value))
           .every(filter => !mon.name.includes(filter.toLowerCase()));
       });
+    }
+  }
+
+  filterCoverage(filters: Filter[]) {
+    const coverage = filters.find(
+      filter => filter.filter === FilterProperties.Coverage
+    );
+    if (coverage) {
+      const team = JSON.parse(coverage.value) as Pokemon[];
+      const teamMembers = team.filter(mon => mon.name !== 'Empty Team Member');
+      const teamTypes: Type[] = Array.from(
+        new Set([].concat(...teamMembers.map(member => member.types)))
+      );
+
+      this.filteredPokemon = this.filteredPokemon.filter(
+        mon => !this.coverage.isCovered(teamTypes, mon.types)
+      );
     }
   }
 

@@ -40,14 +40,14 @@ describe('Sidebar Component', () => {
 
   test('should return if it is the current route', () => {
     routeServiceMock.isCurrentRoute = jest.fn(() => true);
-    const route: Link = { label: '', path: 'nuzlocke' };
+    const route: Link = { label: '', path: '/nuzlocke' };
     expect(component.isCurrentRoute(route)).toBe(true);
   });
 
   test('should return if it is the current route', () => {
     routeServiceMock.changeRoute = jest.fn();
-    const route: Link = { label: '', path: 'nuzlocke' };
+    const route: Link = { label: '', path: '/nuzlocke' };
     component.navigate(route);
-    expect(routeServiceMock.changeRoute).toHaveBeenCalledWith('nuzlocke');
+    expect(routeServiceMock.changeRoute).toHaveBeenCalledWith('/nuzlocke');
   });
 });

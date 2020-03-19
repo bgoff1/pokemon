@@ -10,10 +10,10 @@ import { Link } from '@models/link.model';
 })
 export class FooterComponent {
   navLinks: Link[] = [
-    { label: 'Team Builder', path: 'team-builder' },
+    { label: 'Team Builder', path: '/team-builder' },
     {
       label: 'Options',
-      path: 'options'
+      path: '/options'
     }
   ];
   constructor(private readonly routeService: RouteService) {}

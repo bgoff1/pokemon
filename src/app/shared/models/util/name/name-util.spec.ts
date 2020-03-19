@@ -48,4 +48,14 @@ describe('Name Replacement Utility', () => {
   test('should remove forms', () => {
     expect(NameReplacementUtility.removeForms('forms 222')).toEqual('222');
   });
+
+  test('should get display name', () => {
+    NameReplacementUtility.stripExtras = jest.fn(arg => arg);
+    expect(NameReplacementUtility.getDisplayName('Empty Team Member')).toEqual(
+      ' '
+    );
+    expect(NameReplacementUtility.getDisplayName('Empty Team aMember')).toEqual(
+      'Empty Team aMember'
+    );
+  });
 });

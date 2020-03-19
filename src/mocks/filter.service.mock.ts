@@ -1,7 +1,6 @@
-import { of } from 'rxjs/internal/observable/of';
-
 export default {
-  filterChange$: of([]),
-  filters: [{ filter: 0, value: 'Coverage' }],
-  pokemon: []
+  getFilters: jest.fn(() => Promise.resolve([])),
+  createDatabase: jest.fn(() => Promise.resolve()),
+  checkCoverage: jest.fn(),
+  checkingCoverage: false
 } as any;

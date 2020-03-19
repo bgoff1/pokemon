@@ -7,6 +7,9 @@ import { TreeNode } from '../models/tree-node.model';
 })
 export class FilterOptionsService {
   generateTree(filters: Filter[]): TreeNode[] {
+    if (filters.length === 0) {
+      return [];
+    }
     let filterType: keyof typeof FilterProperties = this.getFilterType(
       filters[0]
     );
@@ -18,7 +21,9 @@ export class FilterOptionsService {
           checked: null,
           children,
           value: filterType,
-          name: filterType
+          name: filterType,
+          expanded: localStorage.getItem(filterType + 'expanded') === 'true',
+          rev: 'parent'
         });
         filterType = this.getFilterType(filter);
         children = [this.createChild(filter, filterType)];
@@ -30,17 +35,20 @@ export class FilterOptionsService {
       checked: null,
       children,
       value: filterType,
-      name: filterType
+      name: filterType,
+      expanded: localStorage.getItem(filterType + 'expanded') === 'true',
+      rev: 'parent'
     });
-    console.log(result);
     return result;
   }
 
   createChild(filter: Filter, filterType: keyof typeof FilterProperties) {
     return {
+      id: filter._id,
       checked: filter.enabled ? true : false,
       value: filter.value,
-      name: filterType
+      name: filterType,
+      rev: filter._rev
     };
   }
 

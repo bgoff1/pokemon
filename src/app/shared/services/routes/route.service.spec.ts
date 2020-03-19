@@ -19,22 +19,22 @@ describe('Route Service', () => {
   });
 
   test('should return if the route is the current one', () => {
-    expect(service.isCurrentRoute('nuzlocke')).toBe(false);
+    expect(service.isCurrentRoute('/nuzlocke')).toBe(false);
   });
 
   test('should change route if not current route', () => {
     const subSpy = jest.fn();
     service.route$.subscribe(subSpy);
     service.isCurrentRoute = jest.fn(() => false);
-    service.changeRoute('team-builder');
-    expect(subSpy).toHaveBeenCalledWith('team-builder');
+    service.changeRoute('/team-builder');
+    expect(subSpy).toHaveBeenCalledWith('/team-builder');
   });
 
   test('should not change route if current route', () => {
     const subSpy = jest.fn();
     service.route$.subscribe(subSpy);
     service.isCurrentRoute = jest.fn(() => true);
-    service.changeRoute('team-builder');
+    service.changeRoute('/team-builder');
     expect(subSpy).not.toHaveBeenCalled();
   });
 });

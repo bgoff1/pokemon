@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
-import { FilterService } from '@shared/services/filter/filter.service';
-import { TeamService } from '@shared/services/team/team.service';
+import { PokemonService } from '@services/pokemon/pokemon.service';
 
 @Component({
   selector: 'picker',
@@ -9,24 +8,20 @@ import { TeamService } from '@shared/services/team/team.service';
   styleUrls: ['./picker.component.scss']
 })
 export class PickerComponent implements OnInit {
-  team: Pokemon[] = [];
+  filtersLoading = true;
   pokemon: Pokemon[] = [];
-  constructor(
-    private readonly filterService: FilterService,
-    private readonly teamService: TeamService
-  ) {}
+  constructor(private readonly pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    this.teamService.teamChange$.subscribe(team => {
-      this.team = team;
-      this.pokemon = this.filterService.pokemonNotInTeam;
-    });
-    this.filterService.filterChange$.subscribe(pokemon => {
-      this.pokemon = pokemon;
+    this.pokemonService.fetchFilters().then(() => {
+      this.pokemonService.pokemonChange$.subscribe(all => {
+        this.filtersLoading = false;
+        this.pokemon = all;
+      });
     });
   }
 
   addPokemon(pokemon: Pokemon): void {
-    this.teamService.addToTeam(pokemon);
+    this.pokemonService.addToTeam(pokemon);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { RouteService } from '@shared/services/routes/route.service';
 import Hammer from 'hammerjs';
+import { RouteService } from '@services/routes/route.service';
 import { Link } from '@models/link.model';
 
 @Component({

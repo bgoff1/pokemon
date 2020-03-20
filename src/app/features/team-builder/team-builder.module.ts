@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { TeamBuilderRoutingModule } from './team-builder-routing.module';
 import { TeamComponent } from './team/team.component';
@@ -18,6 +19,7 @@ import { PokemonComponent } from './pokemon/pokemon.component';
   imports: [
     CommonModule,
     TeamBuilderRoutingModule,
+    MatProgressSpinnerModule,
     MatCardModule,
     VirtualScrollerModule
   ]

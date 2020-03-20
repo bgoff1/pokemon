@@ -1,3 +1,14 @@
-export const Pokemon = jest.fn((name?: string) => {
-  return name ? { name } : { name: 'Empty Team Member' };
+let i = 1;
+export const Pokemon = jest.fn((name?) => {
+  if (name && typeof name === 'string') {
+    return { name, getNationalPokedex: jest.fn() };
+  } else if (name) {
+    return {
+      ...name,
+      getNationalPokedex: jest.fn(() => ({ entryNumber: i++ })),
+      equals: jest.fn(() => true)
+    };
+  } else {
+    return { name: 'Empty Team Member', getNationalPokedex: jest.fn() };
+  }
 });

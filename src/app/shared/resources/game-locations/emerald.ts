@@ -2,27 +2,27 @@ export default {
   gifts: [
     {
       location: 'Starter',
-      pokemon: ['Treecko', 'Torchic', 'Mudkip']
+      pokemon: ['treecko', 'torchic', 'mudkip']
     },
     {
       location: 'Lavaridge Town',
-      pokemon: ['Wynaut']
+      pokemon: ['wynaut']
     },
     {
       location: 'Weather Institute',
-      pokemon: ['Castform']
+      pokemon: ['castform']
     },
     {
       location: 'Route 111 Fossil',
-      pokemon: ['Lileep', 'Anorith']
+      pokemon: ['lileep', 'anorith']
     }
   ],
   statics: [
     {
       location: 'Devon Scope',
-      pokemon: ['Kecleon']
+      pokemon: ['kecleon']
     },
-    { location: 'Sky Pillar', pokemon: ['Rayquaza'] }
+    { location: 'Sky Pillar', pokemon: ['rayquaza'] }
   ],
   encounters: [
     {

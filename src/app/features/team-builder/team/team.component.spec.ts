@@ -1,4 +1,4 @@
-import teamServiceMock from '@mocks/team.service.mock';
+import pokemonServiceMock from '@mocks/pokemon.service.mock';
 import pokemon from '@mocks/pokemon.mock';
 import { TeamComponent } from './team.component';
 import { Pokemon } from '@models/pokemon';
@@ -7,7 +7,7 @@ describe('Team Component', () => {
   let component: TeamComponent;
 
   beforeEach(() => {
-    component = new TeamComponent(teamServiceMock);
+    component = new TeamComponent(pokemonServiceMock);
   });
 
   test('should create', () => {
@@ -21,7 +21,7 @@ describe('Team Component', () => {
 
   test('should call remove from team in remove from team', () => {
     component.removeFromTeam(pokemon[0] as Pokemon);
-    expect(teamServiceMock.removeFromTeam).toHaveBeenCalled();
+    expect(pokemonServiceMock.removeFromTeam).toHaveBeenCalled();
   });
 
   test('should get row correctly (row 1)', () => {

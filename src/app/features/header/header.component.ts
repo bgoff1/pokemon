@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteService } from '@shared/services/routes/route.service';
+import { RouteService } from '@services/routes/route.service';
 
 @Component({
   selector: 'nav-header',

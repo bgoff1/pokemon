@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PokemonService } from '@services/pokemon/pokemon.service';
 import { Pokemon } from '@models/pokemon';
-import { TeamService } from '@shared/services/team/team.service';
 
 @Component({
   selector: 'team',
@@ -9,16 +9,16 @@ import { TeamService } from '@shared/services/team/team.service';
 })
 export class TeamComponent implements OnInit {
   team: Pokemon[] = [];
-  constructor(private readonly teamService: TeamService) {}
+  constructor(private readonly pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    this.teamService.teamChange$.subscribe(team => {
+    this.pokemonService.teamChange$.subscribe(team => {
       this.team = team;
     });
   }
 
   removeFromTeam(pokemon: Pokemon): void {
-    this.teamService.removeFromTeam(pokemon);
+    this.pokemonService.removeFromTeam(pokemon);
   }
 
   getRow(pokemon: Pokemon): 1 | 2 {

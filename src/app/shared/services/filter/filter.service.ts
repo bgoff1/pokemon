@@ -1,89 +1,133 @@
 import { Injectable } from '@angular/core';
-import { Filter, FilterProperties } from '@models/filter/filter.model';
 import { Pokemon } from '@models/pokemon';
-import { Subject } from 'rxjs/internal/Subject';
-import pokemon from '@resources/pokemon';
-import { PokemonList } from '@models/list/pokemon-list.model';
-import { TeamService } from '@shared/services/team/team.service';
+import { Region } from '@models/pokemon/region';
+import { Filter, FilterProperties } from '@models/filter';
+import PouchDB from '@models/pouchdb.model';
 import defaultFilters from '@resources/default-filters';
+import { UpdateFilter } from '@models/filter/update.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
-  private filterChange: Subject<Pokemon[]> = new Subject();
-  private team: Pokemon[];
   checkingCoverage: boolean;
+  filterDB: PouchDB.Database<Filter> = new PouchDB<Filter>('filters');
 
-  private pokemonList: PokemonList = new PokemonList(
-    pokemon.map(mon => new Pokemon(mon))
-  );
-
-  constructor(teamService: TeamService) {
-    if (!this.filters) {
-      this.filters = defaultFilters;
+  async createDatabase(): Promise<void> {
+    this.filterDB.createIndex({
+      index: { fields: ['enabled', 'filter'] }
+    });
+    const docs = await this.filterDB.allDocs();
+    if (!docs.total_rows) {
+      await this.filterDB.bulkDocs(defaultFilters);
     }
-    teamService.teamChange$.subscribe(team => {
-      this.team = team;
-      if (this.checkingCoverage) {
-        const teamNoEmpty = this.team.filter(
-          member => member.name !== 'Empty Team Member'
-        );
-        if (teamNoEmpty.length === 0) {
-          this.checkingCoverage = false;
-        }
-        this.checkCoverage();
-      }
+    this.getCoverageFilter().then(doc => {
+      this.checkingCoverage = doc.enabled;
     });
   }
 
-  resetFilters() {
-    this.filters = defaultFilters;
+  async resetFilters(): Promise<void> {
+    await this.filterDB.destroy();
+    return this.createDatabase();
   }
 
-  get filterChange$() {
-    return this.filterChange.asObservable();
-  }
-
-  get filters() {
-    return JSON.parse(localStorage.getItem('filters'));
-  }
-  set filters(filters: Filter[]) {
-    localStorage.setItem('filters', JSON.stringify(filters));
-  }
-
-  get pokemon(): Pokemon[] {
-    return this.pokemonList.callFilters(this.filters);
-  }
-
-  get isTeamMembers() {
-    return this.team.filter(mon => mon.name !== 'Empty Team Member').length > 0;
-  }
-
-  get pokemonNotInTeam(): Pokemon[] {
-    return this.pokemon.filter(
-      mon =>
-        !this.team
-          .map(member => JSON.stringify(member))
-          .includes(JSON.stringify(mon))
-    );
-  }
-
-  checkCoverage() {
-    this.filters = this.filters.filter(
-      filter => filter.property !== FilterProperties.Coverage
-    );
-    if (this.checkingCoverage) {
-      const coverageFilter: Filter = {
-        property: FilterProperties.Coverage,
-        value: JSON.stringify(
-          this.team.filter(member => member.name !== 'Empty Team Member')
+  async getAllFilters(): Promise<Filter[]> {
+    try {
+      const docs = await this.filterDB.allDocs({ include_docs: true });
+      return docs.rows
+        .map(document => document.doc)
+        .filter(
+          doc =>
+            !isNaN(Number(doc._id)) &&
+            doc.filter !== FilterProperties.Coverage &&
+            doc.filter !== FilterProperties.Search &&
+            !(
+              doc.filter === FilterProperties.Regions &&
+              doc.value === Region[Region.National]
+            )
         )
-      };
-      this.filters = [...this.filters, coverageFilter];
-      return coverageFilter;
+        .sort((a, b) => Number(a._id) - Number(b._id))
+        .sort((a, b) => a.filter - b.filter);
+    } catch {
+      return [];
     }
-    this.filterChange.next(this.pokemonNotInTeam);
-    return null;
+  }
+
+  async getFilters(): Promise<Filter[]> {
+    try {
+      const enabledDocs = await this.filterDB.find({
+        selector: { enabled: true }
+      });
+      return enabledDocs.docs;
+    } catch {
+      return [];
+    }
+  }
+
+  async getSearchFilter(): Promise<Filter | null> {
+    try {
+      const searchDocs = await this.filterDB.find({
+        selector: { filter: FilterProperties.Search },
+        limit: 1
+      });
+      return searchDocs.docs[0];
+    } catch {
+      return null;
+    }
+  }
+
+  async addSearchFilter(searchQuery: string): Promise<void> {
+    const doc = await this.getSearchFilter();
+    if (doc) {
+      this.filterDB.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        filter: FilterProperties.Search,
+        value: searchQuery,
+        enabled: searchQuery.trim().length > 0
+      });
+    }
+  }
+
+  async getCoverageFilter(): Promise<Filter | null> {
+    try {
+      const searchDocs = await this.filterDB.find({
+        selector: { filter: FilterProperties.Coverage },
+        limit: 1
+      });
+      return searchDocs.docs[0];
+    } catch {
+      return null;
+    }
+  }
+
+  async changeCoverageDocument(value: string): Promise<void> {
+    const doc = await this.getCoverageFilter();
+    this.filterDB.put({
+      _id: FilterProperties.Coverage.toString(),
+      _rev: doc._rev,
+      filter: doc.filter,
+      value,
+      enabled: value ? true : false
+    });
+  }
+
+  checkCoverage(team: Pokemon[]): void {
+    this.checkingCoverage = !this.checkingCoverage;
+    if (this.checkingCoverage && team.length) {
+      this.changeCoverageDocument(JSON.stringify(team));
+    } else {
+      this.changeCoverageDocument('');
+    }
+  }
+
+  async updateFilter(filter: Filter): Promise<void> {
+    const doc = await this.filterDB.get(filter._id);
+    this.filterDB.put({ ...doc, enabled: !doc.enabled });
+  }
+
+  async updateFilters(filters: UpdateFilter[]): Promise<Filter[]> {
+    await this.filterDB.bulkDocs(filters);
+    return filters;
   }
 }

@@ -1,14 +1,12 @@
 import { Pokemon } from './index';
 import { Type } from './type';
-import { NameReplacementUtility } from '@models/util/name-util.model';
+import { NameUtility } from '@models/util/name/name-util.model';
 import { Region } from './region';
 
 describe('Pokemon Model', () => {
   let pokemon: Pokemon;
 
   beforeEach(() => {
-    NameReplacementUtility.getDisplayName = jest.fn(arg => arg);
-    NameReplacementUtility.replaceImageCharacters = jest.fn(arg => arg);
     pokemon = new Pokemon();
   });
 
@@ -19,15 +17,12 @@ describe('Pokemon Model', () => {
   });
 
   test('should get display name (empty member)', () => {
+    NameUtility.getDisplayName = jest.fn(arg => arg);
     expect(pokemon.displayName).toEqual(pokemon.name);
-  });
-
-  test('should get display name (has name)', () => {
-    expect(pokemon.displayName).toEqual(pokemon.name);
-    expect(NameReplacementUtility.getDisplayName).toHaveBeenCalled();
   });
 
   test('should get image name', () => {
+    NameUtility.replaceImageCharacters = jest.fn(arg => arg);
     expect(pokemon.imageName).toEqual(pokemon.name);
   });
 
@@ -40,5 +35,46 @@ describe('Pokemon Model', () => {
       name: Region.National,
       entryNumber: 444
     });
+  });
+
+  test('should create and set equal', () => {
+    pokemon = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1],
+      generation: '1',
+      evolutionChain: 2
+    });
+    expect(pokemon).toBeTruthy();
+  });
+
+  test('should create and set equal with multiple types', () => {
+    pokemon = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1, 2],
+      generation: '1',
+      evolutionChain: 2
+    });
+    expect(pokemon).toBeTruthy();
+  });
+
+  test('should see equal', () => {
+    NameUtility.replaceImageCharacters = jest.fn(a => a);
+    pokemon = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1],
+      generation: '1',
+      evolutionChain: 2
+    });
+    const pokemonB = new Pokemon({
+      name: 'a',
+      pokedexNumbers: [],
+      types: [1, 2],
+      generation: '1',
+      evolutionChain: 2
+    });
+    expect(pokemon.equals(pokemonB)).toBe(true);
   });
 });

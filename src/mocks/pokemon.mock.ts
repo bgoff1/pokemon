@@ -38,5 +38,19 @@ export default [
     evolutionChain: 203,
     types: [5],
     generation: 'Generation IV'
+  },
+  {
+    name: 'mega-charmander',
+    pokedexNumbers: [
+      { entryNumber: 83, name: 8 },
+      { entryNumber: 234, name: 4 },
+      { entryNumber: 229, name: 1 },
+      { entryNumber: 4, name: 5 },
+      { entryNumber: 4, name: 13 },
+      { entryNumber: 378, name: 12 }
+    ],
+    evolutionChain: 2,
+    types: [5],
+    generation: 'Generation I'
   }
 ] as PokemonInterface[];

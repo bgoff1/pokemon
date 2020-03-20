@@ -1,77 +1,149 @@
-jest.mock('@resources/regions', () => ({
-  __esModule: true,
-  default: []
-}));
-jest.mock('@resources/extras', () => ({
-  __esModule: true,
-  default: []
-}));
-jest.mock('@models/pokemon/type', () => ({
-  typeNames: ['Unknown']
-}));
 import { FilterOptionsService } from './filter-options.service';
-import romanServiceMock from '@mocks/roman.service.mock';
+import { TreeNode } from '../models/tree-node.model';
+import { FilterProperties } from '@models/filter';
+import filterMocks from '@mocks/filters.mock';
 
 describe('Filter Options Service', () => {
   let service: FilterOptionsService;
 
   beforeEach(() => {
-    service = new FilterOptionsService(romanServiceMock);
+    service = new FilterOptionsService();
   });
 
   test('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should convert to tree node', () => {
-    const conversion = ['me'];
-    const result = service.convertToTreeNode(conversion, 'Coverage');
-    const expected = [{ name: 'Coverage', checked: false, value: 'me' }];
-    expect(result).toEqual(expected);
+  test('should get child', () => {
+    const treeNode: TreeNode = {
+      name: 'Coverage',
+      checked: false,
+      children: [],
+      value: '',
+      rev: ''
+    };
+    expect(service.getChild(treeNode)).toEqual([]);
   });
 
-  test('should covert to tree node and make checked if passed', () => {
-    const conversion = ['me'];
-    const result = service.convertToTreeNode(conversion, 'Coverage', true);
-    const expected = [{ name: 'Coverage', checked: true, value: 'me' }];
-    expect(result).toEqual(expected);
+  test('should get if all descendants are checked', () => {
+    const treeNode: TreeNode = {
+      name: 'Coverage',
+      checked: false,
+      children: [
+        {
+          name: 'Coverage',
+          checked: true,
+          value: '',
+          rev: ''
+        }
+      ],
+      value: '',
+      rev: ''
+    };
+    expect(service.descendantsAllChecked(treeNode)).toBe(true);
   });
 
-  test('should convert typeNames to treeNodes', () => {
-    service.convertToTreeNode = jest.fn(val => val) as any;
-    const result = service.types;
-    expect(result).toEqual([]);
-    expect(service.convertToTreeNode).toHaveBeenCalled();
+  test('should get if some but not all descendants are checked', () => {
+    const treeNode: TreeNode = {
+      name: 'Coverage',
+      checked: false,
+      children: [
+        {
+          name: 'Coverage',
+          checked: true,
+          value: '',
+          rev: ''
+        },
+        {
+          name: 'Coverage',
+          checked: false,
+          value: '',
+          rev: ''
+        }
+      ],
+      rev: '',
+      value: ''
+    };
+    expect(service.descendantsPartiallyChecked(treeNode)).toBe(true);
   });
 
-  test('should generate generations', () => {
-    service.convertToTreeNode = jest.fn(val => val) as any;
-    const result = service.generations;
-    expect(result).toEqual([
-      'Generation 1',
-      'Generation 2',
-      'Generation 3',
-      'Generation 4',
-      'Generation 5',
-      'Generation 6',
-      'Generation 7',
-      'Generation 8'
+  test('should get if some but not all descendants are checked', () => {
+    const treeNode: TreeNode = {
+      name: 'Coverage',
+      checked: false,
+      children: [],
+      value: '',
+      rev: ''
+    };
+    expect(service.hasChild(0, treeNode)).toBe(false);
+  });
+
+  test('should get filter name from filter', () => {
+    expect(
+      service.getFilterType({ filter: FilterProperties.Coverage } as any)
+    ).toEqual(FilterProperties[FilterProperties.Coverage]);
+  });
+
+  test('should create a child', () => {
+    expect(
+      service.createChild(
+        {
+          filter: FilterProperties.Coverage,
+          enabled: true,
+          value: '',
+          _id: '',
+          _rev: '',
+          expanded: false
+        },
+        'Coverage'
+      )
+    ).toEqual({ id: '', checked: true, value: '', name: 'Coverage', rev: '' });
+    expect(
+      service.createChild(
+        {
+          filter: FilterProperties.Coverage,
+          enabled: false,
+          value: '',
+          _id: '',
+          _rev: '',
+          expanded: false
+        },
+        'Coverage'
+      )
+    ).toEqual({ id: '', checked: false, value: '', name: 'Coverage', rev: '' });
+  });
+
+  test('should return empty if no filters', () => {
+    expect(service.generateTree([])).toEqual([]);
+  });
+
+  test('should create tree', () => {
+    const filters = filterMocks;
+    filters.push({ filter: FilterProperties.Coverage, value: '', _id: '0' });
+
+    service.getFilterType = jest.fn(
+      filter => FilterProperties[filter.filter]
+    ) as any;
+    service.createChild = jest.fn(() => true) as any;
+    localStorage.getItem = jest.fn(() => 'a');
+
+    expect(service.generateTree(filters)).toEqual([
+      {
+        checked: null,
+        children: [true, true, true],
+        value: 'Extras',
+        name: 'Extras',
+        expanded: false,
+        rev: 'parent'
+      },
+      {
+        checked: null,
+        children: [true],
+        value: 'Coverage',
+        name: 'Coverage',
+        expanded: false,
+        rev: 'parent'
+      }
     ]);
-    expect(service.convertToTreeNode).toHaveBeenCalledWith(
-      result,
-      'Generations'
-    );
-  });
-
-  test('should get typesNode', () => {
-    expect(service.typesNode.children.length).toBe(0);
-  });
-
-  test('should get all nodes', () => {
-    const treeNodes = service.treeData;
-    expect(treeNodes.length).toBe(4);
-    for (const node of treeNodes) {
-      expect(node).toBeTruthy();
-    }
   });
 });

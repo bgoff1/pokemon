@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { RouteService } from '@shared/services/routes/route.service';
-import { Route } from '@models/view-mode.model';
+import { RouteService } from '@services/routes/route.service';
 import { Link } from '@models/link.model';
 
 @Component({
@@ -10,19 +9,19 @@ import { Link } from '@models/link.model';
 })
 export class FooterComponent {
   navLinks: Link[] = [
-    { label: 'Team Builder', path: 'team-builder' },
+    { label: 'Team Builder', path: '/team-builder' },
     {
       label: 'Options',
-      path: 'options'
+      path: '/options'
     }
   ];
   constructor(private readonly routeService: RouteService) {}
 
-  navigate(path: Route) {
+  navigate(path: string) {
     this.routeService.changeRoute(path);
   }
 
-  isActive(path: Route) {
+  isActive(path: string) {
     return this.routeService.isCurrentRoute(path);
   }
 }

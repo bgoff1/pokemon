@@ -1,15 +1,15 @@
 export default {
   gifts: [
-    { location: 'Starter', pokemon: ['Turtwig', 'Piplup', 'Chimchar'] },
-    { location: 'Hearthome City Egg', pokemon: ['Happiny'] },
-    { location: 'Iron Island Egg', pokemon: ['Riolu'] }
+    { location: 'Starter', pokemon: ['turtwig', 'piplup', 'chimchar'] },
+    { location: 'Hearthome City Egg', pokemon: ['happiny'] },
+    { location: 'Iron Island Egg', pokemon: ['riolu'] }
   ],
   statics: [
-    { location: 'Valley Windworks', pokemon: ['Drifloon'] },
-    { location: 'Hallowed Tower', pokemon: ['Spiritomb'] },
-    { location: 'Lake Acuity', pokemon: ['Uxie'] },
-    { location: 'Roaming Lake Guardian', pokemon: ['Mesprit'] },
-    { location: 'Spear Pillar', pokemon: ['Dialga', 'Palkia'] }
+    { location: 'Valley Windworks', pokemon: ['drifloon'] },
+    { location: 'Hallowed Tower', pokemon: ['spiritomb'] },
+    { location: 'Lake Acuity', pokemon: ['uxie'] },
+    { location: 'Roaming Lake Guardian', pokemon: ['mesprit'] },
+    { location: 'Spear Pillar', pokemon: ['dialga', 'palkia'] }
   ],
   encounters: [
     {

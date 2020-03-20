@@ -13,14 +13,15 @@
     "target": "es2015",
     "typeRoots": ["node_modules/@types"],
     "paths": {
-      "@models/*": ["src/app/shared/models/*"],
-      "@shared/*": ["src/app/shared/*"],
       "@features/*": ["src/app/features/*"],
+      "@models/*": ["src/app/shared/models/*"],
+      "@services/*": ["src/app/shared/services/*"],
       "@resources/*": ["src/app/shared/resources/*"],
       "@mocks/*": ["src/mocks/*"]
     },
     "noImplicitReturns": true,
     "noImplicitAny": true,
+    "noUnusedLocals": true,
     "lib": ["es2018", "dom"],
     "allowSyntheticDefaultImports": true
   },

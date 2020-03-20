@@ -1,5 +1,5 @@
-import { RouteService } from './route.service';
 import routerMock from '@mocks/router.mock';
+import { RouteService } from './route.service';
 
 describe('Route Service', () => {
   let service: RouteService;
@@ -19,14 +19,14 @@ describe('Route Service', () => {
   });
 
   test('should return if the route is the current one', () => {
-    expect(service.isCurrentRoute('nuzlocke')).toBe(false);
+    expect(service.isCurrentRoute('/nuzlocke')).toBe(false);
   });
 
   test('should change route if not current route', () => {
     const subSpy = jest.fn();
     service.route$.subscribe(subSpy);
     service.isCurrentRoute = jest.fn(() => false);
-    service.changeRoute('team-builder');
+    service.changeRoute('/team-builder');
     expect(subSpy).toHaveBeenCalledWith('team-builder');
   });
 
@@ -34,7 +34,7 @@ describe('Route Service', () => {
     const subSpy = jest.fn();
     service.route$.subscribe(subSpy);
     service.isCurrentRoute = jest.fn(() => true);
-    service.changeRoute('team-builder');
+    service.changeRoute('/team-builder');
     expect(subSpy).not.toHaveBeenCalled();
   });
 });

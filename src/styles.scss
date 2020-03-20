@@ -1,15 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import './css/helper.min.css', './css/type-colorings.min.css',
   './css/type-sprites.min.css';
-@import './assets/style/variables.scss';
 
 .sprite {
-  width: $mobile;
-  height: $mobile;
+  width: 74px;
+  height: 74px;
   background-size: 100%;
   background-position: center;
   border-radius: 50%;
-  margin: $mobile_spacing;
+  margin: 5px;
 }
 
 .sprite:hover {
@@ -54,4 +53,8 @@ body {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+mat-spinner {
+  margin: 1vh auto;
 }

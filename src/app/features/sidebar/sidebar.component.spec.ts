@@ -2,6 +2,8 @@ import { SidebarComponent } from './sidebar.component';
 import routeServiceMock from '@mocks/route.service.mock';
 import elementRefMock from '@mocks/element-ref.mock';
 import { Link } from '@models/link.model';
+import 'hammerjs';
+
 describe('Sidebar Component', () => {
   let component: SidebarComponent;
 
@@ -40,14 +42,14 @@ describe('Sidebar Component', () => {
 
   test('should return if it is the current route', () => {
     routeServiceMock.isCurrentRoute = jest.fn(() => true);
-    const route: Link = { label: '', path: 'nuzlocke' };
+    const route: Link = { label: '', path: '/nuzlocke' };
     expect(component.isCurrentRoute(route)).toBe(true);
   });
 
   test('should return if it is the current route', () => {
     routeServiceMock.changeRoute = jest.fn();
-    const route: Link = { label: '', path: 'nuzlocke' };
+    const route: Link = { label: '', path: '/nuzlocke' };
     component.navigate(route);
-    expect(routeServiceMock.changeRoute).toHaveBeenCalledWith('nuzlocke');
+    expect(routeServiceMock.changeRoute).toHaveBeenCalledWith('/nuzlocke');
   });
 });

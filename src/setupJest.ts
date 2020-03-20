@@ -1,5 +1,4 @@
-import "jest-preset-angular";
-import "hammerjs";
+import 'jest-preset-angular';
 
 localStorage.getItem = jest.fn();
 localStorage.setItem = jest.fn();

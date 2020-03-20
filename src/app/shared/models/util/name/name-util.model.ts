@@ -1,4 +1,4 @@
-export class NameReplacementUtility {
+export class NameUtility {
   static replaceImageCharacters(pokemon: string) {
     return this.imageReplace(this.characterReplace(pokemon));
   }
@@ -20,30 +20,18 @@ export class NameReplacementUtility {
   }
 
   static removeHide(text: string): string {
-    return text.replace('hide', '').trim();
+    return text.replace(/(hide|Hide)/, '').trim();
   }
 
   static removeForms(text: string): string {
-    return text.replace('forms', '').trim();
+    return text.replace(/(forms|Forms)/, '').trim();
   }
 
   static trimRegionName(text: string): string {
     return this.removeHide(this.removeForms(text))
-      .replace(/(mega)s/, '$1')
-      .replace(/(alola)n/, '$1')
-      .replace(/(galar)ian/, '$1')
-      .trim();
-  }
-
-  static parseRegionName(regionName: string) {
-    if (regionName.includes('(')) {
-      return regionName.includes('diamond')
-        ? 'original-sinnoh'
-        : 'extended-sinnoh';
-    }
-    return regionName
-      .replace(/^(johto|unova)$/, 'original-$1')
-      .replace(/\s+/g, '-')
+      .replace(/(mega|Mega)s/, '$1')
+      .replace(/(alola|Alola)n/, '$1')
+      .replace(/(galar|Galar)ian/, '$1')
       .trim();
   }
 
@@ -56,8 +44,6 @@ export class NameReplacementUtility {
   }
 
   static getDisplayName(name: string): string {
-    return name === 'Empty Team Member'
-      ? ' '
-      : NameReplacementUtility.stripExtras(name);
+    return name === 'Empty Team Member' ? ' ' : NameUtility.stripExtras(name);
   }
 }

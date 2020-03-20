@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Link } from '@models/link.model';
-import links from '@resources/links';
+import { Subject } from 'rxjs/internal/Subject';
+import { tabs, sidebarLinks } from '@resources/links';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteService {
   open = false;
-  links: Link[] = links.map(this.formatLink);
+  links: string[] = sidebarLinks;
 
   private currentRoute: string;
   private menuClick: Subject<boolean> = new Subject();
@@ -34,7 +33,7 @@ export class RouteService {
   }
 
   isCurrentRoute(route: string): boolean {
-    return this.router.url === route;
+    return this.router.url === '/' + route;
   }
 
   changeRoute(route: string): void {
@@ -48,10 +47,13 @@ export class RouteService {
     this.menuClick.next(this.open);
   }
 
-  formatLink(path: string): Link {
-    return {
-      label: path.replace('-', ' '),
-      path
-    };
+  getTabs(path: string): string[] {
+    return tabs.find(tab => tab.path === path)?.links;
+  }
+
+  isViewMode(parent: string) {
+    return tabs
+      .find(tab => tab.path === parent)
+      ?.links.some(link => this.isCurrentRoute(link));
   }
 }

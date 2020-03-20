@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import Hammer from 'hammerjs';
 import { RouteService } from '@services/routes/route.service';
-import { Link } from '@models/link.model';
 
 @Component({
   selector: 'nav-sidebar',
@@ -10,7 +9,7 @@ import { Link } from '@models/link.model';
 })
 export class SidebarComponent implements OnInit {
   opened = false;
-  links: Link[];
+  links: string[];
   hammer: HammerManager;
 
   constructor(
@@ -40,11 +39,7 @@ export class SidebarComponent implements OnInit {
     this.opened = false;
   }
 
-  isCurrentRoute(link: Link): boolean {
-    return this.routeService.isCurrentRoute(link.path);
-  }
-
-  navigate(link: Link): void {
-    this.routeService.changeRoute(link.path);
+  isActive(link: string) {
+    return this.routeService.isViewMode(link);
   }
 }

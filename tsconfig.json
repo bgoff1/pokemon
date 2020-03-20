@@ -17,6 +17,8 @@
       "@models/*": ["src/app/shared/models/*"],
       "@services/*": ["src/app/shared/services/*"],
       "@resources/*": ["src/app/shared/resources/*"],
+      "@pipes": ["src/app/shared/pipes/pipes.module.ts"],
+      "@pipes/*": ["src/app/shared/pipes/*"],
       "@mocks/*": ["src/mocks/*"]
     },
     "noImplicitReturns": true,

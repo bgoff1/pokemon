@@ -1,9 +1,9 @@
-// interface Link {
-//   path: string;
-//   links: string[];
-// }
-// const links: Link[] = [
-//   { path: 'team-builder', links: ['team-builder', 'nuzlocke'] },
-//   { path: 'nuzlocke', links: [] }
-// ];
-export default ['team-builder', 'nuzlocke'];
+import { Tab } from '@models/tab.model';
+
+export const tabs: Tab[] = [
+  { path: 'team-builder', links: ['team-builder', 'options'] },
+  { path: 'options', links: ['team-builder', 'options'] },
+  { path: 'nuzlocke', links: ['routes', 'encounters', 'overview'] }
+];
+
+export const sidebarLinks: string[] = ['team-builder', 'nuzlocke'];

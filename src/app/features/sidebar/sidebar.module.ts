@@ -7,6 +7,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { SidebarComponent } from './sidebar.component';
 import { AppRoutingModule } from './app-routing.module';
+import { PipesModule } from '@pipes';
 
 @NgModule({
   declarations: [SidebarComponent],
@@ -17,7 +18,8 @@ import { AppRoutingModule } from './app-routing.module';
     MatSidenavModule,
     MatRippleModule,
     MatDividerModule,
-    MatIconModule
+    MatIconModule,
+    PipesModule
   ],
   exports: [SidebarComponent]
 })

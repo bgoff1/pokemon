@@ -10,10 +10,10 @@
       <a
         class="text-center link"
         matRipple
-        [routerLink]="link.path"
-        routerLinkActive="active-link">
+        [routerLink]="link"
+        [class.active-link]="isActive(link)">
         <mat-icon>group</mat-icon>
-        {{ link.label | titlecase }}
+        {{ link | route }}
       </a>
       <mat-divider></mat-divider>
     </div>

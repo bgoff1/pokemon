@@ -1,10 +1,10 @@
-import { NuzlockeComponent } from './nuzlocke.component';
+import { OverviewComponent } from './overview.component';
 
 describe('Nuzlocke Component', () => {
-  let component: NuzlockeComponent;
+  let component: OverviewComponent;
 
   beforeEach(() => {
-    component = new NuzlockeComponent();
+    component = new OverviewComponent();
   });
 
   test('should create', () => {

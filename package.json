@@ -7,7 +7,7 @@
     "build": "ng build --prod",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:ci": "jest --runInBand",
+    "test:ci": "jest --runInBand --ci",
     "lint": "ng lint",
     "format": "pretty-quick --staged",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"

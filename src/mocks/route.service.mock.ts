@@ -8,5 +8,6 @@ export default {
   isCurrentRoute: jest.fn(() => true),
   clickMenu: jest.fn(),
   changeRoute: jest.fn(),
-  formatLink: jest.fn(() => ({ label: '', path: '' }))
+  formatLink: jest.fn(() => ({ label: '', path: '' })),
+  changeTab: jest.fn()
 } as any;

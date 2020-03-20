@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.routeService.route$.subscribe(route => {
-      this.title = route.replace('-', ' ');
+      this.title = route.substring(route.lastIndexOf('/') + 1);
     });
   }
 

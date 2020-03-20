@@ -1,6 +1,6 @@
 import { OverviewComponent } from './overview.component';
 
-describe('Nuzlocke Component', () => {
+describe('Nuzlocke Overview Component', () => {
   let component: OverviewComponent;
 
   beforeEach(() => {

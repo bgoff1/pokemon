@@ -1,4 +1,8 @@
 export interface Tab {
   path: string;
-  links: string[];
+  links: TabLink[];
+}
+export interface TabLink {
+  route: string;
+  name: string;
 }

@@ -1,13 +1,13 @@
-import { FilterOptionsService } from './filter-options.service';
-import { TreeNode } from '../models/tree-node.model';
+import { FilterTreeService } from './filter-tree.service';
+import { TreeNode } from '../../models/tree-node.model';
 import { FilterProperties } from '@models/filter';
 import filterMocks from '@mocks/filters.mock';
 
 describe('Filter Options Service', () => {
-  let service: FilterOptionsService;
+  let service: FilterTreeService;
 
   beforeEach(() => {
-    service = new FilterOptionsService();
+    service = new FilterTreeService();
   });
 
   test('should be created', () => {

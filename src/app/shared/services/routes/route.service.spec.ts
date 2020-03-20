@@ -26,8 +26,8 @@ describe('Route Service', () => {
     const subSpy = jest.fn();
     service.route$.subscribe(subSpy);
     service.isCurrentRoute = jest.fn(() => false);
-    service.changeRoute('/team-builder');
-    expect(subSpy).toHaveBeenCalledWith('team-builder');
+    service.changeRoute('/team-builder/home');
+    expect(subSpy).toHaveBeenCalledWith('/team-builder');
   });
 
   test('should not change route if current route', () => {

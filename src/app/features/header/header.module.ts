@@ -5,10 +5,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { HeaderComponent } from './header.component';
+import { PipesModule } from '@pipes';
 
 @NgModule({
   declarations: [HeaderComponent],
-  imports: [CommonModule, MatToolbarModule, MatIconModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    PipesModule
+  ],
   exports: [HeaderComponent]
 })
 export class HeaderModule {}

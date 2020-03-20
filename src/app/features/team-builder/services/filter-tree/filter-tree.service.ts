@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Filter, FilterProperties } from '@models/filter';
 import { getRegionName, Region } from '@models/pokemon/region';
-import { TreeNode } from '../models/tree-node.model';
+import { TreeNode } from '../../models/tree-node.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilterOptionsService {
+export class FilterTreeService {
   generateTree(filters: Filter[]): TreeNode[] {
     if (filters.length === 0) {
       return [];

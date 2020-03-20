@@ -4,8 +4,8 @@
   <a
     mat-tab-link
     *ngFor="let link of tabs"
-    (click)="navigate(link)"
-    [active]="isActive(link)">
-    {{link | route}}
+    (click)="navigate(link.route)"
+    [active]="isActive(link.route)">
+    {{link.name | route}}
   </a>
 </nav>

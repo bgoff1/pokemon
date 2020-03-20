@@ -27,6 +27,29 @@ describe('Sidebar Component', () => {
     expect(component.opened).toBe(true);
   });
 
+  test('should open sidebar on panright', () => {
+    component.opened = false;
+    component.hammer.emit('panright', {
+      pointerType: 'mouse',
+      center: { x: 2 }
+    });
+    component.hammer.emit('panright', {
+      pointerType: 'cursor',
+      center: { x: 0 }
+    });
+
+    component.hammer.emit('panright', {
+      pointerType: 'cursor',
+      center: { x: 500 }
+    });
+    expect(component.opened).toBe(false);
+  });
+
+  test('should tell if active', () => {
+    routeServiceMock.isViewMode = jest.fn(() => true);
+    expect(component.isActive('a')).toBe(true);
+  });
+
   test('should close sidebar if not passed anything', () => {
     component.opened = true;
     component.closeSidebar();

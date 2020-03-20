@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteService } from '@services/routes/route.service';
+import { TabLink } from '@models/tab.model';
 
 @Component({
   selector: 'nav-footer',
@@ -7,21 +8,22 @@ import { RouteService } from '@services/routes/route.service';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-  tabs: string[] = [];
+  tabs: TabLink[] = [];
+  route: string;
   constructor(private readonly routeService: RouteService) {}
 
   ngOnInit() {
     this.routeService.route$.subscribe(route => {
       this.tabs = this.routeService.getTabs(route);
-      console.log(this.tabs, route);
+      this.route = route;
     });
   }
 
   navigate(path: string) {
-    this.routeService.changeRoute(path);
+    this.routeService.changeTab(path);
   }
 
   isActive(path: string) {
-    return this.routeService.isCurrentRoute(path);
+    return this.routeService.isCurrentRoute(this.route + '/' + path);
   }
 }

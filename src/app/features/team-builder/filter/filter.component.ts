@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilterService } from '@services/filter/filter.service';
-import { PokemonService } from '@services/pokemon/pokemon.service';
+import { FilterService } from '../services/filter/filter.service';
+import { PokemonService } from '../services/pokemon/pokemon.service';
 import { FilterProperties, Filter } from '@models/filter';
 import { TreeNode } from '../models/tree-node.model';
-import { FilterOptionsService } from '../service/filter-options.service';
+import { FilterTreeService } from '../services/filter-tree/filter-tree.service';
 
 @Component({
-  selector: 'filter-options',
-  templateUrl: './filter-options.component.html',
-  styleUrls: ['./filter-options.component.scss']
+  selector: 'filter',
+  templateUrl: './filter.component.html',
+  styleUrls: ['./filter.component.scss']
 })
 export class FilterOptionsComponent implements OnInit {
   treeControl = new NestedTreeControl<TreeNode>(this.optionsService.getChild);
@@ -26,7 +26,7 @@ export class FilterOptionsComponent implements OnInit {
 
   constructor(
     private readonly filterService: FilterService,
-    private readonly optionsService: FilterOptionsService,
+    private readonly optionsService: FilterTreeService,
     private readonly pokemonService: PokemonService
   ) {}
 

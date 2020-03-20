@@ -1,4 +1,4 @@
-import { FilterOptionsComponent } from './filter-options.component';
+import { FilterOptionsComponent } from './filter.component';
 import filterOptionsServiceMock from '@mocks/filter-options.service.mock';
 import filterServiceMock from '@mocks/filter.service.mock';
 import pokemonServiceMock from '@mocks/pokemon.service.mock';

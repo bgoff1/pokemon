@@ -59,6 +59,22 @@ describe('Filter Service', () => {
     });
   });
 
+  test('should get all filters and remove national region', () => {
+    service.filterDB.allDocs = jest.fn(() =>
+      Promise.resolve({
+        rows: [
+          { doc: { _id: 1 } },
+          { doc: { _id: 2, filter: 3, value: 'National' } },
+          { doc: { _id: 2, filter: 2 } },
+          { doc: { _id: 'qwe' } }
+        ]
+      })
+    ) as any;
+    service.getAllFilters().then(filters => {
+      expect(filters).toEqual([{ _id: 1 }, { _id: 2, filter: 2 }]);
+    });
+  });
+
   test('should return [] if allDocs throws', () => {
     service.filterDB.allDocs = jest.fn(() => {
       throw new Error();

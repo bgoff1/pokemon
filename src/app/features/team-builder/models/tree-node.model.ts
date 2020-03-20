@@ -1,4 +1,4 @@
-import { FilterProperties } from '@models/filter';
+import { FilterProperties } from './filter';
 
 export class TreeNode {
   id?: string;

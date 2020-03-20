@@ -1,4 +1,4 @@
-import { FilterProperties } from '@models/filter';
+import { FilterProperties } from '@features/team-builder/models/filter';
 import { romanize } from '@models/util/roman/roman';
 import { typeNames } from '@models/pokemon/type';
 import { Region } from '@models/pokemon/region';

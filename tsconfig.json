@@ -18,6 +18,7 @@
       "@services/*": ["src/app/shared/services/*"],
       "@resources/*": ["src/app/shared/resources/*"],
       "@pipes": ["src/app/shared/pipes/pipes.module.ts"],
+      "@pouchdb": ["src/app/shared/models/pouchdb.model.ts"],
       "@pipes/*": ["src/app/shared/pipes/*"],
       "@mocks/*": ["src/mocks/*"]
     },

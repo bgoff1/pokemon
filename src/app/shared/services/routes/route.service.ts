@@ -3,17 +3,24 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
 import { tabs, sidebarLinks } from '@resources/links';
-import { TabLink } from '@models/tab.model';
+import { TabLink, Tab } from '@models/tab.model';
+import { Link } from '@models/link.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteService {
   open = false;
-  links: string[] = sidebarLinks;
+  links: Link[] = sidebarLinks;
+  sidebarOpen = false;
+  tabs: Tab[] = tabs;
 
   private menuClick: Subject<boolean> = new Subject();
   private route: Subject<string> = new Subject();
+
+  private get parentRoute(): string {
+    return this.router.url.substring(1, this.router.url.lastIndexOf('/'));
+  }
 
   get menuClick$() {
     return this.menuClick.asObservable();
@@ -40,19 +47,10 @@ export class RouteService {
     return this.router.url === '/' + route;
   }
 
-  changeRoute(route: string): void {
-    if (!this.isCurrentRoute(route)) {
-      this.router.navigateByUrl('/' + route);
-    }
-  }
-
   changeTab(route: string): void {
-    if (!this.isCurrentRoute(route)) {
-      this.router.navigateByUrl(
-        this.router.url.substring(0, this.router.url.lastIndexOf('/')) +
-          '/' +
-          route
-      );
+    const futureRoute = this.parentRoute + '/' + route;
+    if (!this.isCurrentRoute(futureRoute)) {
+      this.router.navigateByUrl(futureRoute);
     }
   }
 
@@ -62,12 +60,19 @@ export class RouteService {
   }
 
   getTabs(path: string): TabLink[] {
-    return tabs.find(tab => tab.path === path)?.links;
+    return this.tabs.find(tab => tab.path === path)?.links || [];
   }
 
-  isViewMode(parent: string) {
-    return tabs
-      .find(tab => tab.path === parent)
-      ?.links.some(link => this.isCurrentRoute(parent + '/' + link.route));
+  isViewMode(parent: string): boolean {
+    return (
+      this.tabs
+        .find(tab => tab.path === parent)
+        ?.links.some(link => this.isCurrentRoute(`${parent}/${link.route}`)) ||
+      false
+    );
+  }
+
+  redirect(path: string) {
+    this.router.navigateByUrl(path);
   }
 }

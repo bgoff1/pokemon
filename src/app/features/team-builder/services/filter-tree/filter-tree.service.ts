@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Filter, FilterProperties } from '@models/filter';
 import { getRegionName, Region } from '@models/pokemon/region';
+import { Filter, FilterProperties } from '../../models/filter';
 import { TreeNode } from '../../models/tree-node.model';
 
 @Injectable({

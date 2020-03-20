@@ -31,4 +31,11 @@ describe('Footer Component', () => {
     expect(component.route).toEqual('abc');
     expect(component.tabs).toEqual([]);
   });
+
+  test('should tell if sidebar is open', () => {
+    routeServiceMock.sidebarOpen = true;
+    expect(component.isSidebarOpen()).toBe(true);
+    routeServiceMock.sidebarOpen = false;
+    expect(component.isSidebarOpen()).toBe(false);
+  });
 });

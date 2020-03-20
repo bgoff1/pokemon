@@ -50,15 +50,9 @@ describe('Sidebar Component', () => {
     expect(component.isActive('a')).toBe(true);
   });
 
-  test('should close sidebar if not passed anything', () => {
-    component.opened = true;
-    component.closeSidebar();
-    expect(component.opened).toBe(false);
-  });
-
   test('should close sidebar', () => {
     component.opened = true;
-    component.closeSidebar();
+    component.setOpen(false);
     expect(component.opened).toBe(false);
   });
 });

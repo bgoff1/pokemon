@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Subject } from 'rxjs';
-import { FilterService } from '@features/team-builder/services/filter/filter.service';
 import { Pokemon, PokemonInterface } from '@models/pokemon';
-import { PokemonList } from '@models/list/pokemon-list.model';
+import { FilterService } from '../../services/filter/filter.service';
+import { PokemonList } from '../../models/list/pokemon-list.model';
 
 @Injectable({
   providedIn: 'root'

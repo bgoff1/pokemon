@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import Hammer from 'hammerjs';
 import { RouteService } from '@services/routes/route.service';
+import { Link } from '@models/link.model';
 
 @Component({
   selector: 'nav-sidebar',
@@ -9,7 +10,7 @@ import { RouteService } from '@services/routes/route.service';
 })
 export class SidebarComponent implements OnInit {
   opened = false;
-  links: string[];
+  links: Link[];
   hammer: HammerManager;
 
   constructor(
@@ -23,20 +24,20 @@ export class SidebarComponent implements OnInit {
         event.center.x >= 1 &&
         event.center.x <= 50
       ) {
-        this.opened = true;
+        this.setOpen(true);
       }
     });
+  }
+
+  setOpen(opened: boolean) {
+    this.opened = this.routeService.sidebarOpen = opened;
   }
 
   ngOnInit(): void {
     this.links = this.routeService.links;
     this.routeService.menuClick$.subscribe(open => {
-      this.opened = open;
+      this.setOpen(open);
     });
-  }
-
-  closeSidebar() {
-    this.opened = false;
   }
 
   isActive(link: string) {

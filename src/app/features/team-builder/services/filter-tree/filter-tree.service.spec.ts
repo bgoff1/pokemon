@@ -1,7 +1,7 @@
 import { FilterTreeService } from './filter-tree.service';
 import { TreeNode } from '../../models/tree-node.model';
-import { FilterProperties } from '@models/filter';
-import filterMocks from '@mocks/filters.mock';
+import { FilterProperties } from '../../models/filter';
+import filterMocks from '../../models/filter/filters.mock';
 
 describe('Filter Options Service', () => {
   let service: FilterTreeService;

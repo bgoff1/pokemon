@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
 import { Region } from '@models/pokemon/region';
-import { Filter, FilterProperties } from '@models/filter';
 import PouchDB from '@models/pouchdb.model';
 import defaultFilters from '@resources/default-filters';
-import { UpdateFilter } from '@models/filter/update.model';
+import { UpdateFilter } from '../../models/filter/update.model';
+import { Filter, FilterProperties } from '../../models/filter';
 
 @Injectable({
   providedIn: 'root'

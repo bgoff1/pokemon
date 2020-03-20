@@ -1,8 +1,8 @@
 import { PokemonService } from './pokemon.service';
 jest.mock('@models/pokemon');
-jest.mock('@models/list/pokemon-list.model');
-import pokemon from '@mocks/pokemon.mock';
-import filterServiceMock from '@mocks/filter.service.mock';
+jest.mock('../../models/list/pokemon-list.model');
+import pokemon from '../../mocks/pokemon.mock';
+import filterServiceMock from '../../mocks/filter.service.mock';
 import { Pokemon } from '@models/pokemon';
 
 describe('Team Service', () => {

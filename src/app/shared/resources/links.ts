@@ -1,4 +1,5 @@
 import { Tab } from '@models/tab.model';
+import { Link } from '@models/link.model';
 
 export const tabs: Tab[] = [
   {
@@ -18,6 +19,7 @@ export const tabs: Tab[] = [
   {
     path: 'nuzlocke',
     links: [
+      { route: 'saves', name: 'saves' },
       { route: 'routes', name: 'routes' },
       { route: 'encounters', name: 'encounters' },
       { route: 'overview', name: 'overview' }
@@ -25,4 +27,7 @@ export const tabs: Tab[] = [
   }
 ];
 
-export const sidebarLinks: string[] = ['team-builder', 'nuzlocke'];
+export const sidebarLinks: Link[] = [
+  { link: 'team-builder', icon: 'people' },
+  { link: 'nuzlocke', icon: 'local_pharmacy' }
+];

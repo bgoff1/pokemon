@@ -7,17 +7,23 @@ import { RouteService } from '@services/routes/route.service';
   providedIn: 'root'
 })
 export class CreateGuard implements CanActivate {
+  private hasNuzlockes: boolean;
   constructor(
     private readonly nuzlockeService: NuzlockeService,
     private readonly routeService: RouteService
   ) {}
 
   canActivate(): Promise<boolean> | boolean {
-    return this.nuzlockeService.hasNuzlockeSaved().then(canActivate => {
-      if (!canActivate) {
-        this.routeService.redirect('nuzlocke/create');
-      }
-      return canActivate;
-    });
+    return (
+      this.hasNuzlockes ||
+      this.nuzlockeService.hasNuzlockeSaved().then(canActivate => {
+        console.log('calling');
+        if (!canActivate) {
+          this.routeService.redirect('nuzlocke/create');
+        }
+        this.hasNuzlockes = canActivate;
+        return canActivate;
+      })
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { games } from '@models/pokemon/game-groups';
+import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke.service';
+import { RouteService } from '@services/routes/route.service';
 
 @Component({
   selector: 'create',
@@ -9,9 +10,13 @@ import { games } from '@models/pokemon/game-groups';
 })
 export class CreateComponent {
   formGroup: FormGroup;
-  games = games;
+  games: string[] = [];
 
-  constructor() {
+  constructor(
+    private readonly nuzlockeService: NuzlockeService,
+    private readonly routeService: RouteService
+  ) {
+    this.games = nuzlockeService.gameNames;
     this.formGroup = new FormGroup({
       runName: new FormControl('', Validators.required),
       game: new FormControl(this.games[0], Validators.required),
@@ -20,6 +25,10 @@ export class CreateComponent {
   }
 
   submit() {
-    console.log(this.formGroup);
+    if (!this.formGroup.invalid) {
+      this.nuzlockeService.createNuzlocke(this.formGroup.value).then(run => {
+        this.routeService.changeTab('overview', run);
+      });
+    }
   }
 }

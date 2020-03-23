@@ -36,7 +36,8 @@ export function formatGameName(game: keyof typeof GameGroup): string {
       return game
         .replace(/([A-Z])/g, ' / $1')
         .trim()
-        .slice(1);
+        .slice(1)
+        .trim();
   }
 }
 export const games = enumValues(GameGroup).map(formatGameName);

@@ -47,10 +47,10 @@ export class RouteService {
     return this.router.url === '/' + route;
   }
 
-  changeTab(route: string): void {
+  changeTab(route: string, state?: any): void {
     const futureRoute = this.parentRoute + '/' + route;
     if (!this.isCurrentRoute(futureRoute)) {
-      this.router.navigateByUrl(futureRoute);
+      this.router.navigateByUrl(futureRoute, { state });
     }
   }
 

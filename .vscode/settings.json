@@ -22,6 +22,6 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/node_modules": true,
-    "**/resources/**/*.ts": true
+    "**/resources": true
   }
 }

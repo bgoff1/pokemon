@@ -1,1 +1,6 @@
-<p>saves works!</p>
+<mat-action-list>
+  <button mat-list-item *ngFor="let option of saves">
+    {{ option.runName }} {{ option.game }} {{ option.random }}
+    <mat-divider></mat-divider>
+  </button>
+</mat-action-list>

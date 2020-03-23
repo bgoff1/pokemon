@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 import { OverviewComponent } from './components/overview/overview.component';
 import { EncountersComponent } from './components/encounters/encounters.component';
 import { RoutesComponent } from './components/routes/routes.component';
@@ -43,7 +45,9 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
+    MatListModule,
     MatFormFieldModule,
+    MatDividerModule,
     MatInputModule,
     MatButtonModule,
     MatSelectModule,

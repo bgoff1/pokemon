@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke.service';
 import { RouteService } from '@services/routes/route.service';
+import { NuzlockeStatus } from '@features/nuzlocke/models/status.model';
 
 @Component({
   selector: 'create',
@@ -26,9 +27,15 @@ export class CreateComponent {
 
   submit() {
     if (!this.formGroup.invalid) {
-      this.nuzlockeService.createNuzlocke(this.formGroup.value).then(run => {
-        this.routeService.changeTab('overview', run);
-      });
+      this.nuzlockeService
+        .createNuzlocke({
+          ...this.formGroup.value,
+          startDate: new Date(),
+          status: NuzlockeStatus.Ongoing
+        })
+        .then(run => {
+          this.routeService.changeTab(`overview/${run._id}`);
+        });
     }
   }
 }

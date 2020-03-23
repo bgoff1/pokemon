@@ -24,7 +24,7 @@ export class FooterComponent implements OnInit {
   }
 
   isActive(path: string) {
-    return this.routeService.isCurrentRoute(this.route + '/' + path);
+    return this.routeService.isCurrentRoute(path);
   }
 
   isSidebarOpen() {

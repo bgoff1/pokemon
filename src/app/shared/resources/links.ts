@@ -27,6 +27,8 @@ export const tabs: Tab[] = [
   }
 ];
 
+export const idTabs = ['routes', 'encounters', 'overview'];
+
 export const sidebarLinks: Link[] = [
   { link: 'team-builder', icon: 'people' },
   { link: 'nuzlocke', icon: 'local_pharmacy' }

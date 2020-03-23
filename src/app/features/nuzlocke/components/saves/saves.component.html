@@ -1,6 +1,30 @@
 <mat-action-list>
-  <button mat-list-item *ngFor="let option of saves">
-    {{ option.runName }} {{ option.game }} {{ option.random }}
+  <button
+    mat-list-item
+    *ngFor="let save of saves"
+    (click)="selectSave(save)">
+    <table class="w-100">
+      <tbody>
+        <tr>
+          <td>{{save.runName}}</td>
+          <td class="text-right">
+            {{save.startDate | date: 'MMMM dd, yyyy' }}
+          </td>
+        </tr>
+        <tr>
+          <td class="font-small">
+            {{save.random ? 'Random' : '' }} {{save.game}}
+          </td>
+          <td class="text-right">{{getStatus(save.status)}}</td>
+        </tr>
+      </tbody>
+    </table>
     <mat-divider></mat-divider>
   </button>
 </mat-action-list>
+<button
+  mat-fab
+  class="add"
+  (click)="navigateToCreate()">
+  <mat-icon>add</mat-icon>
+</button>

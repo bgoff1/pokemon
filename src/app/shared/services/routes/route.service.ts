@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
-import { tabs, sidebarLinks } from '@resources/links';
+import { tabs, sidebarLinks, idTabs } from '@resources/links';
 import { TabLink, Tab } from '@models/tab.model';
 import { Link } from '@models/link.model';
 
@@ -19,7 +19,11 @@ export class RouteService {
   private route: Subject<string> = new Subject();
 
   private get parentRoute(): string {
-    return this.router.url.substring(1, this.router.url.lastIndexOf('/'));
+    return this.router.url.substring(1, this.router.url.indexOf('/', 2) + 1);
+  }
+
+  private get id(): string {
+    return this.router.url.slice(this.router.url.lastIndexOf('/'));
   }
 
   get menuClick$() {
@@ -44,13 +48,24 @@ export class RouteService {
   }
 
   isCurrentRoute(route: string): boolean {
-    return this.router.url === '/' + route;
+    return this.router.url.includes('/' + route);
   }
 
-  changeTab(route: string, state?: any): void {
-    const futureRoute = this.parentRoute + '/' + route;
-    if (!this.isCurrentRoute(futureRoute)) {
-      this.router.navigateByUrl(futureRoute, { state });
+  isExactRoute(route: string): boolean {
+    return this.router.url === route;
+  }
+
+  changeTab(route: string): void {
+    if (idTabs.some(tab => tab === route)) {
+      const futureRoute = this.parentRoute + route + this.id;
+      if (!this.isExactRoute(futureRoute)) {
+        this.router.navigateByUrl(futureRoute);
+      }
+    } else {
+      const futureRoute = this.parentRoute + route;
+      if (!this.isExactRoute(futureRoute)) {
+        this.router.navigateByUrl(futureRoute);
+      }
     }
   }
 
@@ -60,6 +75,7 @@ export class RouteService {
   }
 
   getTabs(path: string): TabLink[] {
+    path = path.split('/')[0];
     return this.tabs.find(tab => tab.path === path)?.links || [];
   }
 
@@ -73,6 +89,8 @@ export class RouteService {
   }
 
   redirect(path: string) {
-    this.router.navigateByUrl(path);
+    if (!this.isExactRoute(path)) {
+      this.router.navigateByUrl(path);
+    }
   }
 }

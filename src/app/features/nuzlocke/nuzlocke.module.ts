@@ -9,26 +9,41 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { OverviewComponent } from './components/overview/overview.component';
 import { EncountersComponent } from './components/encounters/encounters.component';
 import { RoutesComponent } from './components/routes/routes.component';
 import { SavesComponent } from './components/saves/saves.component';
 import { CreateComponent } from './components/create/create.component';
 import { CreateGuard } from './guards/create.guard';
+import { NuzlockeResolverService } from './resolvers/nuzlocke-resolver.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'overview', pathMatch: 'full' },
+  { path: '', redirectTo: 'saves', pathMatch: 'full' },
   {
-    path: 'overview',
+    path: 'overview/:id',
     component: OverviewComponent,
-    canActivate: [CreateGuard]
+    canActivate: [CreateGuard],
+    resolve: {
+      nuzlocke: NuzlockeResolverService
+    }
   },
   {
-    path: 'encounters',
+    path: 'encounters/:id',
     component: EncountersComponent,
-    canActivate: [CreateGuard]
+    canActivate: [CreateGuard],
+    resolve: {
+      nuzlocke: NuzlockeResolverService
+    }
   },
-  { path: 'routes', component: RoutesComponent, canActivate: [CreateGuard] },
+  {
+    path: 'routes/:id',
+    component: RoutesComponent,
+    canActivate: [CreateGuard],
+    resolve: {
+      nuzlocke: NuzlockeResolverService
+    }
+  },
   { path: 'create', component: CreateComponent },
   { path: 'saves', component: SavesComponent, canActivate: [CreateGuard] }
 ];
@@ -49,6 +64,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatDividerModule,
     MatInputModule,
+    MatIconModule,
     MatButtonModule,
     MatSelectModule,
     RouterModule.forChild(routes)

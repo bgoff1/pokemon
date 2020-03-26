@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke.service';
+import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.service';
 import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
-import { RouteService } from '@services/routes/route.service';
+import { RouterService } from '@services/router/router.service';
 import { NuzlockeStatus } from '@features/nuzlocke/models/status.model';
+import { GameGroup, formatGameName } from '@models/pokemon/game-groups';
 
 @Component({
   selector: 'saves',
@@ -14,25 +15,28 @@ export class SavesComponent implements OnInit {
 
   constructor(
     private readonly nuzlockeService: NuzlockeService,
-    private readonly routeService: RouteService
+    private readonly routerService: RouterService
   ) {}
 
   ngOnInit() {
     this.nuzlockeService.getSaves().then(saves => {
       this.saves = saves;
-      console.log(this.saves);
     });
   }
 
   selectSave(save: Nuzlocke) {
-    this.routeService.changeTab(`overview/${save._id}`);
+    this.routerService.changeTab(`overview/${save._id}`);
   }
 
   getStatus(status: NuzlockeStatus): string {
     return NuzlockeStatus[status];
   }
 
+  getGame(game: GameGroup): string {
+    return formatGameName(game);
+  }
+
   navigateToCreate() {
-    this.routeService.changeTab('create');
+    this.routerService.changeTab('create');
   }
 }

@@ -1,5 +1,5 @@
 import { SidebarComponent } from './sidebar.component';
-import routeServiceMock from '@mocks/route.service.mock';
+import routerServiceMock from '@mocks/router.service.mock';
 import elementRefMock from '@mocks/element-ref.mock';
 import 'hammerjs';
 
@@ -7,7 +7,7 @@ describe('Sidebar Component', () => {
   let component: SidebarComponent;
 
   beforeEach(() => {
-    component = new SidebarComponent(routeServiceMock, elementRefMock);
+    component = new SidebarComponent(routerServiceMock, elementRefMock);
   });
 
   test('should create', () => {
@@ -46,7 +46,7 @@ describe('Sidebar Component', () => {
   });
 
   test('should tell if active', () => {
-    routeServiceMock.isViewMode = jest.fn(() => true);
+    routerServiceMock.isViewMode = jest.fn(() => true);
     expect(component.isActive('a')).toBe(true);
   });
 

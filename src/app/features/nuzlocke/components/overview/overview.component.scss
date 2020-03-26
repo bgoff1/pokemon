@@ -1,0 +1,14 @@
+.badge {
+  width: 32px;
+  height: 32px;
+}
+.badges {
+  display: flex;
+  justify-content: space-evenly;
+}
+.badge-container {
+  background-color: #222;
+}
+.unearned {
+  filter: grayscale(1) brightness(0.1);
+}

@@ -16,8 +16,8 @@
         <mat-select formControlName="game">
           <mat-option
             *ngFor="let option of games"
-            [value]="option">
-            {{option}}
+            [value]="option.game">
+            {{option.displayName}}
           </mat-option>
         </mat-select>
       </mat-form-field>

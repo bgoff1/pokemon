@@ -1,4 +1,8 @@
-export default {
+import { convertGameLocationToRoutes } from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+export default convertGameLocationToRoutes({
+  game: GameGroup.HeartGoldSoulSilver,
   gifts: [
     { location: 'Starter', pokemon: ['chikorita', 'cyndaquil', 'totodile'] },
     { location: 'Goldenrod City', pokemon: ['eevee'] },
@@ -1314,4 +1318,4 @@ export default {
       ]
     }
   ]
-};
+});

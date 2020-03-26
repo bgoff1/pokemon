@@ -9,10 +9,11 @@ import { Link } from '@models/link.model';
 @Injectable({
   providedIn: 'root'
 })
-export class RouteService {
+export class RouterService {
   open = false;
   links: Link[] = sidebarLinks;
   sidebarOpen = false;
+  canChangeTabs = true;
   tabs: Tab[] = tabs;
 
   private menuClick: Subject<boolean> = new Subject();

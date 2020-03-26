@@ -1,1 +1,14 @@
-<p>nuzlocke works!</p>
+<div class="container">
+  <div class="badge-container py-2">
+    <div
+      class="py-1 badges"
+      *ngFor="let rowBadges of rows; let firstRow = index">
+      <img
+        *ngFor="let badge of rowBadges; let badgeNumber = index"
+        [src]="badge.url"
+        class="badge"
+        [class.unearned]="!badge.earned"
+        (click)="earnBadge(badge, badgeNumber, !!firstRow)">
+    </div>
+  </div>
+</div>

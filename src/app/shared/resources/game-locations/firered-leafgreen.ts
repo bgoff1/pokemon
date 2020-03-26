@@ -1,58 +1,75 @@
-export default {
+import { convertGameLocationToRoutes } from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+export default convertGameLocationToRoutes({
+  game: GameGroup.FireRedLeafGreen,
   gifts: [
     {
       location: 'Starter',
-      pokemon: ['bulbasaur', 'charmander', 'squirtle']
+      pokemon: ['bulbasaur', 'charmander', 'squirtle'],
+      order: 0
     },
     {
       location: 'Route 4',
-      pokemon: ['magikarp']
-    },
-    {
-      location: 'Mt. Moon Fossil',
-      pokemon: ['omantye', 'kabuto']
-    },
-    {
-      location: 'Old Amber Fossil',
-      pokemon: ['aerodactyl']
+      pokemon: ['magikarp'],
+      order: 9
     },
     {
       location: 'Celadon City',
-      pokemon: ['eevee']
+      pokemon: ['eevee'],
+      order: 26
     },
     {
       location: 'Saffron City',
-      pokemon: ['hitmonchan', 'hitmonlee']
+      pokemon: ['hitmonchan', 'hitmonlee'],
+      order: 28
     },
     {
       location: 'Silph Co.',
-      pokemon: ['lapras']
+      pokemon: ['lapras'],
+      order: 29
+    },
+    {
+      location: 'Mt. Moon Fossil',
+      pokemon: ['omantye', 'kabuto'],
+      order: 46
+    },
+    {
+      location: 'Old Amber Fossil',
+      pokemon: ['aerodactyl'],
+      order: 47
     }
   ],
   statics: [
     {
       location: 'Route 12',
-      pokemon: ['snorlax']
+      pokemon: ['snorlax'],
+      order: 40
     },
     {
       location: 'Route 16',
-      pokemon: ['snorlax']
+      pokemon: ['snorlax'],
+      order: 30
     },
     {
       location: 'Berry Forest',
-      pokemon: ['hypno']
+      pokemon: ['hypno'],
+      order: 56
     },
     {
       location: 'Seafoam Islands',
-      pokemon: ['articuno']
+      pokemon: ['articuno'],
+      order: 42
     },
     {
       location: 'Power Plant',
-      pokemon: ['zapdos']
+      pokemon: ['zapdos'],
+      order: 59
     },
     {
       location: 'Mt. Ember',
-      pokemon: ['moltres']
+      pokemon: ['moltres'],
+      order: 52
     }
   ],
   encounters: [
@@ -79,7 +96,8 @@ export default {
         'seaking',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 55
     },
     {
       location: 'Bond Bridge',
@@ -103,7 +121,8 @@ export default {
         'seadra',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 54
     },
     {
       location: 'Cape Brink',
@@ -125,11 +144,13 @@ export default {
         'goldeen',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 53
     },
     {
       location: 'Celadon City',
-      pokemon: ['psyduck', 'slowpoke', 'grimer', 'koffing', 'magikarp']
+      pokemon: ['psyduck', 'slowpoke', 'grimer', 'koffing', 'magikarp'],
+      order: 25
     },
     {
       location: 'Cerulean City',
@@ -141,7 +162,8 @@ export default {
         'horsea',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 11
     },
     {
       location: 'Cinnabar Island',
@@ -157,9 +179,10 @@ export default {
         'staryu',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 44
     },
-    { location: "Diglett's Cave", pokemon: ['diglett', 'dugtrio'] },
+    { location: "Diglett's Cave", pokemon: ['diglett', 'dugtrio'], order: 18 },
     {
       location: 'Fuchsia City',
       pokemon: [
@@ -170,7 +193,8 @@ export default {
         'seaking',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 33
     },
     {
       location: 'Kindle Road',
@@ -193,7 +217,8 @@ export default {
         'seadra',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 50
     },
     {
       location: 'Mt. Ember',
@@ -209,11 +234,13 @@ export default {
         'machoke',
         'slugma',
         'magcargo'
-      ]
+      ],
+      order: 51
     },
     {
       location: 'Mt. Moon',
-      pokemon: ['clefairy', 'zubat', 'paras', 'geodude']
+      pokemon: ['clefairy', 'zubat', 'paras', 'geodude'],
+      order: 10
     },
     {
       location: 'One Island',
@@ -230,7 +257,8 @@ export default {
         'staryu',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 48
     },
     {
       location: 'Pallet Town',
@@ -246,7 +274,8 @@ export default {
         'staryu',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 1
     },
     {
       location: 'Pokémon Mansion',
@@ -260,18 +289,111 @@ export default {
         'koffing',
         'weezing',
         'ditto'
-      ]
+      ],
+      order: 45
     },
-    { location: 'Pokémon Tower', pokemon: ['gastly', 'haunter', 'cubone'] },
+    {
+      location: 'Pokémon Tower',
+      pokemon: ['gastly', 'haunter', 'cubone'],
+      order: 22
+    },
     {
       location: 'Power Plant',
-      pokemon: ['pikachu', 'magnemite', 'magneton', 'voltorb', 'electabuzz']
+      pokemon: ['pikachu', 'magnemite', 'magneton', 'voltorb', 'electabuzz'],
+      order: 49
     },
     {
       location: 'Rock Tunnel',
-      pokemon: ['zubat', 'mankey', 'machop', 'geodude', 'onix', 'graveler']
+      pokemon: ['zubat', 'mankey', 'machop', 'geodude', 'onix', 'graveler'],
+      order: 21
     },
-    { location: 'Route 1', pokemon: ['pidgey', 'rattata'] },
+    { location: 'Route 1', pokemon: ['pidgey', 'rattata'], order: 2 },
+    {
+      location: 'Route 2',
+      pokemon: ['caterpie', 'weedle', 'pidgey', 'rattata'],
+      order: 4
+    },
+    {
+      location: 'Route 3',
+      pokemon: [
+        'pidgey',
+        'spearow',
+        'nidoran-f',
+        'nidoran-m',
+        'jigglypuff',
+        'mankey'
+      ],
+      order: 3
+    },
+    {
+      location: 'Route 4',
+      pokemon: [
+        'rattata',
+        'spearow',
+        'ekans',
+        'sandshrew',
+        'psyduck',
+        'mankey',
+        'tentacool',
+        'slowpoke',
+        'krabby',
+        'horsea',
+        'magikarp',
+        'gyarados'
+      ],
+      order: 8
+    },
+    {
+      location: 'Route 5',
+      pokemon: ['pidgey', 'oddish', 'meowth', 'bellsprout'],
+      order: 14
+    },
+    {
+      location: 'Route 6',
+      pokemon: [
+        'pidgey',
+        'oddish',
+        'meowth',
+        'psyduck',
+        'poliwag',
+        'poliwhirl',
+        'bellsprout',
+        'slowpoke',
+        'goldeen',
+        'magikarp',
+        'gyarados'
+      ],
+      order: 15
+    },
+    {
+      location: 'Route 7',
+      pokemon: [
+        'pidgey',
+        'vulpix',
+        'oddish',
+        'meowth',
+        'growlithe',
+        'bellsprout'
+      ],
+      order: 23
+    },
+    {
+      location: 'Route 8',
+      pokemon: [
+        'pidgey',
+        'ekans',
+        'sandshrew',
+        'vulpix',
+        'meowth',
+        'growlithe'
+      ],
+      order: 24
+    },
+    {
+      location: 'Route 9',
+      pokemon: ['rattata', 'spearow', 'ekans', 'sandshrew'],
+      order: 19
+    },
     {
       location: 'Route 10',
       pokemon: [
@@ -286,7 +408,8 @@ export default {
         'horsea',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 20
     },
     {
       location: 'Route 11',
@@ -302,7 +425,8 @@ export default {
         'horsea',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 17
     },
     {
       location: 'Route 12',
@@ -320,7 +444,8 @@ export default {
         'horsea',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 39
     },
     {
       location: 'Route 13',
@@ -340,7 +465,8 @@ export default {
         'magikarp',
         'gyarados',
         'ditto'
-      ]
+      ],
+      order: 38
     },
     {
       location: 'Route 14',
@@ -353,7 +479,8 @@ export default {
         'bellsprout',
         'weepinbell',
         'ditto'
-      ]
+      ],
+      order: 37
     },
     {
       location: 'Route 15',
@@ -366,23 +493,69 @@ export default {
         'bellsprout',
         'weepinbell',
         'ditto'
-      ]
+      ],
+      order: 36
     },
     {
       location: 'Route 16',
-      pokemon: ['rattata', 'raticate', 'spearow', 'doduo']
+      pokemon: ['rattata', 'raticate', 'spearow', 'doduo'],
+      order: 27
     },
     {
       location: 'Route 17',
-      pokemon: ['rattata', 'raticate', 'spearow', 'fearow', 'doduo']
+      pokemon: ['rattata', 'raticate', 'spearow', 'fearow', 'doduo'],
+      order: 31
     },
     {
       location: 'Route 18',
-      pokemon: ['rattata', 'raticate', 'spearow', 'fearow', 'doduo']
+      pokemon: ['rattata', 'raticate', 'spearow', 'fearow', 'doduo'],
+      order: 32
     },
     {
-      location: 'Route 2',
-      pokemon: ['caterpie', 'weedle', 'pidgey', 'rattata']
+      location: 'Route 19',
+      pokemon: [
+        'psyduck',
+        'tentacool',
+        'slowpoke',
+        'krabby',
+        'kingler',
+        'horsea',
+        'seadra',
+        'magikarp',
+        'gyarados'
+      ],
+      order: 35
+    },
+    {
+      location: 'Route 20',
+      pokemon: [
+        'psyduck',
+        'tentacool',
+        'slowpoke',
+        'krabby',
+        'kingler',
+        'horsea',
+        'seadra',
+        'magikarp',
+        'gyarados'
+      ],
+      order: 43
+    },
+    {
+      location: 'Route 21',
+      pokemon: [
+        'psyduck',
+        'tentacool',
+        'slowpoke',
+        'krabby',
+        'kingler',
+        'tangela',
+        'horsea',
+        'seadra',
+        'magikarp',
+        'gyarados'
+      ],
+      order: 57
     },
     {
       location: 'Route 22',
@@ -397,7 +570,8 @@ export default {
         'goldeen',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 5
     },
     {
       location: 'Route 23',
@@ -417,7 +591,8 @@ export default {
         'goldeen',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 60
     },
     {
       location: 'Route 24',
@@ -437,7 +612,8 @@ export default {
         'horsea',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 12
     },
     {
       location: 'Route 25',
@@ -457,74 +633,8 @@ export default {
         'goldeen',
         'magikarp',
         'gyarados'
-      ]
-    },
-    {
-      location: 'Route 3',
-      pokemon: [
-        'pidgey',
-        'spearow',
-        'nidoran-f',
-        'nidoran-m',
-        'jigglypuff',
-        'mankey'
-      ]
-    },
-    {
-      location: 'Route 4',
-      pokemon: [
-        'rattata',
-        'spearow',
-        'ekans',
-        'sandshrew',
-        'psyduck',
-        'mankey',
-        'tentacool',
-        'slowpoke',
-        'krabby',
-        'horsea',
-        'magikarp',
-        'gyarados'
-      ]
-    },
-    {
-      location: 'Route 5',
-      pokemon: ['pidgey', 'oddish', 'meowth', 'bellsprout']
-    },
-    {
-      location: 'Route 6',
-      pokemon: [
-        'pidgey',
-        'oddish',
-        'meowth',
-        'psyduck',
-        'poliwag',
-        'poliwhirl',
-        'bellsprout',
-        'slowpoke',
-        'goldeen',
-        'magikarp',
-        'gyarados'
-      ]
-    },
-    {
-      location: 'Route 7',
-      pokemon: [
-        'pidgey',
-        'vulpix',
-        'oddish',
-        'meowth',
-        'growlithe',
-        'bellsprout'
-      ]
-    },
-    {
-      location: 'Route 8',
-      pokemon: ['pidgey', 'ekans', 'sandshrew', 'vulpix', 'meowth', 'growlithe']
-    },
-    {
-      location: 'Route 9',
-      pokemon: ['rattata', 'spearow', 'ekans', 'sandshrew']
+      ],
+      order: 13
     },
     {
       location: 'Safari Zone',
@@ -553,50 +663,8 @@ export default {
         'kangaskhan',
         'tauros',
         'venomoth'
-      ]
-    },
-    {
-      location: 'Route 19',
-      pokemon: [
-        'psyduck',
-        'tentacool',
-        'slowpoke',
-        'krabby',
-        'kingler',
-        'horsea',
-        'seadra',
-        'magikarp',
-        'gyarados'
-      ]
-    },
-    {
-      location: 'Route 20',
-      pokemon: [
-        'psyduck',
-        'tentacool',
-        'slowpoke',
-        'krabby',
-        'kingler',
-        'horsea',
-        'seadra',
-        'magikarp',
-        'gyarados'
-      ]
-    },
-    {
-      location: 'Route 21',
-      pokemon: [
-        'psyduck',
-        'tentacool',
-        'slowpoke',
-        'krabby',
-        'kingler',
-        'tangela',
-        'horsea',
-        'seadra',
-        'magikarp',
-        'gyarados'
-      ]
+      ],
+      order: 34
     },
     {
       location: 'Seafoam Islands',
@@ -613,7 +681,8 @@ export default {
         'dewgong',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 41
     },
     {
       location: 'Treasure Beach',
@@ -633,7 +702,8 @@ export default {
         'seadra',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 49
     },
     {
       location: 'Vermilion City',
@@ -647,7 +717,8 @@ export default {
         'staryu',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 16
     },
     {
       location: 'Victory Road',
@@ -662,7 +733,8 @@ export default {
         'onix',
         'marowak',
         'primeape'
-      ]
+      ],
+      order: 61
     },
     {
       location: 'Viridian City',
@@ -674,11 +746,13 @@ export default {
         'goldeen',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 3
     },
     {
       location: 'Viridian Forest',
-      pokemon: ['caterpie', 'metapod', 'weedle', 'kakuna', 'pikachu']
+      pokemon: ['caterpie', 'metapod', 'weedle', 'kakuna', 'pikachu'],
+      order: 6
     }
   ]
-};
+});

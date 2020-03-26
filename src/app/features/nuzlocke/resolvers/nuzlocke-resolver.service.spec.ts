@@ -1,11 +1,11 @@
 import { NuzlockeResolverService } from './nuzlocke-resolver.service';
-import routeServiceMock from '@mocks/route.service.mock';
+import routerServiceMock from '@mocks/router.service.mock';
 
 describe('NuzlockeResolverService', () => {
   let service: NuzlockeResolverService;
 
   beforeEach(() => {
-    service = new NuzlockeResolverService({} as any, routeServiceMock);
+    service = new NuzlockeResolverService({} as any, routerServiceMock);
   });
 
   it('should be created', () => {

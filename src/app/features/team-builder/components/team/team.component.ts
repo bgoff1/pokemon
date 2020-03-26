@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../../services/pokemon/pokemon.service';
 import { Pokemon } from '@models/pokemon';
+import { firstNum } from '@models/util/select';
 
 @Component({
   selector: 'team',
@@ -13,7 +14,10 @@ export class TeamComponent implements OnInit {
 
   ngOnInit(): void {
     this.pokemonService.teamChange$.subscribe(team => {
-      this.team = team;
+      this.team = team.filter(mon => mon.name !== 'Empty Team Member');
+      while (this.team.length < 6) {
+        this.team.push(new Pokemon());
+      }
     });
   }
 
@@ -26,10 +30,10 @@ export class TeamComponent implements OnInit {
   }
 
   get firstThree() {
-    return [this.team[0], this.team[1], this.team[2]];
+    return firstNum(this.team, 3);
   }
 
   get lastThree() {
-    return [this.team[3], this.team[4], this.team[5]];
+    return firstNum(this.team, 3, 3);
   }
 }

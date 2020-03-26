@@ -5,7 +5,7 @@
     mat-tab-link
     *ngFor="let link of tabs"
     (click)="navigate(link.route)"
-    [disabled]="isSidebarOpen()"
+    [disabled]="disabledTabs"
     [active]="isActive(link.route)">
     {{link.name | route}}
   </a>

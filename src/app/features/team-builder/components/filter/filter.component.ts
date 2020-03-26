@@ -83,7 +83,7 @@ export class FilterOptionsComponent implements OnInit {
   }
 
   handleCoverage(): void {
-    this.filterService.checkCoverage(this.pokemonService.nonEmptyMembers);
+    this.filterService.checkCoverage(this.pokemonService.team);
     this.checkingCoverage = !this.checkingCoverage;
   }
 
@@ -98,7 +98,7 @@ export class FilterOptionsComponent implements OnInit {
   }
 
   get hasTeamMembers(): boolean {
-    return !!this.pokemonService.nonEmptyMembers.length;
+    return !!this.pokemonService.team.length;
   }
 
   handleSearch(value: string): Promise<void> {

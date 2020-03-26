@@ -4,15 +4,15 @@ export enum Region {
   // 1
   Kanto,
   // 2
-  OriginalJohto,
+  Johto,
   // 3
   Hoenn,
   // 4
-  OriginalSinnoh,
+  Sinnoh,
   UpdatedJohto,
   ExtendedSinnoh,
   // 5
-  OriginalUnova,
+  Unova,
   UpdatedUnova,
   // 6
   Kalos,
@@ -31,9 +31,9 @@ export const regionNames = enumValues(Region);
 
 export const getRegionName = (regionName: keyof typeof Region) => {
   switch (regionName) {
-    case 'OriginalJohto':
+    case 'Johto':
       return 'Johto (Gold, Silver, Crystal)';
-    case 'OriginalSinnoh':
+    case 'Sinnoh':
       return 'Sinnoh (Diamond and Pearl)';
     case 'ExtendedSinnoh':
       return 'Sinnoh (Platinum)';
@@ -41,7 +41,7 @@ export const getRegionName = (regionName: keyof typeof Region) => {
       return 'Johto (HeartGold and SoulSilver)';
     case 'UpdatedUnova':
       return 'Unova (Black 2 and White 2)';
-    case 'OriginalUnova':
+    case 'Unova':
       return 'Unova (Black and White)';
     case 'UpdatedHoenn':
       return 'Hoenn (Omega Ruby and Alpha Sapphire)';

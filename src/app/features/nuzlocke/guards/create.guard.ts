@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { NuzlockeService } from '../services/nuzlocke.service';
-import { RouteService } from '@services/routes/route.service';
+import { NuzlockeService } from '../services/nuzlocke/nuzlocke.service';
+import { RouterService } from '@services/router/router.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +10,18 @@ export class CreateGuard implements CanActivate {
   private hasNuzlockes: boolean;
   constructor(
     private readonly nuzlockeService: NuzlockeService,
-    private readonly routeService: RouteService
+    private readonly routerService: RouterService
   ) {}
 
   canActivate(): Promise<boolean> | boolean {
     return (
       this.hasNuzlockes ||
       this.nuzlockeService.hasNuzlockeSaved().then(canActivate => {
-        console.log('calling');
         if (!canActivate) {
-          this.routeService.redirect('nuzlocke/create');
+          this.routerService.canChangeTabs = false;
+          this.routerService.redirect('nuzlocke/create');
+        } else {
+          this.routerService.canChangeTabs = true;
         }
         this.hasNuzlockes = canActivate;
         return canActivate;

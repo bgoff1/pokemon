@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteService } from '@services/routes/route.service';
+import { RouterService } from '@services/router/router.service';
 
 @Component({
   selector: 'nav-header',
@@ -7,15 +7,15 @@ import { RouteService } from '@services/routes/route.service';
 })
 export class HeaderComponent implements OnInit {
   title = 'Pokemon';
-  constructor(private readonly routeService: RouteService) {}
+  constructor(private readonly routerService: RouterService) {}
 
   ngOnInit() {
-    this.routeService.route$.subscribe(route => {
+    this.routerService.route$.subscribe(route => {
       this.title = route.substring(route.lastIndexOf('/') + 1);
     });
   }
 
   toggleMenu() {
-    this.routeService.clickMenu();
+    this.routerService.clickMenu();
   }
 }

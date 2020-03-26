@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteService } from '@services/routes/route.service';
+import { RouterService } from '@services/router/router.service';
 import { TabLink } from '@models/tab.model';
 
 @Component({
@@ -10,24 +10,24 @@ import { TabLink } from '@models/tab.model';
 export class FooterComponent implements OnInit {
   tabs: TabLink[] = [];
   route: string;
-  constructor(private readonly routeService: RouteService) {}
+  constructor(private readonly routerService: RouterService) {}
 
   ngOnInit() {
-    this.routeService.route$.subscribe(route => {
-      this.tabs = this.routeService.getTabs(route);
+    this.routerService.route$.subscribe(route => {
+      this.tabs = this.routerService.getTabs(route);
       this.route = route;
     });
   }
 
   navigate(path: string) {
-    this.routeService.changeTab(path);
+    this.routerService.changeTab(path);
   }
 
   isActive(path: string) {
-    return this.routeService.isCurrentRoute(path);
+    return this.routerService.isCurrentRoute(path);
   }
 
-  isSidebarOpen() {
-    return this.routeService.sidebarOpen;
+  get disabledTabs() {
+    return this.routerService.sidebarOpen || !this.routerService.canChangeTabs;
   }
 }

@@ -1,5 +1,5 @@
 export enum NuzlockeStatus {
-  Ongoing,
+  Started,
   Failed,
   Success
 }

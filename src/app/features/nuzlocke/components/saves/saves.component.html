@@ -13,7 +13,7 @@
         </tr>
         <tr>
           <td class="font-small">
-            {{save.random ? 'Random' : '' }} {{save.game}}
+            {{save.random ? 'Random' : '' }} {{getGame(save.game)}}
           </td>
           <td class="text-right">{{getStatus(save.status)}}</td>
         </tr>

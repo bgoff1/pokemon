@@ -17,6 +17,7 @@ import { SavesComponent } from './components/saves/saves.component';
 import { CreateComponent } from './components/create/create.component';
 import { CreateGuard } from './guards/create.guard';
 import { NuzlockeResolverService } from './resolvers/nuzlocke-resolver.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
   { path: '', redirectTo: 'saves', pathMatch: 'full' },
@@ -64,6 +65,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatDividerModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
     MatSelectModule,

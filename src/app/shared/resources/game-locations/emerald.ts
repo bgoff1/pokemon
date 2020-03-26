@@ -1,4 +1,8 @@
-export default {
+import { convertGameLocationToRoutes } from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+export default convertGameLocationToRoutes({
+  game: GameGroup.Emerald,
   gifts: [
     {
       location: 'Starter',
@@ -591,4 +595,4 @@ export default {
       ]
     }
   ]
-};
+});

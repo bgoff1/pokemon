@@ -15,12 +15,12 @@ jest.mock('@resources/links', () => ({
     }
   ]
 }));
-import { RouteService } from './route.service';
+import { RouterService } from './router.service';
 
 describe('Route Service', () => {
-  let service: RouteService;
+  let service: RouterService;
   beforeEach(() => {
-    service = new RouteService(routerMock);
+    service = new RouterService(routerMock);
   });
   test('should create', () => {
     expect(service).toBeTruthy();

@@ -1,4 +1,8 @@
-export default {
+import { convertGameLocationToRoutes } from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+export default convertGameLocationToRoutes({
+  game: GameGroup.Platinum,
   gifts: [
     { location: 'Starter', pokemon: ['turtwig', 'piplup', 'chimchar'] },
     { location: 'Hearthome City', pokemon: ['eevee'] },
@@ -874,4 +878,4 @@ export default {
       pokemon: ['sandshrew', 'zubat', 'geodude', 'onix', 'bronzor', 'gible']
     }
   ]
-};
+});

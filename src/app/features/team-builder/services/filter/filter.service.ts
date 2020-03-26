@@ -1,26 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
 import { Region } from '@models/pokemon/region';
-import PouchDB from '@models/pouchdb.model';
 import defaultFilters from '@resources/default-filters';
 import { UpdateFilter } from '../../models/filter/update.model';
 import { Filter, FilterProperties } from '../../models/filter';
+import { DefaultValueService } from '@services/default-pouchdb/default-value.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilterService {
+export class FilterService extends DefaultValueService {
   checkingCoverage: boolean;
-  filterDB: PouchDB.Database<Filter> = new PouchDB<Filter>('filters');
+  filterDB: PouchDB.Database<Filter>;
 
   async createDatabase(): Promise<void> {
-    this.filterDB.createIndex({
-      index: { fields: ['enabled', 'filter'] }
-    });
-    const docs = await this.filterDB.allDocs();
-    if (!docs.total_rows) {
-      await this.filterDB.bulkDocs(defaultFilters);
-    }
+    await super
+      .createAndFill<Filter>('filter', defaultFilters, ['enabled', 'filter'])
+      .then(db => (this.filterDB = db));
     this.getCoverageFilter().then(doc => {
       this.checkingCoverage = doc.enabled;
     });

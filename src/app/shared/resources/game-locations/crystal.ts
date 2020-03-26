@@ -1,4 +1,8 @@
-export default {
+import { convertGameLocationToRoutes } from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+export default convertGameLocationToRoutes({
+  game: GameGroup.Crystal,
   gifts: [
     {
       location: 'Starter',
@@ -56,11 +60,11 @@ export default {
       pokemon: ['snorlax']
     },
     {
-      location: 'Roaming',
+      location: 'Roaming (Raikou)',
       pokemon: ['raikou']
     },
     {
-      location: 'Roaming',
+      location: 'Roaming (Entei)',
       pokemon: ['entei']
     },
     {
@@ -968,4 +972,4 @@ export default {
       ]
     }
   ]
-};
+});

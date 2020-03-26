@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke.service';
-import { RouteService } from '@services/routes/route.service';
-import { NuzlockeStatus } from '@features/nuzlocke/models/status.model';
+import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.service';
+import { RouterService } from '@services/router/router.service';
+import { Game } from '@features/nuzlocke/models/game.model';
+import { GameGroup } from '@models/pokemon/game-groups';
 
 @Component({
   selector: 'create',
@@ -11,16 +12,16 @@ import { NuzlockeStatus } from '@features/nuzlocke/models/status.model';
 })
 export class CreateComponent {
   formGroup: FormGroup;
-  games: string[] = [];
+  games: Game[] = [];
 
   constructor(
     private readonly nuzlockeService: NuzlockeService,
-    private readonly routeService: RouteService
+    private readonly routerService: RouterService
   ) {
     this.games = nuzlockeService.gameNames;
     this.formGroup = new FormGroup({
       runName: new FormControl('', Validators.required),
-      game: new FormControl(this.games[0], Validators.required),
+      game: new FormControl(this.games[0].game, Validators.required),
       random: new FormControl(false, Validators.required)
     });
   }
@@ -29,13 +30,25 @@ export class CreateComponent {
     if (!this.formGroup.invalid) {
       this.nuzlockeService
         .createNuzlocke({
-          ...this.formGroup.value,
-          startDate: new Date(),
-          status: NuzlockeStatus.Ongoing
+          runName: this.runName,
+          game: this.game,
+          random: this.random
         })
         .then(run => {
-          this.routeService.changeTab(`overview/${run._id}`);
+          this.routerService.changeTab(`overview/${run._id}`);
         });
     }
+  }
+
+  get runName(): string {
+    return this.formGroup.controls.runName.value;
+  }
+
+  get game(): GameGroup {
+    return this.formGroup.controls.game.value;
+  }
+
+  get random(): boolean {
+    return this.formGroup.controls.random.value;
   }
 }

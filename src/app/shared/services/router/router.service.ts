@@ -15,16 +15,13 @@ export class RouterService {
   sidebarOpen = false;
   canChangeTabs = true;
   tabs: Tab[] = tabs;
+  id: string;
 
   private menuClick: Subject<boolean> = new Subject();
   private route: Subject<string> = new Subject();
 
   private get parentRoute(): string {
-    return this.router.url.substring(1, this.router.url.indexOf('/', 2) + 1);
-  }
-
-  private get id(): string {
-    return this.router.url.slice(this.router.url.lastIndexOf('/'));
+    return this.router.url.substring(1, this.router.url.indexOf('/', 2));
   }
 
   get menuClick$() {
@@ -56,14 +53,19 @@ export class RouterService {
     return this.router.url === route;
   }
 
-  changeTab(route: string): void {
+  changeTab(route: string, id?: string): void {
     if (idTabs.some(tab => tab === route)) {
-      const futureRoute = this.parentRoute + route + this.id;
-      if (!this.isExactRoute(futureRoute)) {
-        this.router.navigateByUrl(futureRoute);
+      if (id) {
+        this.id = id;
+      }
+      if (this.id) {
+        const futureRoute = `${this.parentRoute}/${route}/${this.id}`;
+        if (!this.isExactRoute(futureRoute)) {
+          this.router.navigateByUrl(futureRoute);
+        }
       }
     } else {
-      const futureRoute = this.parentRoute + route;
+      const futureRoute = `${this.parentRoute}/${route}`;
       if (!this.isExactRoute(futureRoute)) {
         this.router.navigateByUrl(futureRoute);
       }

@@ -1,27 +1,40 @@
-import { convertGameLocationToRoutes } from '@models/game-location.model';
+import {
+  convertGameLocationToRoutes,
+  GameLocation
+} from '@models/game-location.model';
 import { GameGroup } from '@models/pokemon/game-groups';
 
-export default convertGameLocationToRoutes({
+const gameLocation: GameLocation = {
   game: GameGroup.Platinum,
   gifts: [
-    { location: 'Starter', pokemon: ['turtwig', 'piplup', 'chimchar'] },
-    { location: 'Hearthome City', pokemon: ['eevee'] },
-    { location: 'Veilstone City', pokemon: ['porygon'] },
-    { location: 'Eterna City Egg', pokemon: ['togepi'] },
-    { location: 'Iron Island Egg', pokemon: ['riolu'] }
+    {
+      location: 'Starter',
+      pokemon: ['turtwig', 'piplup', 'chimchar'],
+      order: 0
+    },
+    { location: 'Hearthome City', pokemon: ['eevee'], order: 27 },
+    { location: 'Veilstone City', pokemon: ['porygon'], order: 33 },
+    { location: 'Eterna City Egg', pokemon: ['togepi'], order: 19 },
+    { location: 'Iron Island Egg', pokemon: ['riolu'], order: 47 }
   ],
   statics: [
-    { location: 'Valley Windworks', pokemon: ['drifloon'] },
-    { location: 'Hallowed Tower', pokemon: ['spiritomb'] },
-    { location: 'Old Chateau', pokemon: ['rotom'] },
-    { location: 'Lake Acuity', pokemon: ['uxie'] },
-    { location: 'Roaming Lake Guardian', pokemon: ['mesprit'] },
-    { location: 'Distortion World', pokemon: ['giratina'] }
+    { location: 'Valley Windworks', pokemon: ['drifloon'], order: 15 },
+    { location: 'Hallowed Tower', pokemon: ['spiritomb'], order: 65 },
+    { location: 'Old Chateau', pokemon: ['rotom'], order: 21 },
+    { location: 'Lake Acuity', pokemon: ['uxie'], order: 58 },
+    { location: 'Lake Valor', pokemon: ['azelf'], order: 59 },
+    {
+      location: 'Roaming Lake Guardian',
+      pokemon: ['mesprit'],
+      order: 60
+    },
+    { location: 'Distortion World', pokemon: ['giratina'], order: 52 }
   ],
   encounters: [
     {
       location: 'Acuity Lakefront',
-      pokemon: ['sneasel', 'ursaring', 'swinub', 'snorunt', 'snover']
+      pokemon: ['sneasel', 'ursaring', 'swinub', 'snorunt', 'snover'],
+      order: 50
     },
     {
       location: 'Canalave City',
@@ -35,7 +48,8 @@ export default convertGameLocationToRoutes({
         'gastrodon',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 45
     },
     {
       location: 'Celestic Town',
@@ -48,7 +62,8 @@ export default convertGameLocationToRoutes({
         'gyarados',
         'corphish',
         'crawdaunt'
-      ]
+      ],
+      order: 43
     },
     {
       location: 'Eterna City',
@@ -58,9 +73,9 @@ export default convertGameLocationToRoutes({
         'magikarp',
         'gyarados',
         'barboach',
-        'whiscash',
-        'togepi'
-      ]
+        'whiscash'
+      ],
+      order: 18
     },
     {
       location: 'Eterna Forest',
@@ -84,7 +99,8 @@ export default convertGameLocationToRoutes({
         'kricketot',
         'budew',
         'buneary'
-      ]
+      ],
+      order: 17
     },
     {
       location: 'Fuego Ironworks',
@@ -102,7 +118,8 @@ export default convertGameLocationToRoutes({
         'gastrodon',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 44
     },
     {
       location: 'Great Marsh',
@@ -121,9 +138,9 @@ export default convertGameLocationToRoutes({
         'whiscash',
         'tropius',
         'bibarel'
-      ]
+      ],
+      order: 40
     },
-    { location: 'Hearthome City', pokemon: ['eevee'] },
     {
       location: 'Iron Island',
       pokemon: [
@@ -143,9 +160,9 @@ export default convertGameLocationToRoutes({
         'onix',
         'sableye',
         'mawile',
-        'steelix',
-        'riolu'
-      ]
+        'steelix'
+      ],
+      order: 46
     },
     {
       location: 'Lake Acuity',
@@ -163,7 +180,8 @@ export default convertGameLocationToRoutes({
         'snorunt',
         'bibarel',
         'snover'
-      ]
+      ],
+      order: 51
     },
     {
       location: 'Lake Valor',
@@ -179,7 +197,8 @@ export default convertGameLocationToRoutes({
         'solrock',
         'staravia',
         'bibarel'
-      ]
+      ],
+      order: 37
     },
     {
       location: 'Lake Verity',
@@ -195,13 +214,14 @@ export default convertGameLocationToRoutes({
         'solrock',
         'starly',
         'bidoof'
-      ]
+      ],
+      order: 3
     },
     {
       location: 'Lost Tower',
-      pokemon: ['zubat', 'gastly', 'duskull', 'golbat']
+      pokemon: ['zubat', 'gastly', 'duskull', 'golbat'],
+      order: 29
     },
-    { location: 'Maniac Tunnel', pokemon: ['geodude', 'hippopotas'] },
     {
       location: 'Mt. Coronet',
       pokemon: [
@@ -233,9 +253,10 @@ export default convertGameLocationToRoutes({
         'dratini',
         'dragonair',
         'chimecho'
-      ]
+      ],
+      order: 25
     },
-    { location: 'Old Chateau', pokemon: ['gastly', 'gengar'] },
+    { location: 'Old Chateau', pokemon: ['gastly', 'gengar'], order: 20 },
     {
       location: 'Oreburgh Gate',
       pokemon: [
@@ -248,9 +269,14 @@ export default convertGameLocationToRoutes({
         'gyarados',
         'barboach',
         'whiscash'
-      ]
+      ],
+      order: 10
     },
-    { location: 'Oreburgh Mine', pokemon: ['zubat', 'geodude', 'onix'] },
+    {
+      location: 'Oreburgh Mine',
+      pokemon: ['zubat', 'geodude', 'onix'],
+      order: 12
+    },
     {
       location: 'Pastoria City',
       pokemon: [
@@ -263,7 +289,8 @@ export default convertGameLocationToRoutes({
         'wingull',
         'shellos',
         'gastrodon'
-      ]
+      ],
+      order: 39
     },
     {
       location: 'Pokémon League',
@@ -276,7 +303,8 @@ export default convertGameLocationToRoutes({
         'wingull',
         'pelipper',
         'luvdisc'
-      ]
+      ],
+      order: 64
     },
     {
       location: 'Ravaged Path',
@@ -289,7 +317,8 @@ export default convertGameLocationToRoutes({
         'gyarados',
         'barboach',
         'whiscash'
-      ]
+      ],
+      order: 8
     },
     {
       location: 'Route 201',
@@ -298,13 +327,11 @@ export default convertGameLocationToRoutes({
         'nidoran-m',
         'growlithe',
         'doduo',
-        'turtwig',
-        'chimchar',
-        'piplup',
         'starly',
         'bidoof',
         'kricketot'
-      ]
+      ],
+      order: 2
     },
     {
       location: 'Route 202',
@@ -316,7 +343,8 @@ export default convertGameLocationToRoutes({
         'bidoof',
         'kricketot',
         'shinx'
-      ]
+      ],
+      order: 4
     },
     {
       location: 'Route 203',
@@ -337,7 +365,8 @@ export default convertGameLocationToRoutes({
         'bidoof',
         'kricketot',
         'shinx'
-      ]
+      ],
+      order: 9
     },
     {
       location: 'Route 204',
@@ -361,7 +390,8 @@ export default convertGameLocationToRoutes({
         'shinx',
         'budew',
         'sunkern'
-      ]
+      ],
+      order: 7
     },
     {
       location: 'Route 205',
@@ -393,7 +423,8 @@ export default convertGameLocationToRoutes({
         'whiscash',
         'kricketot',
         'budew'
-      ]
+      ],
+      order: 16
     },
     {
       location: 'Route 206',
@@ -406,7 +437,8 @@ export default convertGameLocationToRoutes({
         'larvitar',
         'baltoy',
         'kricketune'
-      ]
+      ],
+      order: 23
     },
     {
       location: 'Route 207',
@@ -418,7 +450,8 @@ export default convertGameLocationToRoutes({
         'phanpy',
         'stantler',
         'kricketot'
-      ]
+      ],
+      order: 11
     },
     {
       location: 'Route 208',
@@ -439,7 +472,8 @@ export default convertGameLocationToRoutes({
         'bidoof',
         'bibarel',
         'budew'
-      ]
+      ],
+      order: 26
     },
     {
       location: 'Route 209',
@@ -460,7 +494,8 @@ export default convertGameLocationToRoutes({
         'duskull',
         'staravia',
         'bibarel'
-      ]
+      ],
+      order: 28
     },
     {
       location: 'Route 210',
@@ -492,7 +527,8 @@ export default convertGameLocationToRoutes({
         'whiscash',
         'bagon',
         'bibarel'
-      ]
+      ],
+      order: 31
     },
     {
       location: 'Route 211',
@@ -509,7 +545,8 @@ export default convertGameLocationToRoutes({
         'machoke',
         'graveler',
         'noctowl'
-      ]
+      ],
+      order: 22
     },
     {
       location: 'Route 212',
@@ -539,7 +576,8 @@ export default convertGameLocationToRoutes({
         'shellos',
         'gastrodon',
         'croagunk'
-      ]
+      ],
+      order: 41
     },
     {
       location: 'Route 213',
@@ -556,7 +594,8 @@ export default convertGameLocationToRoutes({
         'shellos',
         'gastrodon',
         'chatot'
-      ]
+      ],
+      order: 38
     },
     {
       location: 'Route 214',
@@ -575,7 +614,8 @@ export default convertGameLocationToRoutes({
         'houndour',
         'poochyena',
         'spoink'
-      ]
+      ],
+      order: 34
     },
     {
       location: 'Route 215',
@@ -587,7 +627,8 @@ export default convertGameLocationToRoutes({
         'scyther',
         'marill',
         'staravia'
-      ]
+      ],
+      order: 32
     },
     {
       location: 'Route 216',
@@ -599,7 +640,8 @@ export default convertGameLocationToRoutes({
         'meditite',
         'snorunt',
         'snover'
-      ]
+      ],
+      order: 48
     },
     {
       location: 'Route 217',
@@ -611,7 +653,8 @@ export default convertGameLocationToRoutes({
         'delibird',
         'snorunt',
         'snover'
-      ]
+      ],
+      order: 49
     },
     {
       location: 'Route 218',
@@ -628,7 +671,8 @@ export default convertGameLocationToRoutes({
         'chatot',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 6
     },
     {
       location: 'Route 219',
@@ -641,7 +685,8 @@ export default convertGameLocationToRoutes({
         'pelipper',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 5
     },
     {
       location: 'Route 221',
@@ -661,7 +706,8 @@ export default convertGameLocationToRoutes({
         'floatzel',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 55
     },
     {
       location: 'Route 222',
@@ -682,7 +728,8 @@ export default convertGameLocationToRoutes({
         'luxio',
         'floatzel',
         'chatot'
-      ]
+      ],
+      order: 56
     },
     {
       location: 'Route 224',
@@ -705,9 +752,14 @@ export default convertGameLocationToRoutes({
         'luvdisc',
         'floatzel',
         'gastrodon'
-      ]
+      ],
+      order: 63
     },
-    { location: 'Ruin Maniac Cave', pokemon: ['geodude', 'hippopotas'] },
+    {
+      location: 'Ruin Maniac Cave',
+      pokemon: ['geodude', 'hippopotas'],
+      order: 35
+    },
     {
       location: 'Route 220',
       pokemon: [
@@ -720,7 +772,8 @@ export default convertGameLocationToRoutes({
         'pelipper',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 54
     },
     {
       location: 'Route 223',
@@ -734,7 +787,8 @@ export default convertGameLocationToRoutes({
         'wailmer',
         'wailord',
         'mantyke'
-      ]
+      ],
+      order: 61
     },
     {
       location: 'Sendoff Spring',
@@ -752,31 +806,10 @@ export default convertGameLocationToRoutes({
         'staravia',
         'bibarel',
         'chingling'
-      ]
+      ],
+      order: 53
     },
-    {
-      location: 'Snowpoint Temple',
-      pokemon: ['golbat', 'sneasel', 'smoochum', 'jynx']
-    },
-    { location: 'Solaceon Ruins', pokemon: ['unown'] },
-    {
-      location: 'Stark Mountain',
-      pokemon: [
-        'fearow',
-        'golbat',
-        'graveler',
-        'weezing',
-        'rhyhorn',
-        'rhydon',
-        'skarmory',
-        'numel',
-        'camerupt',
-        'torkoal',
-        'slugma',
-        'magcargo',
-        'koffing'
-      ]
-    },
+    { location: 'Solaceon Ruins', pokemon: ['unown'], order: 30 },
     {
       location: 'Sunyshore City',
       pokemon: [
@@ -789,27 +822,13 @@ export default convertGameLocationToRoutes({
         'octillery',
         'wingull',
         'pelipper'
-      ]
+      ],
+      order: 57
     },
     {
       location: 'Trophy Garden',
-      pokemon: ['pikachu', 'pichu', 'roselia', 'staravia', 'kricketune']
-    },
-    {
-      location: 'Turnback Cave',
-      pokemon: [
-        'golbat',
-        'gastly',
-        'haunter',
-        'lunatone',
-        'solrock',
-        'duskull',
-        'dusclops',
-        'chingling',
-        'bronzor',
-        'bronzong',
-        'chimecho'
-      ]
+      pokemon: ['pikachu', 'pichu', 'roselia', 'staravia', 'kricketune'],
+      order: 42
     },
     {
       location: 'Twinleaf Town',
@@ -820,7 +839,8 @@ export default convertGameLocationToRoutes({
         'seaking',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 1
     },
     {
       location: 'Valley Windworks',
@@ -839,7 +859,8 @@ export default convertGameLocationToRoutes({
         'gastrodon',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 14
     },
     {
       location: 'Valor Lakefront',
@@ -851,9 +872,9 @@ export default convertGameLocationToRoutes({
         'staravia',
         'bibarel',
         'kricketune'
-      ]
+      ],
+      order: 36
     },
-    { location: 'Veilstone City', pokemon: ['porygon'] },
     {
       location: 'Victory Road',
       pokemon: [
@@ -871,11 +892,15 @@ export default convertGameLocationToRoutes({
         'floatzel',
         'dewgong',
         'lapras'
-      ]
+      ],
+      order: 62
     },
     {
       location: 'Wayward Cave',
-      pokemon: ['sandshrew', 'zubat', 'geodude', 'onix', 'bronzor', 'gible']
+      pokemon: ['sandshrew', 'zubat', 'geodude', 'onix', 'bronzor', 'gible'],
+      order: 24
     }
   ]
-});
+};
+
+export default convertGameLocationToRoutes(gameLocation);

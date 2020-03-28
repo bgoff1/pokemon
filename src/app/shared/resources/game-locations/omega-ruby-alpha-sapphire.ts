@@ -5,7 +5,7 @@ import {
 import { GameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
-  game: GameGroup.RubySapphire,
+  game: GameGroup.OmegaRubyAlphaSapphire,
   gifts: [
     {
       location: 'Starter',

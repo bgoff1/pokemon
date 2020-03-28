@@ -15,6 +15,14 @@
     "sinnoh",
     "unova"
   ],
+  "cSpell.ignorePaths": [
+    "**/package-lock.json",
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/objects/**",
+    ".vscode",
+    "**/resources/**/*.ts"
+  ],
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,

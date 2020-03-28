@@ -1,7 +1,10 @@
-import { convertGameLocationToRoutes } from '@models/game-location.model';
+import {
+  convertGameLocationToRoutes,
+  GameLocation
+} from '@models/game-location.model';
 import { GameGroup } from '@models/pokemon/game-groups';
 
-export default convertGameLocationToRoutes({
+const gameLocation: GameLocation = {
   game: GameGroup.RedBlue,
   gifts: [
     {
@@ -536,4 +539,6 @@ export default convertGameLocationToRoutes({
       order: 6
     }
   ]
-});
+};
+
+export default convertGameLocationToRoutes(gameLocation);

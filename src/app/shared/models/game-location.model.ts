@@ -7,7 +7,7 @@ import { GameGroup } from '@models/pokemon/game-groups';
 export interface Location {
   location: string;
   pokemon: string[];
-  order?: number;
+  order: number;
 }
 
 export interface GameLocation {

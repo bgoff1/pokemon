@@ -13,7 +13,7 @@ export class DefaultValueService {
       });
     }
     const docs = await database.allDocs();
-    if (!docs.total_rows) {
+    if (!docs.total_rows && defaultValue.length) {
       await database.bulkDocs(defaultValue);
     }
     return database;

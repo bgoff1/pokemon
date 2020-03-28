@@ -6,6 +6,8 @@ import {
   Route,
   RouteEncounterType
 } from '@features/nuzlocke/models/route.model';
+import { MatDialog } from '@angular/material/dialog';
+import { RouteDialogComponent } from './route-dialog/route-dialog.component';
 
 @Component({
   selector: 'routes',
@@ -16,7 +18,8 @@ export class RoutesComponent implements OnInit {
   routes: Route[] = [];
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly routesService: RoutesService
+    private readonly routesService: RoutesService,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -35,5 +38,14 @@ export class RoutesComponent implements OnInit {
 
   isStatic(route: Route) {
     return route.type === RouteEncounterType.Static;
+  }
+
+  addRoute() {
+    const dialog = this.dialog.open(RouteDialogComponent);
+    dialog.afterClosed().subscribe(res => {
+      // if (res) {
+      console.log(res);
+      // }
+    });
   }
 }

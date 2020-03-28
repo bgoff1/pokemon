@@ -17,12 +17,22 @@ export class RoutesService extends DefaultValueService {
         this.routeDB = db;
       });
   }
+
   async getRoutes(region: GameGroup): Promise<Route[]> {
     try {
       const res = await this.routeDB.find({ selector: { game: region } });
       return res.docs.sort((a, b) => Number(a.order) - Number(b.order));
     } catch {
       return [];
+    }
+  }
+
+  async addRoute(route: Route): Promise<boolean> {
+    try {
+      await this.routeDB.put(route);
+      return true;
+    } catch {
+      return false;
     }
   }
 }

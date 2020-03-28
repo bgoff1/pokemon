@@ -1,18 +1,18 @@
-<mat-sidenav-container
-  class="container"
-  (backdropClick)="setOpen(false)">
+<mat-sidenav-container class="container" (backdropClick)="setOpen(false)">
   <mat-sidenav
     [(opened)]="opened"
     (keydown.escape)="setOpen(false)"
     class="sidebar"
-    disableClose>
+    disableClose
+  >
     <div *ngFor="let link of links">
       <a
         class="text-center link"
         matRipple
         [routerLink]="link.link"
-        [class.active-link]="isActive(link.link)">
-        <mat-icon class="icon">{{link.icon}}</mat-icon>
+        [class.active-link]="isActive(link.link)"
+      >
+        <mat-icon class="icon">{{ link.icon }}</mat-icon>
         {{ link.link | route }}
       </a>
       <mat-divider></mat-divider>

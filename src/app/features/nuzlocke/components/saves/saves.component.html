@@ -1,30 +1,24 @@
 <mat-action-list>
-  <button
-    mat-list-item
-    *ngFor="let save of saves"
-    (click)="selectSave(save)">
+  <button mat-list-item *ngFor="let save of saves" (click)="selectSave(save)">
     <table class="w-100">
       <tbody>
         <tr>
-          <td>{{save.runName}}</td>
+          <td>{{ save.runName }}</td>
           <td class="text-right">
-            {{save.startDate | date: 'MMMM dd, yyyy' }}
+            {{ save.startDate | date: 'MMMM dd, yyyy' }}
           </td>
         </tr>
         <tr>
           <td class="font-small">
-            {{save.random ? 'Random' : '' }} {{getGame(save.game)}}
+            {{ save.random ? 'Random' : '' }} {{ getGame(save.game) }}
           </td>
-          <td class="text-right">{{getStatus(save.status)}}</td>
+          <td class="text-right">{{ getStatus(save.status) }}</td>
         </tr>
       </tbody>
     </table>
     <mat-divider></mat-divider>
   </button>
 </mat-action-list>
-<button
-  mat-fab
-  class="add"
-  (click)="navigateToCreate()">
+<button mat-fab class="add-button" (click)="navigateToCreate()">
   <mat-icon>add</mat-icon>
 </button>

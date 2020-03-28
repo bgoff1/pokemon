@@ -21,11 +21,14 @@ export class SavesComponent implements OnInit {
   ngOnInit() {
     this.nuzlockeService.getSaves().then(saves => {
       this.saves = saves;
+      if (this.saves.length === 1) {
+        this.routerService.id = this.saves[0]._id;
+      }
     });
   }
 
   selectSave(save: Nuzlocke) {
-    this.routerService.changeTab(`overview/${save._id}`);
+    this.routerService.changeTab(`overview`, save._id);
   }
 
   getStatus(status: NuzlockeStatus): string {

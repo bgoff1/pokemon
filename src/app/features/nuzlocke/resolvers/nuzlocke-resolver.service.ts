@@ -19,7 +19,7 @@ export class NuzlockeResolverService implements Resolve<Nuzlocke> {
   }
 
   resolve(route: ActivatedRouteSnapshot): Promise<Nuzlocke> | Nuzlocke {
-    const id = Number(route.paramMap.get('id'));
+    const id = +route.paramMap.get('id');
 
     if (id === this.previous?.id) {
       this.routerService.id = this.previous.id;

@@ -29,7 +29,25 @@ export enum Region {
 export const regions = enumKeys(Region);
 export const regionNames = enumValues(Region);
 
-export const getRegionName = (regionName: keyof typeof Region) => {
+export type RegionDisplayName =
+  | 'Kanto'
+  | 'Hoenn'
+  | 'Kalos'
+  | 'Alola'
+  | 'Galar'
+  | 'National'
+  | 'Johto (Gold, Silver, Crystal)'
+  | 'Sinnoh (Diamond and Pearl)'
+  | 'Sinnoh (Platinum)'
+  | 'Johto (HeartGold and SoulSilver)'
+  | 'Unova (Black 2 and White 2)'
+  | 'Unova (Black and White)'
+  | 'Hoenn (Omega Ruby and Alpha Sapphire)'
+  | 'Alola (Ultra Sun and Ultra Moon)';
+
+export const getRegionName = (
+  regionName: keyof typeof Region
+): RegionDisplayName => {
   switch (regionName) {
     case 'Johto':
       return 'Johto (Gold, Silver, Crystal)';
@@ -49,5 +67,28 @@ export const getRegionName = (regionName: keyof typeof Region) => {
       return 'Alola (Ultra Sun and Ultra Moon)';
     default:
       return regionName;
+  }
+};
+
+export const getRegion = (region: RegionDisplayName): Region => {
+  switch (region) {
+    case 'Alola (Ultra Sun and Ultra Moon)':
+      return Region.UpdatedAlola;
+    case 'Hoenn (Omega Ruby and Alpha Sapphire)':
+      return Region.UpdatedHoenn;
+    case 'Johto (Gold, Silver, Crystal)':
+      return Region.Johto;
+    case 'Johto (HeartGold and SoulSilver)':
+      return Region.UpdatedJohto;
+    case 'Sinnoh (Diamond and Pearl)':
+      return Region.Sinnoh;
+    case 'Sinnoh (Platinum)':
+      return Region.ExtendedSinnoh;
+    case 'Unova (Black 2 and White 2)':
+      return Region.UpdatedUnova;
+    case 'Unova (Black and White)':
+      return Region.Unova;
+    default:
+      return Region[region];
   }
 };

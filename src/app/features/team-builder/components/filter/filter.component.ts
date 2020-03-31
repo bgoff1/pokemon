@@ -83,7 +83,7 @@ export class FilterOptionsComponent implements OnInit {
 
   async resetFilters(): Promise<void> {
     await this.filterService.resetFilters();
-    this.initializeFilters();
+    this.filterService.createDatabase().then(() => this.initializeFilters());
   }
 
   get coverageText() {

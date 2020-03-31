@@ -1,6 +1,6 @@
 import { Pokemon } from '@models/pokemon';
 import { Pokedex } from '@models/pokemon/pokedex';
-import { Region } from '@models/pokemon/region';
+import { Region, getRegion, RegionDisplayName } from '@models/pokemon/region';
 import { Type } from '@models/pokemon/type';
 import { Filter, FilterProperties } from '../filter';
 import { Coverage } from '../type-coverage/coverage.model';
@@ -29,8 +29,6 @@ export class PokemonList {
     this.filterExtras(filters);
     this.filterCoverage(filters);
 
-    this.sortFilterByRegions([Region.Alola, Region.ExtendedSinnoh]);
-
     return this.filteredPokemon;
   }
 
@@ -54,8 +52,9 @@ export class PokemonList {
       filter => filter.filter === FilterProperties.Regions
     );
     if (regionFilters.length) {
-      const regions = regionFilters.map(
-        filter => Region[filter.value as keyof typeof Region]
+      console.log(regionFilters);
+      const regions = regionFilters.map(filter =>
+        getRegion(filter.value as RegionDisplayName)
       );
       this.filteredPokemon = this.filteredPokemon.filter(mon => {
         return mon.pokedexNumbers.some(({ name }) => regions.includes(name));
@@ -122,6 +121,7 @@ export class PokemonList {
   }
 
   sortFilterByRegions(regionNames: Region[]) {
+    console.log(regionNames);
     this.filteredPokemon = this.filteredPokemon.sort((a, b) => {
       if (regionNames.length > 1) {
         const first = a.getNationalPokedex();

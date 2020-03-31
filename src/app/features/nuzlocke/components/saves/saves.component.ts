@@ -12,6 +12,7 @@ import { GameGroup, formatGameName } from '@models/pokemon/game-groups';
 })
 export class SavesComponent implements OnInit {
   saves: Nuzlocke[] = [];
+  editing = false;
 
   constructor(
     private readonly nuzlockeService: NuzlockeService,
@@ -41,5 +42,9 @@ export class SavesComponent implements OnInit {
 
   navigateToCreate() {
     this.routerService.changeTab('create');
+  }
+
+  edit() {
+    this.editing = true;
   }
 }

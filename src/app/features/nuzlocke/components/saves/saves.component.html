@@ -1,24 +1,29 @@
-<mat-action-list>
-  <button mat-list-item *ngFor="let save of saves" (click)="selectSave(save)">
-    <table class="w-100">
-      <tbody>
-        <tr>
-          <td>{{ save.runName }}</td>
-          <td class="text-right">
-            {{ save.startDate | date: 'MMMM dd, yyyy' }}
-          </td>
-        </tr>
-        <tr>
-          <td class="font-small">
-            {{ save.random ? 'Random' : '' }} {{ getGame(save.game) }}
-          </td>
-          <td class="text-right">{{ getStatus(save.status) }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <mat-divider></mat-divider>
-  </button>
-</mat-action-list>
+<div [class.hidden]="editing">
+  <mat-action-list>
+    <button mat-list-item *ngFor="let save of saves" (click)="selectSave(save)">
+      <table class="w-100">
+        <tbody>
+          <tr>
+            <td>{{ save.runName }}</td>
+            <td class="text-right">
+              {{ save.startDate | date: 'MMMM dd, yyyy' }}
+            </td>
+          </tr>
+          <tr>
+            <td class="font-small">
+              {{ save.random ? 'Random' : '' }} {{ getGame(save.game) }}
+            </td>
+            <td class="text-right">{{ getStatus(save.status) }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-divider></mat-divider>
+    </button>
+  </mat-action-list>
+</div>
 <button mat-fab class="add-button" (click)="navigateToCreate()">
   <mat-icon>add</mat-icon>
+</button>
+<button mat-fab class="edit" (click)="edit()">
+  <mat-icon>edit</mat-icon>
 </button>

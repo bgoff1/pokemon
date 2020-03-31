@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverviewComponent } from './components/overview/overview.component';
-import { EncountersComponent } from './components/encounters/encounters.component';
 import { RoutesComponent } from './components/routes/routes.component';
 import { SavesComponent } from './components/saves/saves.component';
 import { CreateComponent } from './components/create/create.component';
@@ -30,14 +29,6 @@ const routes: Routes = [
   {
     path: 'overview/:id',
     component: OverviewComponent,
-    canActivate: [CreateGuard],
-    resolve: {
-      nuzlocke: NuzlockeResolverService
-    }
-  },
-  {
-    path: 'encounters/:id',
-    component: EncountersComponent,
     canActivate: [CreateGuard],
     resolve: {
       nuzlocke: NuzlockeResolverService
@@ -73,7 +64,6 @@ const materialModules = [
 @NgModule({
   declarations: [
     OverviewComponent,
-    EncountersComponent,
     RoutesComponent,
     SavesComponent,
     CreateComponent,

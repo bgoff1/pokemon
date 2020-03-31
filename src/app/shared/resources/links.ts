@@ -21,13 +21,12 @@ export const tabs: Tab[] = [
     links: [
       { route: 'saves', name: 'saves' },
       { route: 'routes', name: 'routes' },
-      { route: 'encounters', name: 'encounters' },
       { route: 'overview', name: 'overview' }
     ]
   }
 ];
 
-export const idTabs = ['routes', 'encounters', 'overview'];
+export const idTabs = ['routes', 'overview'];
 
 export const sidebarLinks: Link[] = [
   { link: 'team-builder', icon: 'people' },

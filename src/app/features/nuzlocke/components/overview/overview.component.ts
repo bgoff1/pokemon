@@ -10,6 +10,7 @@ import {
   PokemonStatus
 } from '@features/nuzlocke/models/nuzlocke-pokemon.model';
 import { enumValues } from '@util/enum';
+import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
 
 @Component({
   selector: 'nuzlocke-overview',
@@ -18,7 +19,7 @@ import { enumValues } from '@util/enum';
 })
 export class OverviewComponent implements OnInit {
   badges: Badge[] = [];
-
+  nuzlocke: Nuzlocke;
   groups: { title: string; data: NuzlockePokemon[] }[];
 
   constructor(
@@ -29,6 +30,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe(({ nuzlocke }: RouteData) => {
+      this.nuzlocke = nuzlocke;
       this.badges = this.badgeService.getBadges(nuzlocke);
       this.groups = [];
       for (const value of enumValues(PokemonStatus)) {
@@ -57,32 +59,41 @@ export class OverviewComponent implements OnInit {
       : [firstNum(this.badges, 8), firstNum(this.badges, 8, 8)];
   }
 
-  get alive() {
+  get groupData(): NuzlockePokemon[] {
+    return [].concat(...this.groups.map(group => group.data));
+  }
+
+  private count(status: PokemonStatus | null, notList?: PokemonStatus[]) {
     let i = 0;
-    for (const group of this.groups) {
-      for (const item of group.data) {
-        if (
-          item.status !== PokemonStatus.Heaven &&
-          item.status !== PokemonStatus.Missed
-        ) {
-          i++;
+    if (status !== null) {
+      for (const item of this.groupData) {
+        if (item.status === status) {
+          ++i;
+        }
+      }
+    } else {
+      for (const item of this.groupData) {
+        if (notList.every(notItem => notItem !== item.status)) {
+          ++i;
         }
       }
     }
     return i;
   }
 
+  get alive() {
+    return this.count(null, [PokemonStatus.Heaven, PokemonStatus.Missed]);
+  }
+
   get dead() {
-    let i = 0;
-    for (const item of [].concat(
-      this.groups.map(group => group.data)
-    ) as NuzlockePokemon[]) {
-      // for (const item of group.data) {
-      if (item.status === PokemonStatus.Heaven) {
-        i++;
-      }
-      // }
-    }
-    return i;
+    return this.count(PokemonStatus.Heaven);
+  }
+
+  get boxed() {
+    return this.count(PokemonStatus.Boxed);
+  }
+
+  get missed() {
+    return this.count(PokemonStatus.Missed);
   }
 }

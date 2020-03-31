@@ -4,107 +4,76 @@ import { Region } from '@models/pokemon/region';
 import defaultFilters from '@resources/default-filters';
 import { UpdateFilter } from '../../models/filter/update.model';
 import { Filter, FilterProperties } from '../../models/filter';
-import { DefaultValueService } from '@services/default-pouchdb/default-value.service';
+import { DatabaseService } from '@services/database/database.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilterService extends DefaultValueService {
+export class FilterService {
   checkingCoverage: boolean;
-  filterDB: PouchDB.Database<Filter>;
+
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async setDefaultFilters() {
+    const count = await this.databaseService.filters.count();
+    if (count === 0) {
+      await this.databaseService.filters.bulkAdd(defaultFilters);
+    }
+  }
 
   async createDatabase(): Promise<void> {
-    await super
-      .createAndFill<Filter>('filter', defaultFilters, ['enabled', 'filter'])
-      .then(db => (this.filterDB = db));
+    await this.setDefaultFilters();
     this.getCoverageFilter().then(doc => {
-      this.checkingCoverage = doc.enabled;
+      this.checkingCoverage = doc.enabled === 1;
     });
   }
 
   async resetFilters(): Promise<void> {
-    await this.filterDB.destroy();
-    return this.createDatabase();
+    await this.databaseService.filters.clear();
   }
 
   async getAllFilters(): Promise<Filter[]> {
-    try {
-      const docs = await this.filterDB.allDocs({ include_docs: true });
-      return docs.rows
-        .map(document => document.doc)
-        .filter(
-          doc =>
-            !isNaN(Number(doc._id)) &&
-            doc.filter !== FilterProperties.Coverage &&
-            doc.filter !== FilterProperties.Search &&
-            !(
-              doc.filter === FilterProperties.Regions &&
-              doc.value === Region[Region.National]
-            )
-        )
-        .sort((a, b) => Number(a._id) - Number(b._id))
-        .sort((a, b) => a.filter - b.filter);
-    } catch {
-      return [];
-    }
+    const filters = await this.databaseService.filters
+      .filter(
+        ({ filter, value }) =>
+          filter !== FilterProperties.Coverage &&
+          filter !== FilterProperties.Search &&
+          !(
+            filter === FilterProperties.Regions &&
+            value === Region[Region.National]
+          )
+      )
+      .toArray();
+    return filters
+      .sort((a, b) => a.id - b.id)
+      .sort((a, b) => a.filter - b.filter);
   }
 
   async getFilters(): Promise<Filter[]> {
-    try {
-      const enabledDocs = await this.filterDB.find({
-        selector: { enabled: true }
-      });
-      return enabledDocs.docs;
-    } catch {
-      return [];
-    }
+    return this.databaseService.filters.where({ enabled: 1 }).toArray();
   }
 
-  async getSearchFilter(): Promise<Filter | null> {
-    try {
-      const searchDocs = await this.filterDB.find({
-        selector: { filter: FilterProperties.Search },
-        limit: 1
-      });
-      return searchDocs.docs[0];
-    } catch {
-      return null;
-    }
+  async getSearchFilter(): Promise<Filter> {
+    return this.databaseService.filters.get(FilterProperties.Search);
   }
 
   async addSearchFilter(searchQuery: string): Promise<void> {
     const doc = await this.getSearchFilter();
-    if (doc) {
-      this.filterDB.put({
-        _id: doc._id,
-        _rev: doc._rev,
-        filter: FilterProperties.Search,
-        value: searchQuery,
-        enabled: searchQuery.trim().length > 0
-      });
-    }
+    this.databaseService.filters.update(doc.id, {
+      value: searchQuery.trim(),
+      enabled: searchQuery.trim().length > 0 ? 1 : 0
+    });
   }
 
   async getCoverageFilter(): Promise<Filter | null> {
-    try {
-      const searchDocs = await this.filterDB.find({
-        selector: { filter: FilterProperties.Coverage },
-        limit: 1
-      });
-      return searchDocs.docs[0];
-    } catch {
-      return null;
-    }
+    return this.databaseService.filters.get(FilterProperties.Coverage);
   }
 
   async changeCoverageDocument(value: string): Promise<void> {
     const doc = await this.getCoverageFilter();
-    this.filterDB.put({
-      _id: FilterProperties.Coverage.toString(),
-      _rev: doc._rev,
-      filter: doc.filter,
+    this.databaseService.filters.update(doc.id, {
       value,
-      enabled: value ? true : false
+      enabled: value ? 1 : 0
     });
   }
 
@@ -118,12 +87,13 @@ export class FilterService extends DefaultValueService {
   }
 
   async updateFilter(filter: Filter): Promise<void> {
-    const doc = await this.filterDB.get(filter._id);
-    this.filterDB.put({ ...doc, enabled: !doc.enabled });
+    this.databaseService.filters.update(filter.id, {
+      enabled: filter.enabled
+    });
   }
 
   async updateFilters(filters: UpdateFilter[]): Promise<Filter[]> {
-    await this.filterDB.bulkDocs(filters);
+    await this.databaseService.filters.bulkPut(filters);
     return filters;
   }
 }

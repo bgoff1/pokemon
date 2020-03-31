@@ -5,7 +5,7 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { FilterProperties, Filter } from '../../models/filter';
 import { TreeNode } from '../../models/tree-node.model';
 import { FilterService } from '../../services/filter/filter.service';
-import { PokemonService } from '../../services/pokemon/pokemon.service';
+import { TeamService } from '../../services/team/team.service';
 import { FilterTreeService } from '../../services/filter-tree/filter-tree.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class FilterOptionsComponent implements OnInit {
   constructor(
     private readonly filterService: FilterService,
     private readonly optionsService: FilterTreeService,
-    private readonly pokemonService: PokemonService
+    private readonly teamService: TeamService
   ) {}
 
   ngOnInit() {
@@ -39,11 +39,6 @@ export class FilterOptionsComponent implements OnInit {
     this.checkingCoverage = this.filterService.checkingCoverage;
     const filters = await this.filterService.getAllFilters();
     this.treeData.data = this.optionsService.generateTree(filters);
-    for (const item of this.treeData.data) {
-      if (item.expanded) {
-        this.treeControl.expand(item);
-      }
-    }
   }
 
   get treeHasData() {
@@ -63,11 +58,10 @@ export class FilterOptionsComponent implements OnInit {
     }
     this.filterService.updateFilters(
       node.children.map(child => ({
-        _id: child.id,
+        id: child.id,
         filter: FilterProperties[child.name],
         value: child.value,
-        enabled: child.checked,
-        _rev: child.rev
+        enabled: child.checked ? 1 : 0
       }))
     );
   }
@@ -75,20 +69,21 @@ export class FilterOptionsComponent implements OnInit {
   handleNodeChange(node: TreeNode): void {
     node.checked = !node.checked;
     this.filterService.updateFilter({
-      _id: node.id,
+      id: node.id,
       filter: FilterProperties[node.name],
       value: node.value,
-      _rev: node.rev
+      enabled: node.checked ? 1 : 0
     });
   }
 
   handleCoverage(): void {
-    this.filterService.checkCoverage(this.pokemonService.team);
+    this.filterService.checkCoverage(this.teamService.team);
     this.checkingCoverage = !this.checkingCoverage;
   }
 
-  resetFilters(): Promise<void> {
-    return this.filterService.resetFilters().then(this.initializeFilters);
+  async resetFilters(): Promise<void> {
+    await this.filterService.resetFilters();
+    this.initializeFilters();
   }
 
   get coverageText() {
@@ -98,7 +93,7 @@ export class FilterOptionsComponent implements OnInit {
   }
 
   get hasTeamMembers(): boolean {
-    return !!this.pokemonService.team.length;
+    return !!this.teamService.team.length;
   }
 
   handleSearch(value: string): Promise<void> {

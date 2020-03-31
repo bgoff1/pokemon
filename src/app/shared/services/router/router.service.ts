@@ -15,7 +15,7 @@ export class RouterService {
   sidebarOpen = false;
   canChangeTabs = true;
   tabs: Tab[] = tabs;
-  id: string;
+  id: number;
 
   private menuClick: Subject<boolean> = new Subject();
   private route: Subject<string> = new Subject();
@@ -53,14 +53,18 @@ export class RouterService {
     return this.router.url === route;
   }
 
-  changeTab(route: string, id?: string): void {
+  changeTab(route: string, id?: number): void {
+    console.log(route, id);
     if (idTabs.some(tab => tab === route)) {
       if (id) {
         this.id = id;
       }
       if (this.id) {
-        const futureRoute = `${this.parentRoute}/${route}/${this.id}`;
+        const futureRoute = `${
+          this.parentRoute
+        }/${route}/${this.id.toString()}`;
         if (!this.isExactRoute(futureRoute)) {
+          console.log('here', futureRoute);
           this.router.navigateByUrl(futureRoute);
         }
       }

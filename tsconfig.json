@@ -20,6 +20,8 @@
       "@pipes": ["src/app/shared/pipes/pipes.module.ts"],
       "@pouchdb": ["src/app/shared/models/pouchdb.model.ts"],
       "@pipes/*": ["src/app/shared/pipes/*"],
+      "@util/*": ["src/app/shared/util/*"],
+      "@shared/*": ["src/app/shared/*"],
       "@mocks/*": ["src/mocks/*"]
     },
     "noImplicitReturns": true,

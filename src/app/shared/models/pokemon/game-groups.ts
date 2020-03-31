@@ -1,4 +1,4 @@
-import { enumValues } from '@models/util/enum';
+import { enumValues } from '@util/enum';
 import { Region } from './region';
 
 export enum GameGroup {

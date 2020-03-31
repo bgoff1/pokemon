@@ -22,13 +22,13 @@ export class SavesComponent implements OnInit {
     this.nuzlockeService.getSaves().then(saves => {
       this.saves = saves;
       if (this.saves.length === 1) {
-        this.routerService.id = this.saves[0]._id;
+        this.routerService.id = this.saves[0].id;
       }
     });
   }
 
   selectSave(save: Nuzlocke) {
-    this.routerService.changeTab(`overview`, save._id);
+    this.routerService.changeTab(`overview`, save.id);
   }
 
   getStatus(status: NuzlockeStatus): string {

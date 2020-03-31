@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
 import { BadgeService } from '@features/nuzlocke/services/badge/badge.service';
 import { Badge } from '@features/nuzlocke/models/badge.model';
-import { firstNum } from '@models/util/select';
+import { firstNum } from '@util/select';
 import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.service';
+import { RouteData } from '@features/nuzlocke/models/route-data.model';
+import {
+  NuzlockePokemon,
+  PokemonStatus
+} from '@features/nuzlocke/models/nuzlocke-pokemon.model';
+import { enumValues } from '@util/enum';
 
 @Component({
   selector: 'nuzlocke-overview',
@@ -12,7 +17,10 @@ import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.s
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  badges: Badge[];
+  badges: Badge[] = [];
+
+  groups: { title: string; data: NuzlockePokemon[] }[];
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly badgeService: BadgeService,
@@ -20,10 +28,22 @@ export class OverviewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data: { nuzlocke: Nuzlocke }) => {
-      this.badges = this.badgeService.getBadges(data.nuzlocke);
-      this.nuzlockeService.currentRunID = data.nuzlocke._id;
+    this.route.data.subscribe(({ nuzlocke }: RouteData) => {
+      this.badges = this.badgeService.getBadges(nuzlocke);
+      this.groups = [];
+      for (const value of enumValues(PokemonStatus)) {
+        this.groups.push({
+          title: value,
+          data: nuzlocke.pokemon.filter(
+            ({ status }) => status === PokemonStatus[value]
+          )
+        });
+      }
     });
+  }
+
+  change(event: NuzlockePokemon) {
+    this.nuzlockeService.updateEncounter(event);
   }
 
   earnBadge(badge: Badge, badgeNumber: any, firstRow: boolean) {
@@ -35,5 +55,34 @@ export class OverviewComponent implements OnInit {
     return this.badges.length === 8
       ? [firstNum(this.badges, 8)]
       : [firstNum(this.badges, 8), firstNum(this.badges, 8, 8)];
+  }
+
+  get alive() {
+    let i = 0;
+    for (const group of this.groups) {
+      for (const item of group.data) {
+        if (
+          item.status !== PokemonStatus.Heaven &&
+          item.status !== PokemonStatus.Missed
+        ) {
+          i++;
+        }
+      }
+    }
+    return i;
+  }
+
+  get dead() {
+    let i = 0;
+    for (const item of [].concat(
+      this.groups.map(group => group.data)
+    ) as NuzlockePokemon[]) {
+      // for (const item of group.data) {
+      if (item.status === PokemonStatus.Heaven) {
+        i++;
+      }
+      // }
+    }
+    return i;
   }
 }

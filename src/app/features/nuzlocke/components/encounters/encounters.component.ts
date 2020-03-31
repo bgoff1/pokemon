@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
+import { RouteData } from '@features/nuzlocke/models/route-data.model';
+import { NameUtility } from '@util/name';
+import { NuzlockePokemon } from '@features/nuzlocke/models/nuzlocke-pokemon.model';
 
 @Component({
   selector: 'encounters',
@@ -8,11 +10,17 @@ import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
   styleUrls: ['./encounters.component.scss']
 })
 export class EncountersComponent implements OnInit {
+  encounters: NuzlockePokemon[] = [];
   constructor(private readonly activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.activatedRoute.data.subscribe((data: { nuzlocke: Nuzlocke }) => {
-      console.log(data.nuzlocke);
+    this.activatedRoute.data.subscribe(({ nuzlocke }: RouteData) => {
+      this.encounters = nuzlocke.pokemon;
     });
+  }
+
+  getPokemonImage(pokemonName: string): string {
+    const imageName = NameUtility.replaceImageCharacters(pokemonName);
+    return `assets/pokemon/${imageName}.png`;
   }
 }

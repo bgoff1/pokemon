@@ -1,4 +1,4 @@
-import { NameUtility } from './name-util.model';
+import { NameUtility } from './index';
 
 describe('Name Replacement Utility', () => {
   test('should replace characters in an image', () => {

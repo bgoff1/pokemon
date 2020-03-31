@@ -1,4 +1,4 @@
-import { enumKeys, enumValues } from '@models/util/enum';
+import { enumKeys, enumValues } from '@util/enum';
 
 export enum Region {
   // 1

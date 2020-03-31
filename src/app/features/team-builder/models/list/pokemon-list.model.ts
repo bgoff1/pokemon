@@ -4,16 +4,15 @@ import { Region } from '@models/pokemon/region';
 import { Type } from '@models/pokemon/type';
 import { Filter, FilterProperties } from '../filter';
 import { Coverage } from '../type-coverage/coverage.model';
-import { NameUtility } from '@models/util/name/name-util.model';
-import pokemon from '@resources/pokemon';
+import { NameUtility } from '@util/name';
 
 export class PokemonList {
   pokemon: Pokemon[];
   filteredPokemon: Pokemon[];
   coverage: Coverage;
 
-  constructor() {
-    this.pokemon = pokemon.map(mon => new Pokemon(mon));
+  constructor(allPokemon: Pokemon[]) {
+    this.pokemon = allPokemon;
     this.coverage = new Coverage();
   }
 
@@ -30,6 +29,8 @@ export class PokemonList {
     this.filterExtras(filters);
     this.filterCoverage(filters);
 
+    this.sortFilterByRegions([Region.Alola, Region.ExtendedSinnoh]);
+
     return this.filteredPokemon;
   }
 
@@ -39,13 +40,11 @@ export class PokemonList {
     );
     if (search.length) {
       this.filteredPokemon = this.filteredPokemon.filter(mon =>
-        search
-          .map(filter => filter.value)
-          .some(searchValue =>
-            NameUtility.characterReplace(mon.name)
-              .toLowerCase()
-              .includes(searchValue.trim().toLowerCase())
-          )
+        search.some(({ value }) =>
+          NameUtility.characterReplace(mon.name)
+            .toLowerCase()
+            .includes(value.trim().toLowerCase())
+        )
       );
     }
   }
@@ -59,7 +58,7 @@ export class PokemonList {
         filter => Region[filter.value as keyof typeof Region]
       );
       this.filteredPokemon = this.filteredPokemon.filter(mon => {
-        return mon.pokedexNumbers.some(dex => regions.includes(dex.name));
+        return mon.pokedexNumbers.some(({ name }) => regions.includes(name));
       });
       this.sortFilterByRegions(regions);
     }
@@ -95,10 +94,10 @@ export class PokemonList {
     );
 
     if (extraFilters.length) {
-      this.filteredPokemon = this.filteredPokemon.filter(mon => {
+      this.filteredPokemon = this.filteredPokemon.filter(({ name }) => {
         return extraFilters
           .map(filter => NameUtility.trimRegionName(filter.value))
-          .every(filter => !mon.name.includes(filter.toLowerCase()));
+          .every(filter => !name.includes(filter.toLowerCase()));
       });
     }
   }
@@ -109,13 +108,15 @@ export class PokemonList {
     );
     if (coverage) {
       const team = JSON.parse(coverage.value) as Pokemon[];
-      const teamMembers = team.filter(mon => mon.name !== 'Empty Team Member');
+      const teamMembers = team.filter(
+        ({ name }) => name !== 'Empty Team Member'
+      );
       const teamTypes: Type[] = Array.from(
         new Set([].concat(...teamMembers.map(member => member.types)))
       );
 
       this.filteredPokemon = this.filteredPokemon.filter(
-        mon => !this.coverage.isCovered(teamTypes, mon.types)
+        ({ types }) => !this.coverage.isCovered(teamTypes, types)
       );
     }
   }
@@ -127,11 +128,11 @@ export class PokemonList {
         const second = b.getNationalPokedex();
         return this.compareNumbers(first, second);
       } else {
-        const first = a.pokedexNumbers.find(dex =>
-          regionNames.includes(dex.name)
+        const first = a.pokedexNumbers.find(({ name }) =>
+          regionNames.includes(name)
         );
-        const second = b.pokedexNumbers.find(dex =>
-          regionNames.includes(dex.name)
+        const second = b.pokedexNumbers.find(({ name }) =>
+          regionNames.includes(name)
         );
         return this.compareNumbers(first, second);
       }
@@ -143,8 +144,8 @@ export class PokemonList {
   }
 
   filterByGeneration(gameNames: string[]) {
-    this.filteredPokemon = this.filteredPokemon.filter(mon => {
-      return gameNames.some(name => mon.generation === name);
+    this.filteredPokemon = this.filteredPokemon.filter(({ generation }) => {
+      return gameNames.some(name => generation === name);
     });
   }
 }

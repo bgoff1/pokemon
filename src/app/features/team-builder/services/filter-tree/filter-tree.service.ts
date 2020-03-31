@@ -23,8 +23,7 @@ export class FilterTreeService {
           children,
           value: filterType,
           name: filterType,
-          expanded: localStorage.getItem(filterType + 'expanded') === 'true',
-          rev: 'parent'
+          expanded: false
         });
         filterType = this.getFilterType(filter);
         children = [this.createChild(filter, filterType)];
@@ -37,19 +36,17 @@ export class FilterTreeService {
       children,
       value: filterType,
       name: filterType,
-      expanded: localStorage.getItem(filterType + 'expanded') === 'true',
-      rev: 'parent'
+      expanded: false
     });
     return result;
   }
 
   createChild(filter: Filter, filterType: keyof typeof FilterProperties) {
     return {
-      id: filter._id,
+      id: filter.id,
       checked: filter.enabled ? true : false,
       value: getRegionName(filter.value as keyof typeof Region),
-      name: filterType,
-      rev: filter._rev
+      name: filterType
     };
   }
 

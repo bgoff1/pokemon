@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverviewComponent } from './components/overview/overview.component';
 import { EncountersComponent } from './components/encounters/encounters.component';
 import { RoutesComponent } from './components/routes/routes.component';
@@ -19,7 +21,9 @@ import { CreateComponent } from './components/create/create.component';
 import { CreateGuard } from './guards/create.guard';
 import { NuzlockeResolverService } from './resolvers/nuzlocke-resolver.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouteDialogComponent } from './components/routes/route-dialog/route-dialog.component';
+import { CreateRouteDialogComponent } from './components/routes/create-route-dialog/create-route-dialog.component';
+import { SelectRouteDialogComponent } from './components/routes/select-route-dialog/select-route-dialog.component';
+import { DragDropComponent } from './components/overview/drag-drop/drag-drop.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'saves', pathMatch: 'full' },
@@ -61,7 +65,9 @@ const materialModules = [
   MatProgressSpinnerModule,
   MatIconModule,
   MatButtonModule,
-  MatSelectModule
+  MatAutocompleteModule,
+  MatSelectModule,
+  DragDropModule
 ];
 
 @NgModule({
@@ -71,7 +77,9 @@ const materialModules = [
     RoutesComponent,
     SavesComponent,
     CreateComponent,
-    RouteDialogComponent
+    CreateRouteDialogComponent,
+    SelectRouteDialogComponent,
+    DragDropComponent
   ],
   imports: [
     CommonModule,
@@ -80,7 +88,7 @@ const materialModules = [
     ...materialModules,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [RouteDialogComponent],
+  entryComponents: [CreateRouteDialogComponent, SelectRouteDialogComponent],
   providers: [CreateGuard]
 })
 export class NuzlockeModule {}

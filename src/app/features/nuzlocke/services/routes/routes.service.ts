@@ -1,38 +1,35 @@
 import { Injectable } from '@angular/core';
 import { allRoutes } from '@resources/game-locations';
-import { GameGroup } from '@models/pokemon/game-groups';
-import { DefaultValueService } from '@services/default-pouchdb/default-value.service';
 import { Route } from '@features/nuzlocke/models/route.model';
+import { NuzlockeService } from '../nuzlocke/nuzlocke.service';
+import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
+import { DatabaseService } from '@services/database/database.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RoutesService extends DefaultValueService {
-  routeDB: PouchDB.Database<Route>;
+export class RoutesService {
+  constructor(
+    private readonly nuzlockeService: NuzlockeService,
+    private readonly databaseService: DatabaseService
+  ) {}
 
   async createDatabase() {
-    await super
-      .createAndFill<Route>('routes', allRoutes, ['game'])
-      .then(db => {
-        this.routeDB = db;
-      });
-  }
-
-  async getRoutes(region: GameGroup): Promise<Route[]> {
-    try {
-      const res = await this.routeDB.find({ selector: { game: region } });
-      return res.docs.sort((a, b) => Number(a.order) - Number(b.order));
-    } catch {
-      return [];
+    const count = await this.databaseService.routes.count();
+    if (count === 0) {
+      await this.databaseService.routes.bulkAdd(allRoutes);
     }
   }
 
-  async addRoute(route: Route): Promise<boolean> {
+  async getRoutes(run: Nuzlocke): Promise<Route[]> {
+    this.nuzlockeService.currentRun = run;
     try {
-      await this.routeDB.put(route);
-      return true;
+      const res = await this.databaseService.routes
+        .where({ game: run.game })
+        .toArray();
+      return res.sort((a, b) => Number(a.order) - Number(b.order));
     } catch {
-      return false;
+      return [];
     }
   }
 }

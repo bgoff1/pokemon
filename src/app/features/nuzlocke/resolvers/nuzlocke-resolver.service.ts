@@ -8,7 +8,7 @@ import { RouterService } from '@services/router/router.service';
   providedIn: 'root'
 })
 export class NuzlockeResolverService implements Resolve<Nuzlocke> {
-  previous: { id: string; nuzlocke: Nuzlocke };
+  previous: { id: number; nuzlocke: Nuzlocke };
   constructor(
     private readonly nuzlockeService: NuzlockeService,
     private readonly routerService: RouterService
@@ -19,15 +19,17 @@ export class NuzlockeResolverService implements Resolve<Nuzlocke> {
   }
 
   resolve(route: ActivatedRouteSnapshot): Promise<Nuzlocke> | Nuzlocke {
-    const id = route.paramMap.get('id');
+    const id = Number(route.paramMap.get('id'));
 
     if (id === this.previous?.id) {
+      this.routerService.id = this.previous.id;
       return this.previous.nuzlocke;
     }
     return this.nuzlockeService.getSaves().then(saves => {
-      const currentSave = saves.find(save => save._id === id);
+      const currentSave = saves.find(save => save.id === id);
       if (!!currentSave) {
         this.previous = { id, nuzlocke: currentSave };
+        this.routerService.id = this.previous.id;
         return currentSave;
       } else {
         this.routerService.redirect('nuzlocke/saves');

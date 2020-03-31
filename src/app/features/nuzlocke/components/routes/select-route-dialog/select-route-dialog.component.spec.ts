@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RouteDialogComponent } from './route-dialog.component';
+import { SelectRouteDialogComponent } from './select-route-dialog.component';
 
-describe('RouteDialogComponent', () => {
-  let component: RouteDialogComponent;
-  let fixture: ComponentFixture<RouteDialogComponent>;
+describe('SelectRouteDialogComponent', () => {
+  let component: SelectRouteDialogComponent;
+  let fixture: ComponentFixture<SelectRouteDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RouteDialogComponent]
+      declarations: [SelectRouteDialogComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RouteDialogComponent);
+    fixture = TestBed.createComponent(SelectRouteDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

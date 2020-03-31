@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonService } from '../../services/pokemon/pokemon.service';
+import { TeamService } from '../../services/team/team.service';
 import { Pokemon } from '@models/pokemon';
-import { firstNum } from '@models/util/select';
+import { firstNum } from '@util/select';
 
 @Component({
   selector: 'team',
@@ -10,11 +10,11 @@ import { firstNum } from '@models/util/select';
 })
 export class TeamComponent implements OnInit {
   team: Pokemon[] = [];
-  constructor(private readonly pokemonService: PokemonService) {}
+  constructor(private readonly teamService: TeamService) {}
 
   ngOnInit(): void {
-    this.pokemonService.teamChange$.subscribe(team => {
-      this.team = team.filter(mon => mon.name !== 'Empty Team Member');
+    this.teamService.teamChange$.subscribe(team => {
+      this.team = team.filter(({ name }) => name !== 'Empty Team Member');
       while (this.team.length < 6) {
         this.team.push(new Pokemon());
       }
@@ -22,7 +22,7 @@ export class TeamComponent implements OnInit {
   }
 
   removeFromTeam(pokemon: Pokemon): void {
-    this.pokemonService.removeFromTeam(pokemon);
+    this.teamService.removeFromTeam(pokemon);
   }
 
   getRow(pokemon: Pokemon): 1 | 2 {

@@ -1,7 +1,7 @@
 import { FilterOptionsComponent } from './filter.component';
 import filterOptionsServiceMock from '../../mocks/filter-options.service.mock';
 import filterServiceMock from '../../mocks/filter.service.mock';
-import pokemonServiceMock from '../../mocks/pokemon.service.mock';
+import teamServiceMock from '../../mocks/team.service.mock';
 import { TreeNode } from '../../models/tree-node.model';
 
 describe('Filter Options Component', () => {
@@ -11,7 +11,7 @@ describe('Filter Options Component', () => {
     component = new FilterOptionsComponent(
       filterServiceMock,
       filterOptionsServiceMock,
-      pokemonServiceMock
+      teamServiceMock
     );
   });
 

@@ -1,6 +1,6 @@
 import { Pokemon } from './index';
 import { Type } from './type';
-import { NameUtility } from '@models/util/name/name-util.model';
+import { NameUtility } from '@util/name';
 import { Region } from './region';
 
 describe('Pokemon Model', () => {

@@ -1,6 +1,5 @@
 export default {
   checkingCoverage: false,
-  filterDB: null,
   createDatabase: jest.fn(() => Promise.resolve()),
   resetFilters: jest.fn(() => Promise.resolve()),
   getAllFilters: jest.fn(() => Promise.resolve([])),

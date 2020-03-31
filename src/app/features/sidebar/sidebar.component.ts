@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import Hammer from 'hammerjs';
 import { RouterService } from '@services/router/router.service';
 import { Link } from '@models/link.model';
+import { DraggingService } from '@services/dragging/dragging.service';
 
 @Component({
   selector: 'nav-sidebar',
@@ -15,11 +16,13 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private readonly routerService: RouterService,
+    draggingService: DraggingService,
     elementRef: ElementRef
   ) {
     this.hammer = new Hammer(elementRef.nativeElement, {});
     this.hammer.on('panright', event => {
       if (
+        !draggingService.isDragging &&
         event.pointerType !== 'mouse' &&
         event.center.x >= 1 &&
         event.center.x <= 50

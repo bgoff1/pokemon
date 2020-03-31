@@ -1,18 +1,29 @@
 import { Injectable } from '@angular/core';
-import PouchDB from '@pouchdb';
-import { Nuzlocke } from '../../models/nuzlocke.model';
-import { games, GameGroup } from '@models/pokemon/game-groups';
-import { NuzlockeStatus } from '@features/nuzlocke/models/status.model';
+import {
+  Nuzlocke,
+  CreateNuzlocke,
+  startGame
+} from '../../models/nuzlocke.model';
+import { games } from '@models/pokemon/game-groups';
 import { Subject } from 'rxjs';
+import { CreateRouteDialogResult } from '@features/nuzlocke/components/routes/models/create-route-dialog.model';
+import {
+  Route,
+  RouteEncounterType
+} from '@features/nuzlocke/models/route.model';
+import {
+  NuzlockePokemon,
+  PokemonStatus
+} from '@features/nuzlocke/models/nuzlocke-pokemon.model';
+import { DatabaseService } from '@services/database/database.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NuzlockeService {
-  nuzlockeDB: PouchDB.Database<Nuzlocke> = new PouchDB<Nuzlocke>('nuzlockes', {
-    auto_compaction: true
-  });
-  currentRunID: string;
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  currentRun: Nuzlocke;
 
   private update = new Subject<Nuzlocke>();
   get update$() {
@@ -20,40 +31,65 @@ export class NuzlockeService {
   }
 
   async hasNuzlockeSaved(): Promise<boolean> {
-    const docs = await this.nuzlockeDB.allDocs();
-    return docs.total_rows > 0;
+    return (await this.databaseService.nuzlockes.count()) > 0;
   }
 
   async getSaves(): Promise<Nuzlocke[]> {
-    return this.nuzlockeDB
-      .allDocs({ include_docs: true })
-      .then(docs => docs.rows.map(row => row.doc));
+    return this.databaseService.nuzlockes.toArray();
   }
 
-  async createNuzlocke(run: {
-    runName: string;
-    game: GameGroup;
-    random: boolean;
-  }): Promise<Nuzlocke> {
-    const game: Nuzlocke = {
-      ...run,
-      badgesEarned: [],
-      startDate: new Date(),
-      status: NuzlockeStatus.Started
-    };
-    await this.nuzlockeDB.post(game);
+  async createNuzlocke(run: CreateNuzlocke): Promise<Nuzlocke> {
+    const game: Nuzlocke = startGame(run);
+    await this.databaseService.nuzlockes.add(game).then(res => {
+      game.id = res;
+    });
     return game;
   }
 
-  async earnBadge(badgeNumber: number) {
-    const run = await this.nuzlockeDB.get(this.currentRunID);
-    if (run.badgesEarned.includes(badgeNumber)) {
-      run.badgesEarned = run.badgesEarned.filter(num => badgeNumber !== num);
-    } else {
-      run.badgesEarned.push(badgeNumber);
+  convertRouteDialogToRoute(routeDialog: CreateRouteDialogResult): Route {
+    return {
+      type: RouteEncounterType.Encounter,
+      order: -1,
+      pokemon: [],
+      game: this.currentRun.game,
+      location: routeDialog.route
+    };
+  }
+
+  async addRouteToCurrentGame(extraRoute: Route) {
+    this.currentRun.extraRoutes.push(extraRoute);
+    await this.databaseService.nuzlockes.put(this.currentRun);
+  }
+
+  async addEncounter(pokemon: NuzlockePokemon) {
+    if (this.currentRun.pokemon.length === 0) {
+      pokemon.status = PokemonStatus.Party;
     }
-    this.nuzlockeDB.put(run).then(() => {
-      this.update.next(run);
+    this.currentRun.pokemon.push(pokemon);
+    await this.databaseService.nuzlockes.put(this.currentRun);
+  }
+
+  async updateEncounter(pokemon: NuzlockePokemon) {
+    const pokemonEntry = this.currentRun.pokemon.find(
+      mon =>
+        mon.name === pokemon.name &&
+        mon.nickName === pokemon.nickName &&
+        mon.routeName === pokemon.routeName
+    );
+    pokemonEntry.status = pokemon.status;
+    await this.databaseService.nuzlockes.put(this.currentRun);
+  }
+
+  async earnBadge(badgeNumber: number) {
+    if (this.currentRun.badgesEarned.includes(badgeNumber)) {
+      this.currentRun.badgesEarned = this.currentRun.badgesEarned.filter(
+        num => badgeNumber !== num
+      );
+    } else {
+      this.currentRun.badgesEarned.push(badgeNumber);
+    }
+    this.databaseService.nuzlockes.put(this.currentRun).then(() => {
+      this.update.next(this.currentRun);
     });
   }
 

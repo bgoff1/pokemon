@@ -12,5 +12,24 @@
         (click)="earnBadge(badge, badgeNumber, !!firstRow)"
       />
     </div>
+    <table>
+      <tr>
+        <td>Alive: {{ alive }}</td>
+        <td class="right-align">Boxed:</td>
+      </tr>
+      <tr>
+        <td>Dead: {{ dead }}</td>
+        <td class="right-align">Missed:</td>
+      </tr>
+    </table>
+  </div>
+  <div cdkDropListGroup>
+    <div *ngFor="let group of groups">
+      <drag-drop
+        [title]="group.title"
+        [data]="group.data"
+        (update)="change($event)"
+      ></drag-drop>
+    </div>
   </div>
 </div>

@@ -7,12 +7,11 @@
     *ngFor="let route of routes"
     (click)="selectRoute(route)">
     <div [class.strikethrough]="route.visited">
-      <span class="text-right">
-        <img
-          [class.hidden]="!route.visited"
-          src="{{ route.capturedPokemon | pokemonImage }}">
-      </span>
-      <span>{{ route.location }}</span>
+      <span class="route">{{ route.location }}</span>
+      <span class="text-right"></span>
+      <img
+        [class.hidden]="!route.visited"
+        src="{{ route.capturedPokemon | pokemonImage }}">
     </div>
 
     <mat-divider></mat-divider>

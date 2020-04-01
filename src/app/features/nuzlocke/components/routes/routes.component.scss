@@ -12,10 +12,16 @@
 .strikethrough {
   text-decoration: line-through;
   width: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: space-between;
 }
 
-.text-right {
-  text-align: right;
+.route {
+  justify-content: center;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
 }
 
 img {

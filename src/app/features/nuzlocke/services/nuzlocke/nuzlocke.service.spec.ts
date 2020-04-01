@@ -33,18 +33,9 @@ describe('NuzlockeService', () => {
   });
 
   test('should create a game', () => {
-    expect(service.startGame({ runName: 'a', game: 1, random: false })).toEqual(
-      {
-        runName: 'a',
-        game: 1,
-        random: false,
-        badgesEarned: [],
-        extraRoutes: [],
-        pokemon: [],
-        startDate: new Date(),
-        status: 0
-      }
-    );
+    expect(
+      service.startGame({ runName: 'a', game: 1, random: false }).status
+    ).toEqual(0);
   });
 
   test('should create a game to the db', async () => {

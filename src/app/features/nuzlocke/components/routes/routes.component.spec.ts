@@ -22,14 +22,28 @@ describe('RoutesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should update available routes', () => {
+  test('should update available routes', async () => {
     routesServiceMock.getRoutes = jest.fn(() =>
       Promise.resolve([{ location: 'a' }, { location: 'b' }])
     );
-    component.updateAvailableRoutes({
+    component.nuzlocke = {
       pokemon: [{ routeName: 'a' }],
       extraRoutes: []
-    } as any);
+    } as any;
+    await component.updateAvailableRoutes();
+    expect(component.routes.length).toBe(1);
+  });
+
+  test('should not filter on updating routes', async () => {
+    routesServiceMock.getRoutes = jest.fn(() =>
+      Promise.resolve([{ location: 'a' }, { location: 'b' }])
+    );
+    component.nuzlocke = {
+      pokemon: [{ routeName: 'a' }],
+      extraRoutes: []
+    } as any;
+    await component.updateAvailableRoutes(false);
+    expect(component.routes.length).toBe(2);
   });
 
   test('should setup on init', async () => {
@@ -90,6 +104,12 @@ describe('RoutesComponent', () => {
     expect(component.addEncounter).toBeCalled();
   });
 
+  test('should do nothing if route is visited', () => {
+    dialogRefMock.open = jest.fn();
+    component.selectRoute({ visited: true } as any);
+    expect(dialogRefMock.open).not.toBeCalled();
+  });
+
   test('should add missed pokemon', () => {
     dialogRefMock.open = jest.fn(() => ({
       afterClosed: () => of({ caught: true })
@@ -111,5 +131,15 @@ describe('RoutesComponent', () => {
 
     component.selectRoute({} as any);
     expect(component.addEncounter).not.toBeCalled();
+  });
+
+  test('should not throw errors on open filter', () => {
+    let error = null;
+    try {
+      component.openFilters();
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toBeNull();
   });
 });

@@ -84,25 +84,25 @@ export class RoutesComponent implements OnInit {
     );
   }
 
-  openFilters() {
-    console.log('opening filters');
-  }
+  openFilters() {}
 
-  selectRoute(route: Route) {
-    const dialog: SelectRouteDialog = this.dialog.open(
-      SelectRouteDialogComponent,
-      { data: route }
-    );
-    dialog.afterClosed().subscribe(res => {
-      if (res) {
-        const pokemon: Pokemon = {
-          routeName: route.location,
-          name: res.pokemon,
-          nickName: res.nickname,
-          status: res.caught ? Status.Boxed : Status.Missed
-        };
-        this.addEncounter(pokemon, route);
-      }
-    });
+  selectRoute(route: DisplayRoute) {
+    if (!route.visited) {
+      const dialog: SelectRouteDialog = this.dialog.open(
+        SelectRouteDialogComponent,
+        { data: route }
+      );
+      dialog.afterClosed().subscribe(res => {
+        if (res) {
+          const pokemon: Pokemon = {
+            routeName: route.location,
+            name: res.pokemon,
+            nickName: res.nickname,
+            status: res.caught ? Status.Boxed : Status.Missed
+          };
+          this.addEncounter(pokemon, route);
+        }
+      });
+    }
   }
 }

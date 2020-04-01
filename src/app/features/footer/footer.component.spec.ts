@@ -31,4 +31,12 @@ describe('Footer Component', () => {
     expect(component.route).toEqual('abc');
     expect(component.tabs).toEqual([]);
   });
+
+  test('should get disabled tabs', () => {
+    routerServiceMock.sidebarOpen = true;
+    expect(component.disabledTabs).toBe(true);
+    routerServiceMock.sidebarOpen = false;
+    routerServiceMock.canChangeTabs = false;
+    expect(component.disabledTabs).toBe(true);
+  });
 });

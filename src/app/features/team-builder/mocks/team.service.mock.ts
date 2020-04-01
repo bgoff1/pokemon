@@ -6,7 +6,7 @@ export default {
   addToTeam: jest.fn(),
   addEmptyMembers: jest.fn(),
   removeFromTeam: jest.fn(),
-  teamChange$: of([]),
+  teamChange$: of([{ name: 'Empty Team Member' }]),
   pokemonChange$: of([]),
   nonEmptyMembers: []
 } as any;

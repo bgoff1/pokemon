@@ -1,21 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  Nuzlocke,
-  CreateNuzlocke,
-  startGame
-} from '../../models/nuzlocke.model';
-import { games } from '@models/pokemon/game-groups';
 import { Subject } from 'rxjs';
-import { CreateRouteDialogResult } from '@features/nuzlocke/components/routes/models/create-route-dialog.model';
-import {
-  Route,
-  RouteEncounterType
-} from '@features/nuzlocke/models/route.model';
-import {
-  NuzlockePokemon,
-  PokemonStatus
-} from '@features/nuzlocke/models/nuzlocke-pokemon.model';
 import { DatabaseService } from '@services/database/database.service';
+import { games } from '@models/pokemon/game-groups';
+import { CreateRouteDialogResult } from '@nuzlocke/components/routes/models/create-route-dialog.model';
+import { Route, EncounterType } from '@nuzlocke/models/route.model';
+import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { NuzlockeStatus } from '@nuzlocke/models/status.model';
+import { Nuzlocke, CreateNuzlocke } from '../../models/nuzlocke.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,16 +30,29 @@ export class NuzlockeService {
   }
 
   async createNuzlocke(run: CreateNuzlocke): Promise<Nuzlocke> {
-    const game: Nuzlocke = startGame(run);
+    const game: Nuzlocke = this.startGame(run);
     await this.databaseService.nuzlockes.add(game).then(res => {
       game.id = res;
     });
     return game;
   }
 
+  startGame(run: CreateNuzlocke): Nuzlocke {
+    return {
+      runName: run.runName,
+      game: run.game,
+      random: run.random,
+      badgesEarned: [],
+      extraRoutes: [],
+      pokemon: [],
+      startDate: new Date(),
+      status: NuzlockeStatus.Started
+    };
+  }
+
   convertRouteDialogToRoute(routeDialog: CreateRouteDialogResult): Route {
     return {
-      type: RouteEncounterType.Encounter,
+      type: EncounterType.Encounter,
       order: -1,
       pokemon: [],
       game: this.currentRun.game,
@@ -61,15 +65,18 @@ export class NuzlockeService {
     await this.databaseService.nuzlockes.put(this.currentRun);
   }
 
-  async addEncounter(pokemon: NuzlockePokemon) {
-    if (this.currentRun.pokemon.length === 0) {
-      pokemon.status = PokemonStatus.Party;
+  async addEncounter(pokemon: Pokemon) {
+    const partyCount = this.currentRun.pokemon.filter(
+      mon => mon.status === Status.Party
+    ).length;
+    if (partyCount < 6 && pokemon.status !== Status.Missed) {
+      pokemon.status = Status.Party;
     }
     this.currentRun.pokemon.push(pokemon);
     await this.databaseService.nuzlockes.put(this.currentRun);
   }
 
-  async updateEncounter(pokemon: NuzlockePokemon) {
+  async updateEncounter(pokemon: Pokemon) {
     const pokemonEntry = this.currentRun.pokemon.find(
       mon =>
         mon.name === pokemon.name &&
@@ -88,9 +95,8 @@ export class NuzlockeService {
     } else {
       this.currentRun.badgesEarned.push(badgeNumber);
     }
-    this.databaseService.nuzlockes.put(this.currentRun).then(() => {
-      this.update.next(this.currentRun);
-    });
+    await this.databaseService.nuzlockes.put(this.currentRun);
+    this.update.next(this.currentRun);
   }
 
   get gameNames() {

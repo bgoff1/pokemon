@@ -3,9 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Route } from '@nuzlocke/models/route.model';
 import { SelectRouteDialogRef } from '../models/select-route-dialog.model';
-import { Route } from '@features/nuzlocke/models/route.model';
-import { NameUtility } from '@util/name';
 
 @Component({
   selector: 'select-route-dialog',
@@ -26,7 +25,7 @@ export class SelectRouteDialogComponent implements OnInit {
     this.autocompleteOptions = data.pokemon;
     this.routeFormControl = new FormGroup({
       pokemon: new FormControl('', Validators.required),
-      nickname: new FormControl()
+      nickname: new FormControl('')
     });
   }
 
@@ -55,9 +54,9 @@ export class SelectRouteDialogComponent implements OnInit {
     }
   }
 
-  getPokemonImage(pokemonName: string): string {
-    const imageName = NameUtility.replaceImageCharacters(pokemonName);
-    return `assets/pokemon/${imageName}.png`;
+  goBack() {
+    this.page--;
+    this.routeFormControl.reset();
   }
 
   obtained(result: 'yes' | 'no') {
@@ -66,6 +65,6 @@ export class SelectRouteDialogComponent implements OnInit {
   }
 
   get pokemonControl() {
-    return this.routeFormControl?.controls.pokemon;
+    return this.routeFormControl.controls.pokemon;
   }
 }

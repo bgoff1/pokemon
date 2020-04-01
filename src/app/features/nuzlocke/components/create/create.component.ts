@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.service';
 import { RouterService } from '@services/router/router.service';
-import { Game } from '@features/nuzlocke/models/game.model';
 import { GameGroup } from '@models/pokemon/game-groups';
+import { Game } from '@nuzlocke/models/game.model';
+import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
 
 @Component({
   selector: 'create',
@@ -26,9 +26,9 @@ export class CreateComponent {
     });
   }
 
-  submit() {
+  async submit() {
     if (!this.formGroup.invalid) {
-      this.nuzlockeService
+      await this.nuzlockeService
         .createNuzlocke({
           runName: this.runName,
           game: this.game,

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { DatabaseService } from '@services/database/database.service';
 import { Pokemon } from '@models/pokemon';
 import pokemon from '@resources/pokemon';
 import { NameUtility } from '@util/name';
-import { DatabaseService } from '@services/database/database.service';
 
 @Injectable({
   providedIn: 'root'

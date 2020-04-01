@@ -1,11 +1,11 @@
-export interface NuzlockePokemon {
+export interface Pokemon {
   name: string;
   nickName?: string;
   routeName: string;
-  status: PokemonStatus;
+  status: Status;
 }
 
-export enum PokemonStatus {
+export enum Status {
   Party,
   Boxed,
   Heaven,

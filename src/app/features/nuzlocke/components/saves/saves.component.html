@@ -1,6 +1,9 @@
-<div [class.hidden]="editing">
+<div>
   <mat-action-list>
-    <button mat-list-item *ngFor="let save of saves" (click)="selectSave(save)">
+    <button
+      mat-list-item
+      *ngFor="let save of saves"
+      (click)="selectSave(save)">
       <table class="w-100">
         <tbody>
           <tr>
@@ -21,9 +24,9 @@
     </button>
   </mat-action-list>
 </div>
-<button mat-fab class="add-button" (click)="navigateToCreate()">
+<button
+  mat-fab
+  class="add-button"
+  (click)="navigateToCreate()">
   <mat-icon>add</mat-icon>
-</button>
-<button mat-fab class="edit" (click)="edit()">
-  <mat-icon>edit</mat-icon>
 </button>

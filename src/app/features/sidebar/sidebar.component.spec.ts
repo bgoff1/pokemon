@@ -1,13 +1,18 @@
 import { SidebarComponent } from './sidebar.component';
 import routerServiceMock from '@mocks/router.service.mock';
 import elementRefMock from '@mocks/element-ref.mock';
+import draggingServiceMock from '@mocks/dragging.service.mock';
 import 'hammerjs';
 
 describe('Sidebar Component', () => {
   let component: SidebarComponent;
 
   beforeEach(() => {
-    component = new SidebarComponent(routerServiceMock, elementRefMock);
+    component = new SidebarComponent(
+      routerServiceMock,
+      draggingServiceMock,
+      elementRefMock
+    );
   });
 
   test('should create', () => {
@@ -20,11 +25,21 @@ describe('Sidebar Component', () => {
   });
 
   test('should open sidebar on panright', () => {
+    draggingServiceMock.isDragging = false;
     component.hammer.emit('panright', {
       pointerType: 'cursor',
       center: { x: 2 }
     });
     expect(component.opened).toBe(true);
+  });
+
+  test('should not open if dragging sidebar on panright', () => {
+    draggingServiceMock.isDragging = true;
+    component.hammer.emit('panright', {
+      pointerType: 'cursor',
+      center: { x: 2 }
+    });
+    expect(component.opened).toBe(false);
   });
 
   test('should open sidebar on panright', () => {

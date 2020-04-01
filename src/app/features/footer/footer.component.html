@@ -1,11 +1,12 @@
-<nav mat-tab-nav-bar mat-stretch-tabs>
+<nav
+  mat-tab-nav-bar
+  mat-stretch-tabs>
   <a
     mat-tab-link
     *ngFor="let link of tabs"
     (click)="navigate(link.route)"
     [disabled]="disabledTabs"
-    [active]="isActive(link.route)"
-  >
+    [active]="isActive(link.route)">
     {{ link.name | route }}
   </a>
 </nav>

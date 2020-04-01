@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Filter } from '../../models/filter';
 import { KeyEvent } from '@models/keydown.model';
+import { Filter } from '@team/models/filter';
 
 @Component({
   selector: 'search',

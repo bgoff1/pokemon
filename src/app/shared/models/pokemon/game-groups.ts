@@ -22,9 +22,11 @@ export enum GameGroup {
   Custom
 }
 
-export function formatGameName(game: string | GameGroup): string {
+export function formatGameName(
+  game: keyof typeof GameGroup | GameGroup
+): string {
   if (typeof game !== 'string') {
-    game = GameGroup[game];
+    game = GameGroup[game] as keyof typeof GameGroup;
   }
   switch (game) {
     case 'Black2White2':
@@ -56,6 +58,7 @@ export function getRegionFromGame(game: GameGroup): Region {
     case GameGroup.RedBlue:
     case GameGroup.Yellow:
     case GameGroup.FireRedLeafGreen:
+    case GameGroup.Custom:
       return Region.Kanto;
     case GameGroup.Crystal:
     case GameGroup.GoldSilver:
@@ -78,7 +81,5 @@ export function getRegionFromGame(game: GameGroup): Region {
       return Region.Alola;
     case GameGroup.SwordShield:
       return Region.Galar;
-    default:
-      return Region.Kanto;
   }
 }

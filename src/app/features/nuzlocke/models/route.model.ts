@@ -1,15 +1,15 @@
-import { GameGroup } from '@models/pokemon/game-groups';
 import { Location } from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
 
 export interface Route extends Location {
   id?: number;
   location: string;
   pokemon: string[];
-  type: RouteEncounterType;
+  type: EncounterType;
   game: GameGroup;
 }
 
-export enum RouteEncounterType {
+export enum EncounterType {
   Gift,
   Static,
   Encounter

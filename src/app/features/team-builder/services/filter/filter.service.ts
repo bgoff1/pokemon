@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { DatabaseService } from '@services/database/database.service';
 import { Pokemon } from '@models/pokemon';
 import { Region } from '@models/pokemon/region';
 import defaultFilters from '@resources/default-filters';
-import { UpdateFilter } from '../../models/filter/update.model';
-import { Filter, FilterProperties } from '../../models/filter';
-import { DatabaseService } from '@services/database/database.service';
+import { UpdateFilter } from '@team/models/filter/update.model';
+import { Filter, FilterProperties } from '@team/models/filter';
 
 @Injectable({
   providedIn: 'root'
@@ -44,12 +44,11 @@ export class FilterService {
           )
       )
       .toArray();
-    return filters
-      .sort((a, b) => a.id - b.id)
-      .sort((a, b) => a.filter - b.filter);
+    return filters.sort((a, b) => a.filter - b.filter);
   }
 
   async getFilters(): Promise<Filter[]> {
+    await this.setDefaultFilters();
     return this.databaseService.filters.where({ enabled: 1 }).toArray();
   }
 

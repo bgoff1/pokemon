@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
-import { tabs, sidebarLinks, idTabs } from '@resources/links';
 import { TabLink, Tab } from '@models/tab.model';
 import { Link } from '@models/link.model';
+import { tabs, sidebarLinks, idTabs } from '@resources/links';
 
 @Injectable({
   providedIn: 'root'
@@ -54,17 +54,13 @@ export class RouterService {
   }
 
   changeTab(route: string, id?: number): void {
-    console.log(route, id);
     if (idTabs.some(tab => tab === route)) {
       if (id) {
         this.id = id;
       }
       if (this.id) {
-        const futureRoute = `${
-          this.parentRoute
-        }/${route}/${this.id.toString()}`;
+        const futureRoute = this.parentRoute + '/' + route + '/' + this.id;
         if (!this.isExactRoute(futureRoute)) {
-          console.log('here', futureRoute);
           this.router.navigateByUrl(futureRoute);
         }
       }

@@ -1,6 +1,17 @@
+jest.mock('@util/enum', () => ({
+  __esModule: true,
+  enumKeys: jest.fn(),
+  enumValues: jest.fn(() => ['Unknown'])
+}));
 import { Pokemon } from './index';
 import { Type } from './type';
-import { NameUtility } from '@util/name';
+jest.mock('@util/name', () => ({
+  __esModule: true,
+  NameUtility: {
+    replaceImageCharacters: jest.fn(a => a),
+    getDisplayName: jest.fn(a => a)
+  }
+}));
 import { Region } from './region';
 
 describe('Pokemon Model', () => {
@@ -17,12 +28,10 @@ describe('Pokemon Model', () => {
   });
 
   test('should get display name (empty member)', () => {
-    NameUtility.getDisplayName = jest.fn(arg => arg);
     expect(pokemon.displayName).toEqual(pokemon.name);
   });
 
   test('should get image name', () => {
-    NameUtility.replaceImageCharacters = jest.fn(arg => arg);
     expect(pokemon.imageName).toEqual(pokemon.name);
   });
 
@@ -60,7 +69,6 @@ describe('Pokemon Model', () => {
   });
 
   test('should see equal', () => {
-    NameUtility.replaceImageCharacters = jest.fn(a => a);
     pokemon = new Pokemon({
       name: 'a',
       pokedexNumbers: [],

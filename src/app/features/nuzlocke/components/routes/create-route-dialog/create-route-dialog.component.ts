@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CreateRouteDialogRef } from '../models/create-route-dialog.model';
 import { MatDialogRef } from '@angular/material/dialog';
+import { CreateRouteDialogRef } from '../models/create-route-dialog.model';
 
 @Component({
   selector: 'create-route-dialog',

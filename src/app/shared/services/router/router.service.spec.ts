@@ -13,17 +13,25 @@ jest.mock('@resources/links', () => ({
         { name: 'c', route: 'c' }
       ]
     }
-  ]
+  ],
+  idTabs: ['b', 'c']
 }));
 import { RouterService } from './router.service';
 
 describe('Route Service', () => {
   let service: RouterService;
+
   beforeEach(() => {
     service = new RouterService(routerMock);
   });
+
   test('should create', () => {
     expect(service).toBeTruthy();
+  });
+
+  test('should tell if is exact route', () => {
+    routerMock.url = '/home';
+    expect(service.isExactRoute('/home')).toBe(true);
   });
 
   test('should toggle menu open on click on menu', () => {
@@ -51,7 +59,31 @@ describe('Route Service', () => {
 
   test('should not change tabs if on the route', () => {
     routerMock.url = '/team-builder/home';
+    service.isExactRoute = jest.fn(() => true);
     service.changeTab('home');
+    expect(routerMock.navigateByUrl).not.toBeCalled();
+  });
+
+  test('should not change tabs if on the route', () => {
+    routerMock.url = '/team-builder/b';
+    service.isExactRoute = jest.fn(() => false);
+    service.changeTab('b', 1);
+    expect(service.id).toBe(1);
+    expect(routerMock.navigateByUrl).toBeCalledWith('team-builder/b/1');
+  });
+
+  test('should not change tabs if on the route', () => {
+    routerMock.url = '/team-builder/b';
+    service.isExactRoute = jest.fn(() => true);
+    service.changeTab('b', 1);
+    expect(routerMock.navigateByUrl).not.toBeCalled();
+  });
+
+  test('should not change tabs if on the route', () => {
+    routerMock.url = '/team-builder/b';
+    service.isExactRoute = jest.fn(() => true);
+    service.changeTab('b');
+    expect(service.id).toBeUndefined();
     expect(routerMock.navigateByUrl).not.toBeCalled();
   });
 
@@ -76,5 +108,17 @@ describe('Route Service', () => {
   test('should not tell the sidebar panel is in the current view if route is missing', () => {
     service.isCurrentRoute = jest.fn(() => true);
     expect(service.isViewMode('c')).toBe(false);
+  });
+
+  test('should directly redirect if needed', () => {
+    service.isExactRoute = jest.fn(() => false);
+    service.redirect('/my-route');
+    expect(routerMock.navigateByUrl).toBeCalledWith('/my-route');
+  });
+
+  test('should not redirect if on that route', () => {
+    service.isExactRoute = jest.fn(() => true);
+    service.redirect('/my-route');
+    expect(routerMock.navigateByUrl).not.toBeCalled();
   });
 });

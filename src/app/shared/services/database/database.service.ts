@@ -1,9 +1,9 @@
-import Dexie from 'dexie';
-import { Filter } from '@features/team-builder/models/filter';
 import { Injectable } from '@angular/core';
+import Dexie from 'dexie';
 import { PokemonInterface } from '@models/pokemon';
-import { Route } from '@features/nuzlocke/models/route.model';
-import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
+import { Filter } from '@team/models/filter';
+import { Route } from '@nuzlocke/models/route.model';
+import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 
 @Injectable({ providedIn: 'root' })
 export class DatabaseService extends Dexie {

@@ -1,4 +1,4 @@
-import { NameUtility } from './index';
+import { NameUtility } from './name';
 
 describe('Name Replacement Utility', () => {
   test('should replace characters in an image', () => {

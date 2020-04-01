@@ -1,24 +1,33 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CreateRouteDialogComponent } from './create-route-dialog.component';
+import dialogRefMock from '@mocks/dialog-ref.mock';
 
 describe('CreateRouteDialogComponent', () => {
   let component: CreateRouteDialogComponent;
-  let fixture: ComponentFixture<CreateRouteDialogComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CreateRouteDialogComponent]
-    }).compileComponents();
-  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateRouteDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new CreateRouteDialogComponent(dialogRefMock);
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  test('should pass value on ok', () => {
+    component.routeFormControl.patchValue({ route: 'a' });
+    dialogRefMock.close = jest.fn();
+    component.onClose('ok');
+    expect(dialogRefMock.close).toBeCalledWith({ route: 'a', current: false });
+  });
+
+  test('should not pass value on ok if form is invalid', () => {
+    dialogRefMock.close = jest.fn();
+    component.onClose('ok');
+    expect(dialogRefMock.close).not.toBeCalled();
+  });
+
+  test('should not pass on close', () => {
+    dialogRefMock.close = jest.fn();
+    component.onClose('cancel');
+    expect(dialogRefMock.close).toBeCalled();
   });
 });

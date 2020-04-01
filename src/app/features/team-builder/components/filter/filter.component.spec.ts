@@ -3,6 +3,7 @@ import filterOptionsServiceMock from '../../mocks/filter-options.service.mock';
 import filterServiceMock from '../../mocks/filter.service.mock';
 import teamServiceMock from '../../mocks/team.service.mock';
 import { TreeNode } from '../../models/tree-node.model';
+import { FilterProperties } from '@features/team-builder/models/filter';
 
 describe('Filter Options Component', () => {
   let component: FilterOptionsComponent;
@@ -32,7 +33,7 @@ describe('Filter Options Component', () => {
     component.treeControl.expand = jest.fn();
     filterServiceMock.checkingCoverage = false;
     await component.initializeFilters();
-    expect(component.treeControl.expand).toBeCalledTimes(1);
+    expect(component.treeData.data).toBeTruthy();
   });
 
   test('should tell if tree has data', () => {
@@ -73,9 +74,19 @@ describe('Filter Options Component', () => {
 
   test('should handle node click and toggle the filter', () => {
     const node = new TreeNode();
+    node.id = 1;
+    node.name = 'Coverage';
     node.checked = true;
+    node.value = 'a';
     component.handleNodeChange(node);
     expect(node.checked).toBe(false);
+    component.handleNodeChange(node);
+    expect(filterServiceMock.updateFilter).toBeCalledWith({
+      id: 1,
+      filter: FilterProperties.Coverage,
+      value: 'a',
+      enabled: 1
+    });
   });
 
   test('should trigger the filter service to handle the coverage', () => {

@@ -2,17 +2,23 @@
   <h1 mat-dialog-title>Add Route</h1>
   <div mat-dialog-content>
     <mat-form-field>
-      <input matInput formControlName="route" placeholder="Route Name" />
+      <input
+        matInput
+        formControlName="route"
+        placeholder="Route Name">
     </mat-form-field>
-    <mat-slide-toggle formControlName="current">
-      Save for this run?
-    </mat-slide-toggle>
+    <mat-slide-toggle formControlName="current">Save for this run?</mat-slide-toggle>
   </div>
   <div mat-dialog-actions>
-    <button mat-raised-button (click)="onClose('cancel')">
+    <button
+      mat-raised-button
+      (click)="onClose('cancel')">
       Cancel
     </button>
-    <button mat-raised-button (click)="onClose('ok')" cdkFocusInitial>
+    <button
+      mat-raised-button
+      (click)="onClose('ok')"
+      cdkFocusInitial>
       Ok
     </button>
   </div>

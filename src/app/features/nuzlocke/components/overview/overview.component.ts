@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BadgeService } from '@features/nuzlocke/services/badge/badge.service';
-import { Badge } from '@features/nuzlocke/models/badge.model';
-import { firstNum } from '@util/select';
-import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.service';
-import { RouteData } from '@features/nuzlocke/models/route-data.model';
-import {
-  NuzlockePokemon,
-  PokemonStatus
-} from '@features/nuzlocke/models/nuzlocke-pokemon.model';
 import { enumValues } from '@util/enum';
-import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
+import { BadgeService } from '@features/nuzlocke/services/badge/badge.service';
+import { Badge } from '@nuzlocke/models/badge.model';
+import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
+import { RouteData } from '@nuzlocke/models/route-data.model';
+import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Group } from '@nuzlocke/models/group.model';
 
 @Component({
   selector: 'nuzlocke-overview',
@@ -20,7 +17,7 @@ import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
 export class OverviewComponent implements OnInit {
   badges: Badge[] = [];
   nuzlocke: Nuzlocke;
-  groups: { title: string; data: NuzlockePokemon[] }[];
+  groups: Group[] = [];
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -33,37 +30,37 @@ export class OverviewComponent implements OnInit {
       this.nuzlocke = nuzlocke;
       this.badges = this.badgeService.getBadges(nuzlocke);
       this.groups = [];
-      for (const value of enumValues(PokemonStatus)) {
+      for (const value of enumValues(Status)) {
         this.groups.push({
           title: value,
           data: nuzlocke.pokemon.filter(
-            ({ status }) => status === PokemonStatus[value]
+            ({ status }) => status === Status[value]
           )
         });
       }
     });
   }
 
-  change(event: NuzlockePokemon) {
+  dragDropChange(event: Pokemon) {
     this.nuzlockeService.updateEncounter(event);
   }
 
-  earnBadge(badge: Badge, badgeNumber: any, firstRow: boolean) {
+  earnBadge(badge: Badge, badgeNumber: number, secondRow: boolean) {
     badge.earned = !badge.earned;
-    this.nuzlockeService.earnBadge(firstRow ? badgeNumber + 8 : badgeNumber);
+    this.nuzlockeService.earnBadge(secondRow ? badgeNumber + 8 : badgeNumber);
   }
 
   get rows(): Badge[][] {
     return this.badges.length === 8
-      ? [firstNum(this.badges, 8)]
-      : [firstNum(this.badges, 8), firstNum(this.badges, 8, 8)];
+      ? [this.badges.slice(0, 8)]
+      : [this.badges.slice(0, 8), this.badges.slice(8)];
   }
 
-  get groupData(): NuzlockePokemon[] {
+  get groupData(): Pokemon[] {
     return [].concat(...this.groups.map(group => group.data));
   }
 
-  private count(status: PokemonStatus | null, notList?: PokemonStatus[]) {
+  private count(status: Status | null, notList?: Status[]) {
     let i = 0;
     if (status !== null) {
       for (const item of this.groupData) {
@@ -82,18 +79,18 @@ export class OverviewComponent implements OnInit {
   }
 
   get alive() {
-    return this.count(null, [PokemonStatus.Heaven, PokemonStatus.Missed]);
+    return this.count(null, [Status.Heaven, Status.Missed]);
   }
 
   get dead() {
-    return this.count(PokemonStatus.Heaven);
+    return this.count(Status.Heaven);
   }
 
   get boxed() {
-    return this.count(PokemonStatus.Boxed);
+    return this.count(Status.Boxed);
   }
 
   get missed() {
-    return this.count(PokemonStatus.Missed);
+    return this.count(Status.Missed);
   }
 }

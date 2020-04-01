@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { TeamComponent } from './components/team/team.component';
 import { TeamBuilderComponent } from './components/container/team-builder.component';
@@ -15,7 +16,7 @@ import { PickerComponent } from './components/picker/picker.component';
 import { PokemonComponent } from './components/pokemon/pokemon.component';
 import { FilterOptionsComponent } from './components/filter/filter.component';
 import { SearchComponent } from './components/search/search.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { PipesModule } from '@pipes';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -34,6 +35,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    PipesModule,
     MatTreeModule,
     MatCheckboxModule,
     MatFormFieldModule,

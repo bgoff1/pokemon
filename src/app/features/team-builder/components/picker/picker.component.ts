@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
-import { TeamService } from '../../services/team/team.service';
+import { TeamService } from '@team/services/team/team.service';
 
 @Component({
   selector: 'picker',
@@ -13,11 +13,10 @@ export class PickerComponent implements OnInit {
   constructor(private readonly teamService: TeamService) {}
 
   ngOnInit(): void {
-    this.teamService.fetchFilters().then(() => {
-      this.teamService.pokemonChange$.subscribe(all => {
-        this.filtersLoading = false;
-        this.pokemon = all;
-      });
+    this.teamService.fetchFilters();
+    this.teamService.pokemonChange$.subscribe(all => {
+      this.filtersLoading = false;
+      this.pokemon = all;
     });
   }
 

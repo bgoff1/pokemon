@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TeamService } from '../../services/team/team.service';
 import { Pokemon } from '@models/pokemon';
 import { firstNum } from '@util/select';
+import { TeamService } from '@team/services/team/team.service';
 
 @Component({
   selector: 'team',

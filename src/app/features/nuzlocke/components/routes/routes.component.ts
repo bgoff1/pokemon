@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { RoutesService } from '../../services/routes/routes.service';
-import { Route, RouteEncounterType } from '../../models/route.model';
+import { RouteData } from '@nuzlocke/models/route-data.model';
+import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
+import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { Route } from '@nuzlocke/models/route.model';
+import { RoutesService } from '@nuzlocke/services/routes/routes.service';
 import { CreateRouteDialogComponent } from './create-route-dialog/create-route-dialog.component';
 import { CreateRouteDialog } from './models/create-route-dialog.model';
-import { RouteData } from '@features/nuzlocke/models/route-data.model';
-import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.service';
 import { SelectRouteDialog } from './models/select-route-dialog.model';
 import { SelectRouteDialogComponent } from './select-route-dialog/select-route-dialog.component';
-import {
-  NuzlockePokemon,
-  PokemonStatus
-} from '@features/nuzlocke/models/nuzlocke-pokemon.model';
+import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
+
+interface DisplayRoute extends Route {
+  visited: boolean;
+  capturedPokemon?: string;
+}
 
 @Component({
   selector: 'routes',
@@ -20,7 +23,9 @@ import {
   styleUrls: ['./routes.component.scss']
 })
 export class RoutesComponent implements OnInit {
-  routes: Route[] = [];
+  routes: DisplayRoute[] = [];
+  nuzlocke: Nuzlocke;
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly routesService: RoutesService,
@@ -28,27 +33,30 @@ export class RoutesComponent implements OnInit {
     private readonly dialog: MatDialog
   ) {}
 
-  ngOnInit() {
-    this.routesService.createDatabase().then(() => {
-      this.activatedRoute.data.subscribe(({ nuzlocke }: RouteData) => {
-        this.routesService.getRoutes(nuzlocke).then(routes => {
-          this.routes = [
-            ...routes,
-            ...nuzlocke.extraRoutes
-          ].filter(({ location }) =>
-            nuzlocke.pokemon.every(({ routeName }) => routeName !== location)
-          );
-        });
-      });
+  async ngOnInit() {
+    await this.routesService.createDatabase();
+    this.activatedRoute.data.subscribe(({ nuzlocke }: RouteData) => {
+      this.nuzlocke = nuzlocke;
+      this.updateAvailableRoutes();
     });
   }
 
-  isGift(route: Route) {
-    return route.type === RouteEncounterType.Gift;
-  }
-
-  isStatic(route: Route) {
-    return route.type === RouteEncounterType.Static;
+  async updateAvailableRoutes(filter = true) {
+    const routes = await this.routesService.getRoutes(this.nuzlocke);
+    this.routes = [...routes, ...this.nuzlocke.extraRoutes].map(route => {
+      return {
+        ...route,
+        visited: this.nuzlocke.pokemon.some(
+          pokemon => pokemon.routeName === route.location
+        ),
+        capturedPokemon: this.nuzlocke.pokemon.find(
+          mon => mon.routeName === route.location
+        )?.name
+      };
+    });
+    if (filter) {
+      this.routes = this.routes.filter(route => !route.visited);
+    }
   }
 
   addRoute() {
@@ -57,15 +65,27 @@ export class RoutesComponent implements OnInit {
     );
     dialog.afterClosed().subscribe(res => {
       if (res) {
+        const route = this.nuzlockeService.convertRouteDialogToRoute(res);
         if (res.current) {
-          const route = this.nuzlockeService.convertRouteDialogToRoute(res);
           this.nuzlockeService.addRouteToCurrentGame(route);
-          this.routes.push(route);
+          this.routes.push({ ...route, visited: false });
         } else {
-          console.log('should add to all game runs');
+          this.routesService.addRouteToGame(route);
+          this.routes.push({ ...route, visited: false });
         }
       }
     });
+  }
+
+  async addEncounter(pokemon: Pokemon, route: Route) {
+    await this.nuzlockeService.addEncounter(pokemon);
+    this.routes = this.routes.filter(
+      ({ location }) => location !== route.location
+    );
+  }
+
+  openFilters() {
+    console.log('opening filters');
   }
 
   selectRoute(route: Route) {
@@ -75,17 +95,13 @@ export class RoutesComponent implements OnInit {
     );
     dialog.afterClosed().subscribe(res => {
       if (res) {
-        const pokemon: NuzlockePokemon = {
+        const pokemon: Pokemon = {
           routeName: route.location,
           name: res.pokemon,
           nickName: res.nickname,
-          status: res.caught ? PokemonStatus.Boxed : PokemonStatus.Missed
+          status: res.caught ? Status.Boxed : Status.Missed
         };
-        this.nuzlockeService.addEncounter(pokemon).then(() => {
-          this.routes = this.routes.filter(
-            ({ location }) => location !== route.location
-          );
-        });
+        this.addEncounter(pokemon, route);
       }
     });
   }

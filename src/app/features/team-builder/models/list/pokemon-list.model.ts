@@ -2,9 +2,9 @@ import { Pokemon } from '@models/pokemon';
 import { Pokedex } from '@models/pokemon/pokedex';
 import { Region, getRegion, RegionDisplayName } from '@models/pokemon/region';
 import { Type } from '@models/pokemon/type';
+import { NameUtility } from '@util/name';
 import { Filter, FilterProperties } from '../filter';
 import { Coverage } from '../type-coverage/coverage.model';
-import { NameUtility } from '@util/name';
 
 export class PokemonList {
   pokemon: Pokemon[];
@@ -52,7 +52,6 @@ export class PokemonList {
       filter => filter.filter === FilterProperties.Regions
     );
     if (regionFilters.length) {
-      console.log(regionFilters);
       const regions = regionFilters.map(filter =>
         getRegion(filter.value as RegionDisplayName)
       );
@@ -121,7 +120,6 @@ export class PokemonList {
   }
 
   sortFilterByRegions(regionNames: Region[]) {
-    console.log(regionNames);
     this.filteredPokemon = this.filteredPokemon.sort((a, b) => {
       if (regionNames.length > 1) {
         const first = a.getNationalPokedex();

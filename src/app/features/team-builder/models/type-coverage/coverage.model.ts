@@ -229,8 +229,9 @@ export class Coverage {
     }
     for (const type of teamTypes) {
       const typeMap = this.typeEffectivenessMap.get(type);
-      const effectiveness =
-        typeMap.get(defenderTypes[0]) * typeMap.get(defenderTypes[1]);
+      const typeOneEffectiveness = typeMap.get(defenderTypes[0]) || 1;
+      const typeTwoEffectiveness = typeMap.get(defenderTypes[1]) || 1;
+      const effectiveness = typeOneEffectiveness * typeTwoEffectiveness;
       if (effectiveness > 1) {
         return true;
       }

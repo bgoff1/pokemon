@@ -1,8 +1,8 @@
-import { FilterProperties } from '@features/team-builder/models/filter';
-import { romanize } from '@util/roman';
 import { typeNames } from '@models/pokemon/type';
 import { Region } from '@models/pokemon/region';
 import { enumValues } from '@util/enum';
+import { romanize } from '@util/roman';
+import { FilterProperties } from '@team/models/filter';
 
 import extras from './extras';
 const regions = enumValues(Region);

@@ -13,16 +13,18 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OverviewComponent } from './components/overview/overview.component';
 import { RoutesComponent } from './components/routes/routes.component';
 import { SavesComponent } from './components/saves/saves.component';
 import { CreateComponent } from './components/create/create.component';
 import { CreateGuard } from './guards/create.guard';
 import { NuzlockeResolverService } from './resolvers/nuzlocke-resolver.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CreateRouteDialogComponent } from './components/routes/create-route-dialog/create-route-dialog.component';
 import { SelectRouteDialogComponent } from './components/routes/select-route-dialog/select-route-dialog.component';
 import { DragDropComponent } from './components/overview/drag-drop/drag-drop.component';
+import { PipesModule } from '@pipes';
 
 const routes: Routes = [
   { path: '', redirectTo: 'saves', pathMatch: 'full' },
@@ -58,7 +60,8 @@ const materialModules = [
   MatButtonModule,
   MatAutocompleteModule,
   MatSelectModule,
-  DragDropModule
+  DragDropModule,
+  MatMenuModule
 ];
 
 @NgModule({
@@ -75,6 +78,7 @@ const materialModules = [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    PipesModule,
     ...materialModules,
     RouterModule.forChild(routes)
   ],

@@ -1,8 +1,5 @@
-import {
-  Route,
-  RouteEncounterType
-} from '@features/nuzlocke/models/route.model';
 import { GameGroup } from '@models/pokemon/game-groups';
+import { Route, EncounterType } from '@nuzlocke/models/route.model';
 
 export interface Location {
   location: string;
@@ -26,21 +23,21 @@ export function convertGameLocationToRoutes(
       pokemon: encounter.pokemon,
       order: encounter.order,
       game: gameLocation.game,
-      type: RouteEncounterType.Gift
+      type: EncounterType.Gift
     })),
     ...gameLocation.statics.map(encounter => ({
       location: 'Static - ' + encounter.location,
       pokemon: encounter.pokemon,
       order: encounter.order,
       game: gameLocation.game,
-      type: RouteEncounterType.Static
+      type: EncounterType.Static
     })),
     ...gameLocation.encounters.map(encounter => ({
       location: encounter.location,
       pokemon: encounter.pokemon,
       order: encounter.order,
       game: gameLocation.game,
-      type: RouteEncounterType.Encounter
+      type: EncounterType.Encounter
     }))
   ];
 }

@@ -1,7 +1,8 @@
+jest.mock('@util/enum');
 import { FilterTreeService } from './filter-tree.service';
 import { TreeNode } from '../../models/tree-node.model';
 import { FilterProperties } from '../../models/filter';
-import filterMocks from '../../models/filter/filters.mock';
+import filterMocks from '../../mocks/filters.mock';
 
 describe('Filter Options Service', () => {
   let service: FilterTreeService;
@@ -19,8 +20,7 @@ describe('Filter Options Service', () => {
       name: 'Coverage',
       checked: false,
       children: [],
-      value: '',
-      rev: ''
+      value: ''
     };
     expect(service.getChild(treeNode)).toEqual([]);
   });
@@ -33,12 +33,10 @@ describe('Filter Options Service', () => {
         {
           name: 'Coverage',
           checked: true,
-          value: '',
-          rev: ''
+          value: ''
         }
       ],
-      value: '',
-      rev: ''
+      value: ''
     };
     expect(service.descendantsAllChecked(treeNode)).toBe(true);
   });
@@ -51,17 +49,14 @@ describe('Filter Options Service', () => {
         {
           name: 'Coverage',
           checked: true,
-          value: '',
-          rev: ''
+          value: ''
         },
         {
           name: 'Coverage',
           checked: false,
-          value: '',
-          rev: ''
+          value: ''
         }
       ],
-      rev: '',
       value: ''
     };
     expect(service.descendantsPartiallyChecked(treeNode)).toBe(true);
@@ -72,8 +67,7 @@ describe('Filter Options Service', () => {
       name: 'Coverage',
       checked: false,
       children: [],
-      value: '',
-      rev: ''
+      value: ''
     };
     expect(service.hasChild(0, treeNode)).toBe(false);
   });
@@ -89,28 +83,24 @@ describe('Filter Options Service', () => {
       service.createChild(
         {
           filter: FilterProperties.Coverage,
-          enabled: true,
+          enabled: 1,
           value: '',
-          _id: '',
-          _rev: '',
-          expanded: false
+          id: 1
         },
         'Coverage'
       )
-    ).toEqual({ id: '', checked: true, value: '', name: 'Coverage', rev: '' });
+    ).toEqual({ id: 1, checked: true, value: '', name: 'Coverage' });
     expect(
       service.createChild(
         {
           filter: FilterProperties.Coverage,
-          enabled: false,
+          enabled: 0,
           value: '',
-          _id: '',
-          _rev: '',
-          expanded: false
+          id: 1
         },
         'Coverage'
       )
-    ).toEqual({ id: '', checked: false, value: '', name: 'Coverage', rev: '' });
+    ).toEqual({ id: 1, checked: false, value: '', name: 'Coverage' });
   });
 
   test('should return empty if no filters', () => {
@@ -119,7 +109,7 @@ describe('Filter Options Service', () => {
 
   test('should create tree', () => {
     const filters = filterMocks;
-    filters.push({ filter: FilterProperties.Coverage, value: '', _id: '0' });
+    filters.push({ filter: FilterProperties.Coverage, value: '', id: 0 });
 
     service.getFilterType = jest.fn(
       filter => FilterProperties[filter.filter]
@@ -133,16 +123,14 @@ describe('Filter Options Service', () => {
         children: [true, true, true],
         value: 'Extras',
         name: 'Extras',
-        expanded: false,
-        rev: 'parent'
+        expanded: false
       },
       {
         checked: null,
         children: [true],
         value: 'Coverage',
         name: 'Coverage',
-        expanded: false,
-        rev: 'parent'
+        expanded: false
       }
     ]);
   });

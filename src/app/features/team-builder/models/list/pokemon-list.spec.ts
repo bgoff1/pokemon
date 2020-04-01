@@ -5,13 +5,14 @@ jest.mock('@resources/pokemon', () => ({
   __esModule: true,
   default: pokemonMocks
 }));
-jest.mock('@models/util/name/name-util.model', () => ({
+jest.mock('@util/name', () => ({
   __esModule: true,
   NameUtility: {
     characterReplace: jest.fn(arg => arg),
     trimRegionName: jest.fn(arg => arg)
   }
 }));
+jest.mock('@util/enum');
 import { PokemonList } from './pokemon-list.model';
 import { Pokemon } from '@models/pokemon';
 import { Region } from '@models/pokemon/region';
@@ -22,7 +23,7 @@ describe('Pokemon List', () => {
   const pokemon = pokemonMocks.map(mon => new Pokemon(mon));
 
   beforeAll(() => {
-    list = new PokemonList();
+    list = new PokemonList(pokemon);
   });
   beforeEach(() => {
     list.filteredPokemon = pokemon;
@@ -42,7 +43,7 @@ describe('Pokemon List', () => {
 
   test('should filter search', () => {
     list.filterSearch([
-      { filter: FilterProperties.Search, value: 'bulb', _id: '' }
+      { filter: FilterProperties.Search, value: 'bulb', id: 1 }
     ]);
     expect(list.filteredPokemon.length).toBe(1);
     expect(list.filteredPokemon[0].imageName).toEqual(pokemon[0].imageName);
@@ -50,7 +51,7 @@ describe('Pokemon List', () => {
 
   test('should filter types', () => {
     list.filterTypes([
-      { filter: FilterProperties.Types, value: 'Fire', _id: '' }
+      { filter: FilterProperties.Types, value: 'Fire', id: 1 }
     ]);
 
     expect(list.filteredPokemon.length).toBe(1);
@@ -59,7 +60,7 @@ describe('Pokemon List', () => {
 
   test('should filter regions', () => {
     list.filterRegions([
-      { filter: FilterProperties.Regions, value: 'Kanto', _id: '' }
+      { filter: FilterProperties.Regions, value: 'Kanto', id: 1 }
     ]);
 
     expect(list.filteredPokemon.length).toBe(2);
@@ -69,7 +70,7 @@ describe('Pokemon List', () => {
 
   test('should filter generations', () => {
     list.filterGenerations([
-      { filter: FilterProperties.Generations, value: 'Generation IV', _id: '' }
+      { filter: FilterProperties.Generations, value: 'Generation IV', id: 1 }
     ]);
     expect(list.filteredPokemon.length).toBe(1);
     expect(list.filteredPokemon[0].imageName).toEqual(pokemon[2].imageName);
@@ -77,7 +78,7 @@ describe('Pokemon List', () => {
 
   test('should filter extras', () => {
     list.filterExtras([
-      { filter: FilterProperties.Extras, value: 'mega', _id: '' }
+      { filter: FilterProperties.Extras, value: 'mega', id: 1 }
     ]);
 
     expect(list.filteredPokemon.length).toBe(3);
@@ -91,7 +92,7 @@ describe('Pokemon List', () => {
       {
         filter: FilterProperties.Coverage,
         value: JSON.stringify(pokemon),
-        _id: ''
+        id: 1
       }
     ]);
     expect(list.filteredPokemon).not.toContainEqual(pokemon[2]);
@@ -129,13 +130,13 @@ describe('Pokemon List', () => {
 
     list.callFilters(
       [
-        { filter: 1, _id: '', value: '', enabled: false },
-        { filter: 1, _id: '', value: '', enabled: true }
+        { filter: 1, id: 1, value: '', enabled: 0 },
+        { filter: 1, id: 1, value: '', enabled: 1 }
       ],
       []
     );
     expect(list.filterSearch).toBeCalledWith([
-      { filter: 1, _id: '', value: '', enabled: true }
+      { filter: 1, id: 1, value: '', enabled: 1 }
     ]);
   });
 

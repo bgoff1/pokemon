@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { RouterService } from '@services/router/router.service';
 import { Nuzlocke } from '../models/nuzlocke.model';
 import { NuzlockeService } from '../services/nuzlocke/nuzlocke.service';
-import { RouterService } from '@services/router/router.service';
 
 @Injectable({
   providedIn: 'root'

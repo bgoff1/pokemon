@@ -1,15 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { NameUtility } from '@util/name';
-import {
-  NuzlockePokemon,
-  PokemonStatus
-} from '@features/nuzlocke/models/nuzlocke-pokemon.model';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DraggingService } from '@services/dragging/dragging.service';
+import { NameUtility } from '@util/name';
+import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
 
 @Component({
   selector: 'drag-drop',
@@ -17,20 +10,20 @@ import { DraggingService } from '@services/dragging/dragging.service';
   styleUrls: ['./drag-drop.component.scss']
 })
 export class DragDropComponent {
-  @Input() title: keyof typeof PokemonStatus;
-  @Input() data: NuzlockePokemon[];
-  @Output() update: EventEmitter<NuzlockePokemon> = new EventEmitter();
+  @Input() title: keyof typeof Status;
+  @Input() data: Pokemon[];
+  @Output() update: EventEmitter<Pokemon> = new EventEmitter();
 
   constructor(private readonly draggingService: DraggingService) {}
 
-  drop(event: CdkDragDrop<NuzlockePokemon[]>, title: string) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
+  drop(event: CdkDragDrop<Pokemon[]>) {
+    if (event.previousContainer !== event.container) {
+      if (
+        event.container.data[0].status === Status.Party &&
+        event.container.data.length === 6
+      ) {
+        return;
+      }
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -39,7 +32,7 @@ export class DragDropComponent {
       );
       this.update.next({
         ...event.container.data[event.currentIndex],
-        status: PokemonStatus[this.title]
+        status: Status[this.title]
       });
     }
   }

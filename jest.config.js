@@ -97,8 +97,11 @@ module.exports = {
     '@models/(.*)': '<rootDir>/src/app/shared/models/$1',
     '@services/(.*)': '<rootDir>/src/app/shared/services/$1',
     '@resources/(.*)': '<rootDir>/src/app/shared/resources/$1',
+    '@nuzlocke/(.*)': '<rootDir>/src/app/features/nuzlocke/$1',
+    '@team/(.*)': '<rootDir>/src/app/features/team-builder/$1',
     '@pipes/(.*)': '<rootDir>/src/app/shared/pipes/$1',
-    '@pouchdb': '<rootDir>/src/app/shared/models/pouchdb.model.ts',
+    '@util/(.*)': '<rootDir>/src/app/shared/util/$1',
+    '@shared/(.*)': '<rootDir>/src/app/shared/$1',
     '@mocks/(.*)': '<rootDir>/src/mocks/$1'
   },
 

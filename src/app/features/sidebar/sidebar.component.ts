@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import Hammer from 'hammerjs';
 import { RouterService } from '@services/router/router.service';
-import { Link } from '@models/link.model';
 import { DraggingService } from '@services/dragging/dragging.service';
+import { Link } from '@models/link.model';
 
 @Component({
   selector: 'nav-sidebar',

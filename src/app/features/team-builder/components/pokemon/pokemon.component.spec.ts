@@ -1,3 +1,4 @@
+jest.mock('@util/enum');
 import { PokemonComponent } from './pokemon.component';
 import { Type } from '@models/pokemon/type';
 
@@ -26,36 +27,11 @@ describe('Pokemon Component', () => {
     expect(component.empty).toBe(false);
   });
 
-  test('should get the type style', () => {
-    component.row = 2;
-    expect(component.typeStyle).toEqual({
-      'pokemon-type': false,
-      'no-wrap': true
-    });
-  });
-
-  test('should get the type style (row 1)', () => {
+  test('should get if it is on row 1', () => {
     component.row = 1;
-    expect(component.typeStyle).toEqual({
-      'pokemon-type': true,
-      'no-wrap': true
-    });
-  });
-
-  test('should get the name style', () => {
+    expect(component.rowOne).toBe(true);
     component.row = 2;
-    expect(component.nameStyle).toEqual({
-      'pokemon-name': false,
-      'inline-block': true
-    });
-  });
-
-  test('should get the name style (row 1)', () => {
-    component.row = 1;
-    expect(component.nameStyle).toEqual({
-      'pokemon-name': true,
-      'inline-block': true
-    });
+    expect(component.rowOne).toBe(false);
   });
 
   test('should get no image alternate for an empty member', () => {

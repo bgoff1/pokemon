@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { getRegionFromGame } from '@models/pokemon/game-groups';
 import { Region } from '@models/pokemon/region';
-import { Nuzlocke } from '@features/nuzlocke/models/nuzlocke.model';
-import { Badge } from '@features/nuzlocke/models/badge.model';
+import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Badge } from '@nuzlocke/models/badge.model';
 import { NuzlockeService } from '../nuzlocke/nuzlocke.service';
 
 @Injectable({

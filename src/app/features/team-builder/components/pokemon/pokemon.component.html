@@ -1,17 +1,25 @@
 <div
   *ngIf="pokemon"
   class="sprite inline-block {{ pokemon.cssClasses }}"
-  title="{{ pokemon.displayName | titlecase }}"
->
-  <img [src]="imageUrl" [alt]="imageAlt" />
-  <span *ngIf="row === 1 || row === 2" class="name-type-container">
-    <span [ngClass]="nameStyle">{{ pokemon.displayName | titlecase }}</span>
-    <span [ngClass]="typeStyle">
+  title="{{ pokemon.displayName | titlecase }}">
+  <img
+    src="{{ pokemon?.imageName | pokemonImage}}"
+    [alt]="imageAlt">
+  <span
+    *ngIf="row === 1 || row === 2"
+    class="name-type-container">
+    <span
+      [class.pokemon-name]="rowOne"
+      class="inline-block">
+      {{ pokemon.displayName | titlecase }}
+    </span>
+    <span
+      [class.pokemon-type]="rowOne"
+      class="no-wrap">
       <div>
         <div
           *ngFor="let type of types"
-          class="{{ type }}-type type inline-block"
-        >
+          class="{{ type }}-type type inline-block">
           &nbsp;
         </div>
       </div>

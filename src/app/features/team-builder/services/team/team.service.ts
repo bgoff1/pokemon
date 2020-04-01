@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Subject } from 'rxjs';
-import { Pokemon, PokemonInterface } from '@models/pokemon';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { PokemonService } from '@services/pokemon/pokemon.service';
+import { Pokemon, PokemonInterface } from '@models/pokemon';
+import { PokemonList } from '@team/models/list/pokemon-list.model';
 import { FilterService } from '../filter/filter.service';
-import { PokemonList } from '../../models/list/pokemon-list.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,17 +25,13 @@ export class TeamService {
 
   async fetchPokemon(): Promise<void> {
     await this.pokemonService.createDatabase();
-    this.pokemonService.getPokemon().then(pokemon => {
-      this.pokemonList = new PokemonList(pokemon);
-    });
+    const pokemon = await this.pokemonService.getPokemon();
+    this.pokemonList = new PokemonList(pokemon);
   }
 
   async fetchFilters(): Promise<void> {
-    await this.filterService.createDatabase();
     await this.fetchPokemon();
-    this.filterService.getFilters().then(filters => {
-      this.pokemonChange.next(this.pokemonList.callFilters(filters, this.team));
-    });
+    await this.sendTeamChange();
   }
 
   private loadTeam(): Pokemon[] {
@@ -51,9 +46,14 @@ export class TeamService {
       this.filterService.checkCoverage(this.team);
     }
     localStorage.setItem('team', JSON.stringify(this.team));
-    this.filterService.getFilters().then(filters => {
+    this.sendTeamChange();
+  }
+
+  async sendTeamChange() {
+    if (this.pokemonList) {
+      const filters = await this.filterService.getFilters();
       this.pokemonChange.next(this.pokemonList.callFilters(filters, this.team));
-    });
+    }
   }
 
   addToTeam(pokemon: Pokemon): void {

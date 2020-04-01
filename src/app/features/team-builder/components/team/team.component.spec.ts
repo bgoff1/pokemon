@@ -1,3 +1,9 @@
+jest.mock('@util/enum');
+jest.mock('@util/select', () => ({
+  __esModule: true,
+  firstNum: jest.fn((arr, num) => arr.slice(num))
+}));
+jest.mock('@models/pokemon');
 import teamServiceMock from '../../mocks/team.service.mock';
 import pokemon from '../../mocks/pokemon.mock';
 import { TeamComponent } from './team.component';
@@ -16,7 +22,7 @@ describe('Team Component', () => {
 
   test('should set team in ng on init', () => {
     component.ngOnInit();
-    expect(component.team.length).toBe(0);
+    expect(component.team.length).toBe(6);
   });
 
   test('should call remove from team in remove from team', () => {
@@ -34,12 +40,12 @@ describe('Team Component', () => {
   });
 
   test('should get the first three items', () => {
-    component.team = [...pokemon, ...pokemon] as Pokemon[];
-    expect(component.firstThree.length).toBe(3);
+    component.team = pokemon as Pokemon[];
+    expect(component.firstThree.length).toBe(1);
   });
 
   test('should get the last three items', () => {
-    component.team = [...pokemon, ...pokemon] as Pokemon[];
-    expect(component.lastThree.length).toBe(3);
+    component.team = pokemon as Pokemon[];
+    expect(component.lastThree.length).toBe(1);
   });
 });

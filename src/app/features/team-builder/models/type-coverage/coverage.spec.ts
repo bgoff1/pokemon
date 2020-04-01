@@ -1,3 +1,8 @@
+jest.mock('@util/enum', () => ({
+  __esModule: true,
+  enumKeys: jest.fn(() => ['Normal']),
+  enumValues: jest.fn(() => [])
+}));
 import { Coverage } from './coverage.model';
 import { Type } from '@models/pokemon/type';
 
@@ -31,6 +36,12 @@ describe('Pokemon List', () => {
   test('should do complex comparison (psychic vs fighting-flying)', () => {
     const teamTypes = [Type.Psychic];
     const defenderTypes = [Type.Fighting, Type.Flying];
+    expect(coverage.isCovered(teamTypes, defenderTypes)).toBe(true);
+  });
+
+  test('should do complex comparison (fire vs normal-grass)', () => {
+    const teamTypes = [Type.Fire];
+    const defenderTypes = [Type.Normal, Type.Grass];
     expect(coverage.isCovered(teamTypes, defenderTypes)).toBe(true);
   });
 });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { NuzlockeService } from '../services/nuzlocke/nuzlocke.service';
 import { RouterService } from '@services/router/router.service';
+import { NuzlockeService } from '../services/nuzlocke/nuzlocke.service';
 
 @Injectable({
   providedIn: 'root'

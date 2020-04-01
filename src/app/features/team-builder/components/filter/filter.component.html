@@ -4,13 +4,18 @@
 <mat-tree
   [dataSource]="treeData"
   [treeControl]="treeControl"
-  class="options-tree"
->
+  class="options-tree">
   <!-- Child Nodes -->
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+  <mat-tree-node
+    *matTreeNodeDef="let node"
+    matTreeNodeToggle>
     <li class="mat-tree-node">
-      <button mat-icon-button disabled></button>
-      <mat-checkbox [checked]="node.checked" (change)="handleNodeChange(node)">
+      <button
+        mat-icon-button
+        disabled></button>
+      <mat-checkbox
+        [checked]="node.checked"
+        (change)="handleNodeChange(node)">
         {{ node.value }}
       </mat-checkbox>
     </li>
@@ -22,8 +27,7 @@
         <button
           mat-icon-button
           matTreeNodeToggle
-          [attr.aria-label]="'toggle ' + node.name"
-        >
+          [attr.aria-label]="'toggle ' + node.name">
           <mat-icon>
             {{ node.expanded ? 'expand_more' : 'chevron_right' }}
           </mat-icon>
@@ -31,8 +35,7 @@
         <mat-checkbox
           [checked]="descendantsAllChecked(node)"
           [indeterminate]="descendantsPartiallyChecked(node)"
-          (change)="selectionToggle(node, $event)"
-        >
+          (change)="selectionToggle(node, $event)">
           {{ node.name }}
         </mat-checkbox>
       </div>
@@ -46,8 +49,7 @@
 <div class="search">
   <search
     (search)="handleSearch($event)"
-    [filter]="searchFilter | async"
-  ></search>
+    [filter]="searchFilter | async"></search>
 </div>
 <div>
   <div class="text-center">
@@ -55,14 +57,16 @@
       mat-raised-button
       [disabled]="!hasTeamMembers"
       class="w-80"
-      (click)="handleCoverage()"
-    >
+      (click)="handleCoverage()">
       {{ coverageText }}
     </button>
   </div>
 </div>
 <div class="text-center">
-  <button mat-raised-button class="w-80" (click)="resetFilters()">
+  <button
+    mat-raised-button
+    class="w-80"
+    (click)="resetFilters()">
     Reset Filters
   </button>
 </div>

@@ -4,17 +4,19 @@
       <div class="first-three text-center">
         <span
           *ngFor="let pokemon of firstThree"
-          (click)="removeFromTeam(pokemon)"
-        >
-          <pokemon [pokemon]="pokemon" [row]="getRow(pokemon)"></pokemon>
+          (click)="removeFromTeam(pokemon)">
+          <pokemon
+            [pokemon]="pokemon"
+            [row]="getRow(pokemon)"></pokemon>
         </span>
       </div>
       <div class="last-three text-center">
         <span
           *ngFor="let pokemon of lastThree"
-          (click)="removeFromTeam(pokemon)"
-        >
-          <pokemon [pokemon]="pokemon" [row]="getRow(pokemon)"></pokemon>
+          (click)="removeFromTeam(pokemon)">
+          <pokemon
+            [pokemon]="pokemon"
+            [row]="getRow(pokemon)"></pokemon>
         </span>
       </div>
     </div>

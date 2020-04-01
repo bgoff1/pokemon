@@ -6,7 +6,7 @@
     mat-list-item
     *ngFor="let route of routes"
     (click)="selectRoute(route)">
-    <div [class.strikethrough]="route.visited">
+    <div [class.strike-through]="route.visited">
       <span class="route">{{ route.location }}</span>
       <span class="text-right"></span>
       <img

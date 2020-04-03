@@ -1,0 +1,32 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$primary: mat-palette($mat-purple, 200);
+$primary-variant: mat-palette($mat-purple, 700);
+$accent: mat-palette($mat-teal, 200);
+$warn: mat-palette($mat-red);
+
+$mat-red: mat-palette($mat-red);
+$mat-pink: mat-palette($mat-pink);
+$mat-purple: mat-palette($mat-purple);
+$mat-deep-purple: mat-palette($mat-deep-purple);
+$mat-indigo: mat-palette($mat-indigo);
+$mat-blue: mat-palette($mat-blue);
+$mat-light-blue: mat-palette($mat-light-blue);
+$mat-cyan: mat-palette($mat-cyan);
+$mat-teal: mat-palette($mat-teal);
+$mat-green: mat-palette($mat-green);
+$mat-light-green: mat-palette($mat-light-green);
+$mat-lime: mat-palette($mat-lime);
+$mat-yellow: mat-palette($mat-yellow);
+$mat-amber: mat-palette($mat-amber);
+$mat-orange: mat-palette($mat-orange);
+$mat-deep-orange: mat-palette($mat-deep-orange);
+$mat-brown: mat-palette($mat-brown);
+$mat-grey: mat-palette($mat-grey);
+$mat-blue-grey: mat-palette($mat-blue-grey);
+
+$theme: mat-dark-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);

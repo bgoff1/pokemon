@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import Hammer from 'hammerjs';
-import { RouteService } from '@services/routes/route.service';
+import { RouterService } from '@services/router/router.service';
+import { DraggingService } from '@services/dragging/dragging.service';
 import { Link } from '@models/link.model';
 
 @Component({
@@ -14,37 +15,35 @@ export class SidebarComponent implements OnInit {
   hammer: HammerManager;
 
   constructor(
-    private readonly routeService: RouteService,
+    private readonly routerService: RouterService,
+    draggingService: DraggingService,
     elementRef: ElementRef
   ) {
     this.hammer = new Hammer(elementRef.nativeElement, {});
     this.hammer.on('panright', event => {
       if (
+        !draggingService.isDragging &&
         event.pointerType !== 'mouse' &&
         event.center.x >= 1 &&
         event.center.x <= 50
       ) {
-        this.opened = true;
+        this.setOpen(true);
       }
     });
   }
 
+  setOpen(opened: boolean) {
+    this.opened = this.routerService.sidebarOpen = opened;
+  }
+
   ngOnInit(): void {
-    this.links = this.routeService.links;
-    this.routeService.menuClick$.subscribe(open => {
-      this.opened = open;
+    this.links = this.routerService.links;
+    this.routerService.menuClick$.subscribe(open => {
+      this.setOpen(open);
     });
   }
 
-  closeSidebar() {
-    this.opened = false;
-  }
-
-  isCurrentRoute(link: Link): boolean {
-    return this.routeService.isCurrentRoute(link.path);
-  }
-
-  navigate(link: Link): void {
-    this.routeService.changeRoute(link.path);
+  isActive(link: string) {
+    return this.routerService.isViewMode(link);
   }
 }

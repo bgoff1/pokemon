@@ -1,87 +1,53 @@
 import { PokemonService } from './pokemon.service';
+import databaseServiceMock from '@mocks/database.service.mock';
 jest.mock('@models/pokemon');
-jest.mock('@models/list/pokemon-list.model');
-import pokemon from '@mocks/pokemon.mock';
-import filterServiceMock from '@mocks/filter.service.mock';
-import { Pokemon } from '@models/pokemon';
+jest.mock('@util/name', () => ({
+  __esModule: true,
+  NameUtility: {
+    replaceImageCharacters: (arg: string) => arg
+  }
+}));
+jest.mock('@resources/pokemon', () => ({
+  __esModule: true,
+  default: [{ name: 'item' }]
+}));
 
-describe('Team Service', () => {
+describe('PokemonService', () => {
   let service: PokemonService;
-  let newPokemon: Pokemon;
+
   beforeEach(() => {
-    service = new PokemonService(filterServiceMock);
-    newPokemon = new Pokemon(pokemon[0]);
-    service.team = [];
+    service = new PokemonService(databaseServiceMock);
   });
 
   test('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should add and remove empty members', () => {
-    service.addEmptyMembers();
-    expect(service.team.length).toBe(6);
+  test('should create db', async () => {
+    databaseServiceMock.pokemon.count = jest.fn(() => Promise.resolve(3));
+    databaseServiceMock.pokemon.bulkAdd = jest.fn();
+    await service.createDatabase();
+    expect(databaseServiceMock.pokemon.bulkAdd).not.toBeCalled();
   });
 
-  test('should get team changes', () => {
-    service.teamChange$.subscribe(team => {
-      expect(team.length).toBe(6);
-    });
+  test('should create db and add', async () => {
+    databaseServiceMock.pokemon.count = jest.fn(() => Promise.resolve(0));
+    databaseServiceMock.pokemon.bulkAdd = jest.fn(() => Promise.resolve());
+    await service.createDatabase();
+    expect(databaseServiceMock.pokemon.bulkAdd).toBeCalled();
   });
 
-  test('should add a member to the team', () => {
-    service.addEmptyMembers = jest.fn();
-
-    expect(service.team.length).toBe(0);
-
-    service.addToTeam(newPokemon);
-
-    expect(service.team.length).toBeGreaterThan(0);
-
-    expect(service.addEmptyMembers).toHaveBeenCalled();
+  test('should get pokemon', async () => {
+    databaseServiceMock.pokemon.toArray = jest.fn(() => Promise.resolve(['']));
+    expect(
+      (await service.getPokemon()).find(mon => mon.name === 'Empty Team Member')
+    ).toBeTruthy();
   });
 
-  test('should do nothing if the team is full', () => {
-    service.team = [
-      newPokemon,
-      newPokemon,
-      newPokemon,
-      newPokemon,
-      newPokemon,
-      newPokemon
-    ];
-
-    const pokemon2 = new Pokemon(pokemon[1]);
-
-    service.addToTeam(pokemon2);
-
-    expect(service.team).not.toContain(pokemon2);
-  });
-
-  test('should remove a member', () => {
-    service.addToTeam(newPokemon);
-    expect(service.team.length).toBe(6);
-    service.removeFromTeam(newPokemon);
-    expect(service.team.length).toBe(6);
-    expect(service.team).not.toContain(newPokemon);
-  });
-
-  test('should not remove if its all empty', () => {
-    service.addEmptyMembers();
-    service.removeFromTeam(newPokemon);
-    expect(service.nonEmptyMembers.length).toBe(0);
-  });
-
-  test('should call check coverage if checking coverage', () => {
-    filterServiceMock.checkingCoverage = true;
-    service.addToTeam(newPokemon);
-    expect(filterServiceMock.checkCoverage).toBeCalled();
-  });
-
-  test('should get filters', () => {
-    service.pokemonChange$.subscribe(val => {
-      expect(val).toEqual([]);
-    });
-    service.fetchFilters();
+  test('should find by name', async () => {
+    service.getPokemon = jest.fn(() =>
+      Promise.resolve([{ name: 'abc' }, { name: 'ABC' }])
+    ) as any;
+    expect((await service.find(['ABc'])).length).toBe(2);
   });
 });

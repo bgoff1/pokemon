@@ -1,74 +1,45 @@
-export default {
+import {
+  convertGameLocationToRoutes,
+  GameLocation
+} from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+const gameLocation: GameLocation = {
+  game: GameGroup.GoldSilver,
   gifts: [
     {
       location: 'Starter',
-      pokemon: ['chikorita', 'cyndaquil', 'totodile']
+      pokemon: ['chikorita', 'cyndaquil', 'totodile'],
+      order: 0
     },
-    {
-      location: 'Violet City Egg',
-      pokemon: ['togepi']
-    },
-    {
-      location: 'Goldenrod City',
-      pokemon: ['eevee']
-    },
-    {
-      location: 'Route 35',
-      pokemon: ['spearow']
-    },
-    {
-      location: 'Cianwood City',
-      pokemon: ['shuckle']
-    },
-    {
-      location: 'Mt. Mortar',
-      pokemon: ['tyrogue']
-    }
+    { location: 'Violet City Egg', pokemon: ['togepi'], order: 8 },
+    { location: 'Goldenrod City', pokemon: ['eevee'], order: 18 },
+    { location: 'Route 35', pokemon: ['spearow'], order: 20 },
+    { location: 'Cianwood City', pokemon: ['shuckle'], order: 36 },
+    { location: 'Mt. Mortar', pokemon: ['tyrogue'], order: 48 }
   ],
   statics: [
-    {
-      location: 'Union Cave',
-      pokemon: ['lapras']
-    },
-    {
-      location: 'Route 36',
-      pokemon: ['sudowoodo']
-    },
-    {
-      location: 'Lake of Rage',
-      pokemon: ['gyarados']
-    },
-    {
-      location: 'Vermillion City',
-      pokemon: ['snorlax']
-    },
-    {
-      location: 'Roaming (Raikou)',
-      pokemon: ['raikou']
-    },
-    {
-      location: 'Roaming (Entei)',
-      pokemon: ['entei']
-    },
-    {
-      location: 'Roaming (Suicune)',
-      pokemon: ['suicune']
-    },
-    {
-      location: 'Whirl Islands',
-      pokemon: ['lugia']
-    },
-    {
-      location: 'Tin Tower',
-      pokemon: ['ho-oh']
-    }
+    { location: 'Union Cave', pokemon: ['lapras'], order: 13 },
+    { location: 'Route 36', pokemon: ['sudowoodo'], order: 23 },
+    { location: 'Lake of Rage', pokemon: ['gyarados'], order: 42 },
+    { location: 'Vermilion City', pokemon: ['snorlax'], order: 78 },
+    { location: 'Roaming Raikou', pokemon: ['raikou'], order: 27 },
+    { location: 'Roaming Entei', pokemon: ['entei'], order: 28 },
+    { location: 'Roaming Suicune', pokemon: ['suicune'], order: 29 },
+    { location: 'Whirl Islands', pokemon: ['lugia'], order: 50 },
+    { location: 'Tin Tower', pokemon: ['ho-oh'], order: 39 }
   ],
   encounters: [
-    { location: 'Bell Tower', pokemon: ['rattata', 'gastly'] },
-    { location: 'Blackthorn City', pokemon: ['poliwag', 'magikarp'] },
+    { location: 'Bell Tower', pokemon: ['rattata', 'gastly'], order: 38 },
+    {
+      location: 'Blackthorn City',
+      pokemon: ['poliwag', 'magikarp'],
+      order: 45
+    },
     {
       location: 'Burned Tower',
-      pokemon: ['rattata', 'raticate', 'zubat', 'koffing', 'magmar']
+      pokemon: ['rattata', 'raticate', 'zubat', 'koffing', 'magmar'],
+      order: 26
     },
     {
       location: 'Cherrygrove City',
@@ -80,7 +51,8 @@ export default {
         'staryu',
         'magikarp',
         'corsola'
-      ]
+      ],
+      order: 3
     },
     {
       location: 'Cianwood City',
@@ -93,7 +65,8 @@ export default {
         'magikarp',
         'shuckle',
         'corsola'
-      ]
+      ],
+      order: 35
     },
     {
       location: 'Dark Cave',
@@ -109,19 +82,23 @@ export default {
         'golbat',
         'graveler',
         'wobbuffet'
-      ]
+      ],
+      order: 6
     },
     {
       location: "Dragon's Den",
-      pokemon: ['magikarp', 'dratini', 'dragonair']
+      pokemon: ['magikarp', 'dratini', 'dragonair'],
+      order: 46
     },
     {
       location: 'Ecruteak City',
-      pokemon: ['poliwag', 'poliwhirl', 'magikarp']
+      pokemon: ['poliwag', 'poliwhirl', 'magikarp'],
+      order: 25
     },
     {
       location: 'Ice Path',
-      pokemon: ['zubat', 'golbat', 'jynx', 'swinub', 'delibird']
+      pokemon: ['zubat', 'golbat', 'jynx', 'swinub', 'delibird'],
+      order: 44
     },
     {
       location: 'Ilex Forest',
@@ -137,9 +114,14 @@ export default {
         'golduck',
         'poliwag',
         'magikarp'
-      ]
+      ],
+      order: 16
     },
-    { location: 'Lake of Rage', pokemon: ['magikarp', 'gyarados'] },
+    {
+      location: 'Lake of Rage',
+      pokemon: ['magikarp', 'gyarados'],
+      order: 41
+    },
     {
       location: 'Mt. Mortar',
       pokemon: [
@@ -155,7 +137,8 @@ export default {
         'marill',
         'machoke',
         'graveler'
-      ]
+      ],
+      order: 47
     },
     {
       location: 'Mt. Silver',
@@ -180,7 +163,8 @@ export default {
         'tangela',
         'graveler',
         'onix'
-      ]
+      ],
+      order: 93
     },
     {
       location: 'National Park',
@@ -192,7 +176,8 @@ export default {
         'pidgey',
         'hoothoot',
         'sunkern'
-      ]
+      ],
+      order: 21
     },
     {
       location: 'New Bark Town',
@@ -203,7 +188,8 @@ export default {
         'magikarp',
         'chinchou',
         'lanturn'
-      ]
+      ],
+      order: 1
     },
     {
       location: 'Olivine City',
@@ -215,11 +201,13 @@ export default {
         'staryu',
         'magikarp',
         'corsola'
-      ]
+      ],
+      order: 32
     },
     {
       location: 'Route 29',
-      pokemon: ['pidgey', 'rattata', 'sentret', 'hoothoot']
+      pokemon: ['pidgey', 'rattata', 'sentret', 'hoothoot'],
+      order: 2
     },
     {
       location: 'Route 30',
@@ -236,7 +224,8 @@ export default {
         'hoothoot',
         'ledyba',
         'spinarak'
-      ]
+      ],
+      order: 4
     },
     {
       location: 'Route 31',
@@ -254,7 +243,8 @@ export default {
         'hoothoot',
         'ledyba',
         'spinarak'
-      ]
+      ],
+      order: 5
     },
     {
       location: 'Route 32',
@@ -271,11 +261,13 @@ export default {
         'wooper',
         'quagsire',
         'qwilfish'
-      ]
+      ],
+      order: 10
     },
     {
       location: 'Route 33',
-      pokemon: ['rattata', 'spearow', 'ekans', 'zubat', 'hoppip']
+      pokemon: ['rattata', 'spearow', 'ekans', 'zubat', 'hoppip'],
+      order: 14
     },
     {
       location: 'Route 34',
@@ -291,7 +283,8 @@ export default {
         'magikarp',
         'ditto',
         'corsola'
-      ]
+      ],
+      order: 17
     },
     {
       location: 'Route 35',
@@ -308,7 +301,8 @@ export default {
         'ditto',
         'hoothoot',
         'yanma'
-      ]
+      ],
+      order: 19
     },
     {
       location: 'Route 36',
@@ -320,7 +314,8 @@ export default {
         'growlithe',
         'hoothoot',
         'stantler'
-      ]
+      ],
+      order: 22
     },
     {
       location: 'Route 37',
@@ -333,7 +328,8 @@ export default {
         'ledyba',
         'spinarak',
         'stantler'
-      ]
+      ],
+      order: 24
     },
     {
       location: 'Route 38',
@@ -346,7 +342,8 @@ export default {
         'tauros',
         'snubbull',
         'miltank'
-      ]
+      ],
+      order: 30
     },
     {
       location: 'Route 39',
@@ -358,7 +355,8 @@ export default {
         'farfetchd',
         'tauros',
         'miltank'
-      ]
+      ],
+      order: 31
     },
     {
       location: 'Route 42',
@@ -371,7 +369,8 @@ export default {
         'magikarp',
         'mareep',
         'flaaffy'
-      ]
+      ],
+      order: 37
     },
     {
       location: 'Route 43',
@@ -384,7 +383,8 @@ export default {
         'mareep',
         'flaaffy',
         'girafarig'
-      ]
+      ],
+      order: 40
     },
     {
       location: 'Route 44',
@@ -397,7 +397,8 @@ export default {
         'tangela',
         'magikarp',
         'remoraid'
-      ]
+      ],
+      order: 43
     },
     {
       location: 'Route 45',
@@ -411,11 +412,13 @@ export default {
         'teddiursa',
         'skarmory',
         'phanpy'
-      ]
+      ],
+      order: 51
     },
     {
       location: 'Route 46',
-      pokemon: ['rattata', 'spearow', 'jigglypuff', 'geodude']
+      pokemon: ['rattata', 'spearow', 'jigglypuff', 'geodude'],
+      order: 52
     },
     {
       location: 'Ruins of Alph',
@@ -427,10 +430,11 @@ export default {
         'quagsire',
         'smeargle',
         'unown'
-      ]
+      ],
+      order: 11
     },
     {
-      location: 'Sea Route 40',
+      location: 'Route 40',
       pokemon: [
         'tentacool',
         'tentacruel',
@@ -440,10 +444,11 @@ export default {
         'magikarp',
         'shuckle',
         'corsola'
-      ]
+      ],
+      order: 33
     },
     {
-      location: 'Sea Route 41',
+      location: 'Route 41',
       pokemon: [
         'tentacool',
         'tentacruel',
@@ -452,7 +457,8 @@ export default {
         'chinchou',
         'lanturn',
         'mantine'
-      ]
+      ],
+      order: 34
     },
     {
       location: 'Slowpoke Well',
@@ -464,9 +470,14 @@ export default {
         'magikarp',
         'golbat',
         'slowbro'
-      ]
+      ],
+      order: 15
     },
-    { location: 'Sprout Tower', pokemon: ['rattata', 'gastly'] },
+    {
+      location: 'Sprout Tower',
+      pokemon: ['rattata', 'gastly'],
+      order: 9
+    },
     {
       location: 'Tohjo Falls',
       pokemon: [
@@ -478,7 +489,8 @@ export default {
         'goldeen',
         'seaking',
         'magikarp'
-      ]
+      ],
+      order: 54
     },
     {
       location: 'Union Cave',
@@ -501,11 +513,13 @@ export default {
         'kingler',
         'staryu',
         'corsola'
-      ]
+      ],
+      order: 12
     },
     {
       location: 'Violet City',
-      pokemon: ['poliwag', 'poliwhirl', 'magikarp']
+      pokemon: ['poliwag', 'poliwhirl', 'magikarp'],
+      order: 7
     },
     {
       location: 'Whirl Islands',
@@ -520,12 +534,14 @@ export default {
         'horsea',
         'seadra',
         'magikarp'
-      ]
+      ],
+      order: 49
     },
-    { location: 'Celadon City', pokemon: ['grimer', 'muk'] },
+    { location: 'Celadon City', pokemon: ['grimer', 'muk'], order: 68 },
     {
       location: 'Cerulean City',
-      pokemon: ['goldeen', 'seaking', 'magikarp']
+      pokemon: ['goldeen', 'seaking', 'magikarp'],
+      order: 64
     },
     {
       location: 'Cinnabar Island',
@@ -536,10 +552,19 @@ export default {
         'magikarp',
         'chinchou',
         'lanturn'
-      ]
+      ],
+      order: 88
     },
-    { location: "Diglett's Cave", pokemon: ['diglett', 'dugtrio'] },
-    { location: 'Fuchsia City', pokemon: ['magikarp', 'gyarados'] },
+    {
+      location: "Diglett's Cave",
+      pokemon: ['diglett', 'dugtrio'],
+      order: 79
+    },
+    {
+      location: 'Fuchsia City',
+      pokemon: ['magikarp', 'gyarados'],
+      order: 72
+    },
     {
       location: 'Mt. Moon',
       pokemon: [
@@ -549,7 +574,8 @@ export default {
         'zubat',
         'paras',
         'geodude'
-      ]
+      ],
+      order: 82
     },
     {
       location: 'Pallet Town',
@@ -560,7 +586,8 @@ export default {
         'magikarp',
         'chinchou',
         'lanturn'
-      ]
+      ],
+      order: 86
     },
     {
       location: 'Rock Tunnel',
@@ -573,11 +600,13 @@ export default {
         'cubone',
         'marowak',
         'kangaskhan'
-      ]
+      ],
+      order: 62
     },
     {
       location: 'Route 1',
-      pokemon: ['pidgey', 'rattata', 'sentret', 'furret', 'hoothoot']
+      pokemon: ['pidgey', 'rattata', 'sentret', 'furret', 'hoothoot'],
+      order: 85
     },
     {
       location: 'Route 10',
@@ -591,15 +620,18 @@ export default {
         'electabuzz',
         'magikarp',
         'quagsire'
-      ]
+      ],
+      order: 61
     },
     {
       location: 'Route 11',
-      pokemon: ['rattata', 'magnemite', 'drowzee', 'hypno']
+      pokemon: ['rattata', 'magnemite', 'drowzee', 'hypno'],
+      order: 77
     },
     {
       location: 'Route 12',
-      pokemon: ['tentacool', 'tentacruel', 'magikarp', 'quagsire', 'qwilfish']
+      pokemon: ['tentacool', 'tentacruel', 'magikarp', 'quagsire', 'qwilfish'],
+      order: 76
     },
     {
       location: 'Route 13',
@@ -615,7 +647,8 @@ export default {
         'hoppip',
         'quagsire',
         'qwilfish'
-      ]
+      ],
+      order: 75
     },
     {
       location: 'Route 14',
@@ -628,7 +661,8 @@ export default {
         'hoppip',
         'skiploom',
         'quagsire'
-      ]
+      ],
+      order: 74
     },
     {
       location: 'Route 15',
@@ -640,16 +674,23 @@ export default {
         'noctowl',
         'hoppip',
         'quagsire'
-      ]
+      ],
+      order: 73
     },
     {
       location: 'Route 16',
-      pokemon: ['fearow', 'grimer', 'muk', 'murkrow', 'slugma']
+      pokemon: ['fearow', 'grimer', 'muk', 'murkrow', 'slugma'],
+      order: 69
     },
-    { location: 'Route 17', pokemon: ['fearow', 'grimer', 'muk', 'slugma'] },
+    {
+      location: 'Route 17',
+      pokemon: ['fearow', 'grimer', 'muk', 'slugma'],
+      order: 70
+    },
     {
       location: 'Route 18',
-      pokemon: ['fearow', 'grimer', 'muk', 'murkrow', 'slugma']
+      pokemon: ['fearow', 'grimer', 'muk', 'murkrow', 'slugma'],
+      order: 71
     },
     {
       location: 'Route 19',
@@ -661,7 +702,8 @@ export default {
         'staryu',
         'magikarp',
         'corsola'
-      ]
+      ],
+      order: 90
     },
     {
       location: 'Route 2',
@@ -681,7 +723,8 @@ export default {
         'ledian',
         'spinarak',
         'ariados'
-      ]
+      ],
+      order: 80
     },
     {
       location: 'Route 20',
@@ -692,7 +735,8 @@ export default {
         'magikarp',
         'chinchou',
         'lanturn'
-      ]
+      ],
+      order: 89
     },
     {
       location: 'Route 21',
@@ -705,7 +749,8 @@ export default {
         'magikarp',
         'chinchou',
         'lanturn'
-      ]
+      ],
+      order: 87
     },
     {
       location: 'Route 22',
@@ -718,7 +763,8 @@ export default {
         'ponyta',
         'doduo',
         'magikarp'
-      ]
+      ],
+      order: 91
     },
     {
       location: 'Route 24',
@@ -733,7 +779,8 @@ export default {
         'seaking',
         'magikarp',
         'sunkern'
-      ]
+      ],
+      order: 65
     },
     {
       location: 'Route 25',
@@ -749,7 +796,8 @@ export default {
         'goldeen',
         'seaking',
         'magikarp'
-      ]
+      ],
+      order: 66
     },
     {
       location: 'Route 26',
@@ -767,7 +815,8 @@ export default {
         'chinchou',
         'lanturn',
         'quagsire'
-      ]
+      ],
+      order: 55
     },
     {
       location: 'Route 27',
@@ -785,7 +834,8 @@ export default {
         'chinchou',
         'lanturn',
         'quagsire'
-      ]
+      ],
+      order: 53
     },
     {
       location: 'Route 28',
@@ -801,11 +851,13 @@ export default {
         'sneasel',
         'ursaring',
         'donphan'
-      ]
+      ],
+      order: 92
     },
     {
       location: 'Route 3',
-      pokemon: ['rattata', 'spearow', 'ekans', 'arbok', 'jigglypuff', 'zubat']
+      pokemon: ['rattata', 'spearow', 'ekans', 'arbok', 'jigglypuff', 'zubat'],
+      order: 81
     },
     {
       location: 'Route 4',
@@ -818,11 +870,13 @@ export default {
         'zubat',
         'goldeen',
         'seaking'
-      ]
+      ],
+      order: 83
     },
     {
       location: 'Route 5',
-      pokemon: ['pidgey', 'oddish', 'gloom', 'meowth', 'abra', 'bellsprout']
+      pokemon: ['pidgey', 'oddish', 'gloom', 'meowth', 'abra', 'bellsprout'],
+      order: 67
     },
     {
       location: 'Route 6',
@@ -837,7 +891,8 @@ export default {
         'bellsprout',
         'magnemite',
         'magikarp'
-      ]
+      ],
+      order: 58
     },
     {
       location: 'Route 7',
@@ -851,7 +906,8 @@ export default {
         'growlithe',
         'murkrow',
         'houndour'
-      ]
+      ],
+      order: 59
     },
     {
       location: 'Route 8',
@@ -865,7 +921,8 @@ export default {
         'kadabra',
         'haunter',
         'noctowl'
-      ]
+      ],
+      order: 60
     },
     {
       location: 'Route 9',
@@ -879,7 +936,8 @@ export default {
         'goldeen',
         'seaking',
         'magikarp'
-      ]
+      ],
+      order: 63
     },
     {
       location: 'Vermilion City',
@@ -890,12 +948,20 @@ export default {
         'magikarp',
         'chinchou',
         'lanturn'
-      ]
+      ],
+      order: 57
     },
     {
       location: 'Victory Road',
-      pokemon: ['golbat', 'graveler', 'onix', 'rhyhorn', 'ursaring', 'donphan']
+      pokemon: ['golbat', 'graveler', 'onix', 'rhyhorn', 'ursaring', 'donphan'],
+      order: 56
     },
-    { location: 'Viridian City', pokemon: ['poliwag', 'poliwhirl'] }
+    {
+      location: 'Viridian City',
+      pokemon: ['poliwag', 'poliwhirl'],
+      order: 84
+    }
   ]
 };
+
+export default convertGameLocationToRoutes(gameLocation);

@@ -1,5 +1,5 @@
-```
-POKEMON.ts
+```typescript
+POKEMON.ts;
 export abstract class AbstractPokemon implements PokemonInterface {
   name: string;
   genderRate: number;

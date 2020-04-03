@@ -1,0 +1,31 @@
+@import '../../../../../../css/theme.scss';
+
+.party-container {
+  background-color: mat-color($mat-indigo);
+  min-height: 13vh;
+}
+
+.boxed-container {
+  background-color: mat-color($mat-light-green, 700);
+  min-height: 13vh;
+}
+
+.heaven-container {
+  background-color: mat-color($mat-brown, 600);
+  min-height: 13vh;
+}
+
+.missed-container {
+  background-color: mat-color($mat-deep-orange, 300);
+  min-height: 13vh;
+}
+
+.pokemon {
+  width: 68px;
+  height: 68px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-evenly;
+}

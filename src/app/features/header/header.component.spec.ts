@@ -1,11 +1,11 @@
 import { HeaderComponent } from './header.component';
-import routeServiceMock from '@mocks/route.service.mock';
+import routerServiceMock from '@mocks/router.service.mock';
 
 describe('Header Component', () => {
   let component: HeaderComponent;
 
   beforeEach(() => {
-    component = new HeaderComponent(routeServiceMock);
+    component = new HeaderComponent(routerServiceMock);
   });
 
   test('should create', () => {
@@ -14,7 +14,7 @@ describe('Header Component', () => {
 
   test('should call click menu on toggle menu', () => {
     component.toggleMenu();
-    expect(routeServiceMock.clickMenu).toHaveBeenCalled();
+    expect(routerServiceMock.clickMenu).toHaveBeenCalled();
   });
 
   test('should subscribe on ng on init', () => {

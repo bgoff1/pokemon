@@ -1,0 +1,18 @@
+<div
+  cdkDropList
+  [cdkDropListData]="data"
+  class="{{ title | lowercase }}-container pb-2 text-center"
+  (cdkDropListDropped)="drop($event)">
+  <div>{{ title | titlecase }}</div>
+  <div class="container">
+    <span>
+      <img
+        *ngFor="let pokemon of data"
+        class="pokemon"
+        [src]="pokemon?.name | pokemonImage"
+        cdkDrag
+        (cdkDragStarted)="startDragging()"
+        (cdkDragEnded)="stopDragging()">
+    </span>
+  </div>
+</div>

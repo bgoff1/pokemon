@@ -1,0 +1,34 @@
+<div class="container text-center">
+  <div class="header">Create your Nuzlocke</div>
+  <form [formGroup]="formGroup">
+    <div>
+      <mat-form-field>
+        <input
+          type="text"
+          placeholder="Name"
+          matInput
+          formControlName="runName">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Game</mat-label>
+        <mat-select formControlName="game">
+          <mat-option
+            *ngFor="let option of games"
+            [value]="option.game">
+            {{ option.displayName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="my-3">
+      <mat-slide-toggle formControlName="random">Randomized Run?</mat-slide-toggle>
+    </div>
+    <button
+      mat-raised-button
+      (click)="submit()">
+      Submit!
+    </button>
+  </form>
+</div>

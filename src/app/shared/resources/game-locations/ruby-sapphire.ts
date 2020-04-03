@@ -1,44 +1,44 @@
-export default {
+import {
+  convertGameLocationToRoutes,
+  GameLocation
+} from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+const gameLocation: GameLocation = {
+  game: GameGroup.RubySapphire,
   gifts: [
     {
       location: 'Starter',
-      pokemon: ['treecko', 'torchic', 'mudkip']
+      pokemon: ['treecko', 'torchic', 'mudkip'],
+      order: 0
     },
-    {
-      location: 'Lavaridge Town',
-      pokemon: ['wynaut']
-    },
-    {
-      location: 'Weather Institute',
-      pokemon: ['castform']
-    },
-    {
-      location: 'Route 111 Fossil',
-      pokemon: ['lileep', 'anorith']
-    }
+    { location: 'Lavaridge Town', pokemon: ['wynaut'], order: 26 },
+    { location: 'Weather Institute', pokemon: ['castform'], order: 35 },
+    { location: 'Route 111 Fossil', pokemon: ['lileep', 'anorith'], order: 28 }
   ],
   statics: [
-    {
-      location: 'Devon Scope',
-      pokemon: ['kecleon']
-    },
-    {
-      location: 'Cave of Origin',
-      pokemon: ['kyogre', 'groudon']
-    }
+    { location: 'Devon Scope', pokemon: ['kecleon'], order: 37 },
+    { location: 'Cave of Origin', pokemon: ['kyogre', 'groudon'], order: 55 },
+    { location: 'Team Hideout', pokemon: ['electrode'], order: 44 },
+    { location: 'Ancient Tomb', pokemon: ['registeel'], order: 63 },
+    { location: 'Desert Ruins', pokemon: ['regirock'], order: 64 },
+    { location: 'Island Cave', pokemon: ['regice'], order: 65 }
   ],
   encounters: [
     {
       location: 'Abandoned Ship',
-      pokemon: ['tentacool', 'tentacruel', 'magikarp']
+      pokemon: ['tentacool', 'tentacruel', 'magikarp'],
+      order: 33
     },
     {
       location: 'Cave of Origin',
-      pokemon: ['zubat', 'golbat', 'sableye', 'mawile']
+      pokemon: ['zubat', 'golbat', 'sableye', 'mawile'],
+      order: 54
     },
     {
       location: 'Dewford Town',
-      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer']
+      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer'],
+      order: 9
     },
     {
       location: 'Ever Grande City',
@@ -50,11 +50,13 @@ export default {
         'pelipper',
         'wailmer',
         'luvdisc'
-      ]
+      ],
+      order: 66
     },
     {
       location: 'Fiery Path',
-      pokemon: ['machop', 'grimer', 'koffing', 'slugma', 'numel', 'torkoal']
+      pokemon: ['machop', 'grimer', 'koffing', 'slugma', 'numel', 'torkoal'],
+      order: 20
     },
     {
       location: 'Granite Cave',
@@ -67,9 +69,14 @@ export default {
         'mawile',
         'aron',
         'nosepass'
-      ]
+      ],
+      order: 11
     },
-    { location: 'Jagged Pass', pokemon: ['machop', 'numel', 'spoink'] },
+    {
+      location: 'Jagged Pass',
+      pokemon: ['machop', 'numel', 'spoink'],
+      order: 25
+    },
     {
       location: 'Lilycove City',
       pokemon: [
@@ -79,7 +86,8 @@ export default {
         'wingull',
         'pelipper',
         'wailmer'
-      ]
+      ],
+      order: 40
     },
     {
       location: 'Meteor Falls',
@@ -93,7 +101,8 @@ export default {
         'golbat',
         'whiscash',
         'bagon'
-      ]
+      ],
+      order: 23
     },
     {
       location: 'Mossdeep City',
@@ -104,7 +113,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 46
     },
     {
       location: 'Mt. Pyre',
@@ -115,11 +125,13 @@ export default {
         'wingull',
         'meditite',
         'chimecho'
-      ]
+      ],
+      order: 42
     },
     {
       location: 'New Mauville',
-      pokemon: ['magnemite', 'voltorb', 'magneton', 'electrode']
+      pokemon: ['magnemite', 'voltorb', 'magneton', 'electrode'],
+      order: 29
     },
     {
       location: 'Pacifidlog Town',
@@ -130,11 +142,13 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 59
     },
     {
       location: 'Petalburg City',
-      pokemon: ['goldeen', 'magikarp', 'marill', 'corphish']
+      pokemon: ['goldeen', 'magikarp', 'marill', 'corphish'],
+      order: 4
     },
     {
       location: 'Petalburg Woods',
@@ -146,9 +160,14 @@ export default {
         'taillow',
         'shroomish',
         'slakoth'
-      ]
+      ],
+      order: 6
     },
-    { location: 'Route 101', pokemon: ['poochyena', 'zigzagoon', 'wurmple'] },
+    {
+      location: 'Route 101',
+      pokemon: ['poochyena', 'zigzagoon', 'wurmple'],
+      order: 1
+    },
     {
       location: 'Route 102',
       pokemon: [
@@ -163,7 +182,8 @@ export default {
         'ralts',
         'surskit',
         'corphish'
-      ]
+      ],
+      order: 3
     },
     {
       location: 'Route 103',
@@ -176,7 +196,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 2
     },
     {
       location: 'Route 104',
@@ -187,27 +208,33 @@ export default {
         'taillow',
         'wingull',
         'pelipper'
-      ]
+      ],
+      order: 30
     },
     {
       location: 'Route 105',
-      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer']
+      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer'],
+      order: 31
     },
     {
       location: 'Route 106',
-      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer']
+      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer'],
+      order: 10
     },
     {
       location: 'Route 107',
-      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer']
+      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer'],
+      order: 12
     },
     {
       location: 'Route 108',
-      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer']
+      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer'],
+      order: 32
     },
     {
       location: 'Route 109',
-      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer']
+      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer'],
+      order: 13
     },
     {
       location: 'Route 110',
@@ -223,7 +250,8 @@ export default {
         'minun',
         'gulpin',
         'wailmer'
-      ]
+      ],
+      order: 15
     },
     {
       location: 'Route 111',
@@ -238,10 +266,15 @@ export default {
         'cacnea',
         'barboach',
         'baltoy'
-      ]
+      ],
+      order: 27
     },
-    { location: 'Route 112', pokemon: ['machop', 'numel'] },
-    { location: 'Route 113', pokemon: ['sandshrew', 'skarmory', 'spinda'] },
+    { location: 'Route 112', pokemon: ['machop', 'numel'], order: 19 },
+    {
+      location: 'Route 113',
+      pokemon: ['sandshrew', 'skarmory', 'spinda'],
+      order: 21
+    },
     {
       location: 'Route 114',
       pokemon: [
@@ -258,7 +291,8 @@ export default {
         'zangoose',
         'seviper',
         'barboach'
-      ]
+      ],
+      order: 22
     },
     {
       location: 'Route 115',
@@ -272,11 +306,13 @@ export default {
         'pelipper',
         'wailmer',
         'swablu'
-      ]
+      ],
+      order: 24
     },
     {
       location: 'Route 116',
-      pokemon: ['zigzagoon', 'taillow', 'nincada', 'whismur', 'skitty']
+      pokemon: ['zigzagoon', 'taillow', 'nincada', 'whismur', 'skitty'],
+      order: 7
     },
     {
       location: 'Route 117',
@@ -291,7 +327,8 @@ export default {
         'illumise',
         'roselia',
         'corphish'
-      ]
+      ],
+      order: 16
     },
     {
       location: 'Route 118',
@@ -307,7 +344,8 @@ export default {
         'carvanha',
         'sharpedo',
         'kecleon'
-      ]
+      ],
+      order: 17
     },
     {
       location: 'Route 119',
@@ -322,7 +360,8 @@ export default {
         'carvanha',
         'kecleon',
         'tropius'
-      ]
+      ],
+      order: 34
     },
     {
       location: 'Route 120',
@@ -337,7 +376,8 @@ export default {
         'barboach',
         'kecleon',
         'absol'
-      ]
+      ],
+      order: 36
     },
     {
       location: 'Route 121',
@@ -354,7 +394,8 @@ export default {
         'kecleon',
         'shuppet',
         'duskull'
-      ]
+      ],
+      order: 38
     },
     {
       location: 'Route 122',
@@ -365,7 +406,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 41
     },
     {
       location: 'Route 123',
@@ -382,7 +424,8 @@ export default {
         'kecleon',
         'shuppet',
         'duskull'
-      ]
+      ],
+      order: 43
     },
     {
       location: 'Route 124',
@@ -396,7 +439,8 @@ export default {
         'chinchou',
         'clamperl',
         'relicanth'
-      ]
+      ],
+      order: 45
     },
     {
       location: 'Route 125',
@@ -407,7 +451,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 47
     },
     {
       location: 'Route 126',
@@ -421,7 +466,8 @@ export default {
         'chinchou',
         'clamperl',
         'relicanth'
-      ]
+      ],
+      order: 49
     },
     {
       location: 'Route 127',
@@ -432,7 +478,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 50
     },
     {
       location: 'Route 128',
@@ -444,7 +491,8 @@ export default {
         'pelipper',
         'wailmer',
         'luvdisc'
-      ]
+      ],
+      order: 51
     },
     {
       location: 'Route 129',
@@ -456,7 +504,8 @@ export default {
         'sharpedo',
         'wailmer',
         'wailord'
-      ]
+      ],
+      order: 56
     },
     {
       location: 'Route 130',
@@ -468,7 +517,8 @@ export default {
         'sharpedo',
         'wailmer',
         'wynaut'
-      ]
+      ],
+      order: 57
     },
     {
       location: 'Route 131',
@@ -479,7 +529,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 58
     },
     {
       location: 'Route 132',
@@ -491,7 +542,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 60
     },
     {
       location: 'Route 133',
@@ -503,7 +555,8 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 61
     },
     {
       location: 'Route 134',
@@ -515,9 +568,10 @@ export default {
         'pelipper',
         'sharpedo',
         'wailmer'
-      ]
+      ],
+      order: 62
     },
-    { location: 'Rusturf Tunnel', pokemon: ['whismur'] },
+    { location: 'Rusturf Tunnel', pokemon: ['whismur'], order: 8 },
     {
       location: 'Safari Zone',
       pokemon: [
@@ -540,11 +594,13 @@ export default {
         'pikachu',
         'wobbuffet',
         'girafarig'
-      ]
+      ],
+      order: 39
     },
     {
       location: 'Seafloor Cavern',
-      pokemon: ['zubat', 'golbat', 'tentacool', 'magikarp', 'wailmer']
+      pokemon: ['zubat', 'golbat', 'tentacool', 'magikarp', 'wailmer'],
+      order: 52
     },
     {
       location: 'Shoal Cave',
@@ -556,15 +612,18 @@ export default {
         'wailmer',
         'spheal',
         'snorunt'
-      ]
+      ],
+      order: 48
     },
     {
       location: 'Slateport City',
-      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer']
+      pokemon: ['tentacool', 'magikarp', 'wingull', 'pelipper', 'wailmer'],
+      order: 14
     },
     {
       location: 'Sootopolis City',
-      pokemon: ['tentacool', 'magikarp', 'gyarados']
+      pokemon: ['tentacool', 'magikarp', 'gyarados'],
+      order: 53
     },
     {
       location: 'Victory Road',
@@ -587,7 +646,10 @@ export default {
         'sableye',
         'barboach',
         'whiscash'
-      ]
+      ],
+      order: 67
     }
   ]
 };
+
+export default convertGameLocationToRoutes(gameLocation);

@@ -1,15 +1,27 @@
-export default {
+import {
+  convertGameLocationToRoutes,
+  GameLocation
+} from '@models/game-location.model';
+import { GameGroup } from '@models/pokemon/game-groups';
+
+const gameLocation: GameLocation = {
+  game: GameGroup.DiamondPearl,
   gifts: [
-    { location: 'Starter', pokemon: ['turtwig', 'piplup', 'chimchar'] },
-    { location: 'Hearthome City Egg', pokemon: ['happiny'] },
-    { location: 'Iron Island Egg', pokemon: ['riolu'] }
+    {
+      location: 'Starter',
+      pokemon: ['turtwig', 'piplup', 'chimchar'],
+      order: 0
+    },
+    { location: 'Hearthome City Egg', pokemon: ['happiny'], order: 25 },
+    { location: 'Iron Island Egg', pokemon: ['riolu'], order: 44 }
   ],
   statics: [
-    { location: 'Valley Windworks', pokemon: ['drifloon'] },
-    { location: 'Hallowed Tower', pokemon: ['spiritomb'] },
-    { location: 'Lake Acuity', pokemon: ['uxie'] },
-    { location: 'Roaming Lake Guardian', pokemon: ['mesprit'] },
-    { location: 'Spear Pillar', pokemon: ['dialga', 'palkia'] }
+    { location: 'Valley Windworks', pokemon: ['drifloon'], order: 15 },
+    { location: 'Hallowed Tower', pokemon: ['spiritomb'], order: 61 },
+    { location: 'Lake Acuity', pokemon: ['uxie'], order: 54 },
+    { location: 'Lake Valor', pokemon: ['azelf'], order: 55 },
+    { location: 'Roaming Lake Guardian', pokemon: ['mesprit'], order: 56 },
+    { location: 'Spear Pillar', pokemon: ['dialga', 'palkia'], order: 49 }
   ],
   encounters: [
     {
@@ -24,7 +36,8 @@ export default {
         'medicham',
         'snorunt',
         'snover'
-      ]
+      ],
+      order: 47
     },
     {
       location: 'Canalave City',
@@ -38,7 +51,8 @@ export default {
         'pelipper',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 42
     },
     {
       location: 'Celestic Town',
@@ -51,7 +65,8 @@ export default {
         'whiscash',
         'corphish',
         'crawdaunt'
-      ]
+      ],
+      order: 40
     },
     {
       location: 'Eterna City',
@@ -63,7 +78,8 @@ export default {
         'barboach',
         'whiscash',
         'togepi'
-      ]
+      ],
+      order: 18
     },
     {
       location: 'Eterna Forest',
@@ -83,7 +99,8 @@ export default {
         'nincada',
         'budew',
         'buneary'
-      ]
+      ],
+      order: 17
     },
     {
       location: 'Fuego Ironworks',
@@ -107,7 +124,8 @@ export default {
         'gastrodon',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 41
     },
     {
       location: 'Great Marsh',
@@ -129,9 +147,9 @@ export default {
         'bidoof',
         'bibarel',
         'budew'
-      ]
+      ],
+      order: 37
     },
-    { location: 'Hearthome City', pokemon: ['eevee', 'happiny'] },
     {
       location: 'Iron Island',
       pokemon: [
@@ -151,9 +169,9 @@ export default {
         'onix',
         'sableye',
         'mawile',
-        'steelix',
-        'riolu'
-      ]
+        'steelix'
+      ],
+      order: 43
     },
     {
       location: 'Lake Acuity',
@@ -173,7 +191,8 @@ export default {
         'solrock',
         'bibarel',
         'chingling'
-      ]
+      ],
+      order: 48
     },
     {
       location: 'Lake Valor',
@@ -192,7 +211,8 @@ export default {
         'staravia',
         'bibarel',
         'chingling'
-      ]
+      ],
+      order: 34
     },
     {
       location: 'Lake Verity',
@@ -207,20 +227,18 @@ export default {
         'surskit',
         'lunatone',
         'solrock',
-        'turtwig',
-        'chimchar',
-        'piplup',
         'starly',
         'staravia',
         'bidoof',
         'bibarel'
-      ]
+      ],
+      order: 3
     },
     {
       location: 'Lost Tower',
-      pokemon: ['zubat', 'gastly', 'murkrow', 'misdreavus', 'golbat']
+      pokemon: ['zubat', 'gastly', 'murkrow', 'misdreavus', 'golbat'],
+      order: 27
     },
-    { location: 'Maniac Tunnel', pokemon: ['geodude', 'hippopotas'] },
     {
       location: 'Mt. Coronet',
       pokemon: [
@@ -250,9 +268,14 @@ export default {
         'dratini',
         'dragonair',
         'chimecho'
-      ]
+      ],
+      order: 23
     },
-    { location: 'Old Chateau', pokemon: ['gastly', 'haunter', 'gengar'] },
+    {
+      location: 'Old Chateau',
+      pokemon: ['gastly', 'haunter', 'gengar'],
+      order: 19
+    },
     {
       location: 'Oreburgh Gate',
       pokemon: [
@@ -265,9 +288,14 @@ export default {
         'gyarados',
         'barboach',
         'whiscash'
-      ]
+      ],
+      order: 10
     },
-    { location: 'Oreburgh Mine', pokemon: ['zubat', 'geodude', 'onix'] },
+    {
+      location: 'Oreburgh Mine',
+      pokemon: ['zubat', 'geodude', 'onix'],
+      order: 12
+    },
     {
       location: 'Pastoria City',
       pokemon: [
@@ -279,7 +307,8 @@ export default {
         'octillery',
         'wingull',
         'pelipper'
-      ]
+      ],
+      order: 36
     },
     {
       location: 'Pokémon League',
@@ -291,7 +320,8 @@ export default {
         'octillery',
         'pelipper',
         'luvdisc'
-      ]
+      ],
+      order: 60
     },
     {
       location: 'Ravaged Path',
@@ -305,7 +335,8 @@ export default {
         'gyarados',
         'barboach',
         'whiscash'
-      ]
+      ],
+      order: 8
     },
     {
       location: 'Route 201',
@@ -316,7 +347,8 @@ export default {
         'doduo',
         'starly',
         'bidoof'
-      ]
+      ],
+      order: 2
     },
     {
       location: 'Route 202',
@@ -328,7 +360,8 @@ export default {
         'bidoof',
         'kricketot',
         'shinx'
-      ]
+      ],
+      order: 4
     },
     {
       location: 'Route 203',
@@ -351,7 +384,8 @@ export default {
         'bidoof',
         'kricketot',
         'shinx'
-      ]
+      ],
+      order: 9
     },
     {
       location: 'Route 204',
@@ -376,7 +410,8 @@ export default {
         'shinx',
         'budew',
         'sunkern'
-      ]
+      ],
+      order: 7
     },
     {
       location: 'Route 205',
@@ -403,7 +438,8 @@ export default {
         'lotad',
         'barboach',
         'whiscash'
-      ]
+      ],
+      order: 16
     },
     {
       location: 'Route 206',
@@ -418,7 +454,8 @@ export default {
         'kricketune',
         'stunky',
         'bronzor'
-      ]
+      ],
+      order: 21
     },
     {
       location: 'Route 207',
@@ -431,7 +468,8 @@ export default {
         'stantler',
         'larvitar',
         'kricketot'
-      ]
+      ],
+      order: 11
     },
     {
       location: 'Route 208',
@@ -451,7 +489,8 @@ export default {
         'whiscash',
         'bidoof',
         'bibarel'
-      ]
+      ],
+      order: 24
     },
     {
       location: 'Route 209',
@@ -474,7 +513,8 @@ export default {
         'bibarel',
         'bonsly',
         'mime-jr'
-      ]
+      ],
+      order: 26
     },
     {
       location: 'Route 210',
@@ -506,7 +546,8 @@ export default {
         'kecleon',
         'bagon',
         'bibarel'
-      ]
+      ],
+      order: 29
     },
     {
       location: 'Route 211',
@@ -524,7 +565,8 @@ export default {
         'graveler',
         'noctowl',
         'swablu'
-      ]
+      ],
+      order: 20
     },
     {
       location: 'Route 212',
@@ -550,7 +592,8 @@ export default {
         'barboach',
         'whiscash',
         'bibarel'
-      ]
+      ],
+      order: 38
     },
     {
       location: 'Route 213',
@@ -569,7 +612,8 @@ export default {
         'buizel',
         'floatzel',
         'shellos'
-      ]
+      ],
+      order: 35
     },
     {
       location: 'Route 214',
@@ -592,7 +636,8 @@ export default {
         'spoink',
         'kricketune',
         'stunky'
-      ]
+      ],
+      order: 31
     },
     {
       location: 'Route 215',
@@ -606,7 +651,8 @@ export default {
         'houndoom',
         'mightyena',
         'kricketune'
-      ]
+      ],
+      order: 30
     },
     {
       location: 'Route 216',
@@ -621,7 +667,8 @@ export default {
         'meditite',
         'snorunt',
         'snover'
-      ]
+      ],
+      order: 45
     },
     {
       location: 'Route 217',
@@ -636,7 +683,8 @@ export default {
         'medicham',
         'snorunt',
         'snover'
-      ]
+      ],
+      order: 46
     },
     {
       location: 'Route 218',
@@ -656,7 +704,8 @@ export default {
         'glameow',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 6
     },
     {
       location: 'Route 219',
@@ -670,7 +719,8 @@ export default {
         'clamperl',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 5
     },
     {
       location: 'Route 221',
@@ -694,7 +744,8 @@ export default {
         'skuntank',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 51
     },
     {
       location: 'Route 222',
@@ -716,7 +767,8 @@ export default {
         'glameow',
         'purugly',
         'chatot'
-      ]
+      ],
+      order: 52
     },
     {
       location: 'Route 224',
@@ -741,9 +793,14 @@ export default {
         'shellos',
         'gastrodon',
         'chatot'
-      ]
+      ],
+      order: 59
     },
-    { location: 'Ruin Maniac Cave', pokemon: ['geodude', 'hippopotas'] },
+    {
+      location: 'Ruin Maniac Cave',
+      pokemon: ['geodude', 'hippopotas'],
+      order: 32
+    },
     {
       location: 'Route 220',
       pokemon: [
@@ -757,7 +814,8 @@ export default {
         'pelipper',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 50
     },
     {
       location: 'Route 223',
@@ -771,13 +829,10 @@ export default {
         'wailmer',
         'wailord',
         'mantyke'
-      ]
+      ],
+      order: 57
     },
-    {
-      location: 'Snowpoint Temple',
-      pokemon: ['golbat', 'graveler', 'onix', 'steelix', 'sneasel']
-    },
-    { location: 'Solaceon Ruins', pokemon: ['unown'] },
+    { location: 'Solaceon Ruins', pokemon: ['unown'], order: 28 },
     {
       location: 'Sunyshore City',
       pokemon: [
@@ -789,22 +844,13 @@ export default {
         'octillery',
         'pelipper',
         'mantyke'
-      ]
+      ],
+      order: 53
     },
     {
       location: 'Trophy Garden',
-      pokemon: ['pikachu', 'pichu', 'roselia', 'staravia', 'kricketune']
-    },
-    {
-      location: 'Turnback Cave',
-      pokemon: [
-        'golbat',
-        'haunter',
-        'lunatone',
-        'solrock',
-        'bronzor',
-        'bronzong'
-      ]
+      pokemon: ['pikachu', 'pichu', 'roselia', 'staravia', 'kricketune'],
+      order: 39
     },
     {
       location: 'Twinleaf Town',
@@ -815,7 +861,8 @@ export default {
         'seaking',
         'magikarp',
         'gyarados'
-      ]
+      ],
+      order: 1
     },
     {
       location: 'Valley Windworks',
@@ -836,7 +883,8 @@ export default {
         'shellos',
         'finneon',
         'lumineon'
-      ]
+      ],
+      order: 14
     },
     {
       location: 'Valor Lakefront',
@@ -849,7 +897,8 @@ export default {
         'staravia',
         'bibarel',
         'kricketune'
-      ]
+      ],
+      order: 33
     },
     {
       location: 'Victory Road',
@@ -865,11 +914,15 @@ export default {
         'gyarados',
         'floatzel',
         'lapras'
-      ]
+      ],
+      order: 58
     },
     {
       location: 'Wayward Cave',
-      pokemon: ['sandshrew', 'zubat', 'geodude', 'bronzor', 'gible']
+      pokemon: ['sandshrew', 'zubat', 'geodude', 'bronzor', 'gible'],
+      order: 22
     }
   ]
 };
+
+export default convertGameLocationToRoutes(gameLocation);

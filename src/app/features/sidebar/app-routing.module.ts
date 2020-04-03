@@ -10,13 +10,6 @@ const routes: Routes = [
       )
   },
   {
-    path: 'options',
-    loadChildren: () =>
-      import('../filter-options/filter-options.module').then(
-        m => m.FilterOptionsModule
-      )
-  },
-  {
     path: 'nuzlocke',
     loadChildren: () =>
       import('../nuzlocke/nuzlocke.module').then(m => m.NuzlockeModule)

@@ -1,0 +1,30 @@
+.filter {
+  position: fixed;
+  bottom: 7.5vh;
+  left: 5vw;
+}
+
+.mat-menu-content {
+  position: relative;
+  bottom: 1vh;
+}
+
+.strike-through {
+  text-decoration: line-through;
+  width: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: space-between;
+}
+
+.route {
+  justify-content: center;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+}
+
+img {
+  height: 48px;
+  width: 48px;
+}

@@ -24,6 +24,7 @@ export abstract class AbstractPokemon implements PokemonInterface {
 }
 
 export interface PokemonInterface {
+  id?: number;
   name: string;
   pokedexNumbers: Pokedex[];
   evolutionChain: number;

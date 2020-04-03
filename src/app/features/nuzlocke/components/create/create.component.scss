@@ -1,0 +1,16 @@
+.container {
+  height: 75%;
+  margin-top: 3vh;
+  @media (max-width: 700px) {
+    margin-top: 25%;
+  }
+}
+.header {
+  font-size: x-large;
+  @media (max-width: 700px) {
+    margin-bottom: 25%;
+  }
+}
+mat-form-field {
+  width: 80%;
+}

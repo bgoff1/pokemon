@@ -1,4 +1,4 @@
-import { NameUtility } from '@models/util/name/name-util.model';
+import { NameUtility } from '@util/name';
 import { PokemonInterface, AbstractPokemon } from './pokemon';
 import { Type } from './type';
 export * from './pokemon';

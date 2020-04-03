@@ -5,6 +5,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { PipesModule } from '@pipes';
 import { SidebarComponent } from './sidebar.component';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -17,7 +18,8 @@ import { AppRoutingModule } from './app-routing.module';
     MatSidenavModule,
     MatRippleModule,
     MatDividerModule,
-    MatIconModule
+    MatIconModule,
+    PipesModule
   ],
   exports: [SidebarComponent]
 })

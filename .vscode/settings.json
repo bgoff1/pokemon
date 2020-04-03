@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "Dexie",
     "Pickable",
     "Pokedex",
     "Scroller",
@@ -9,9 +10,29 @@
     "johto",
     "kalos",
     "kanto",
+    "ngsw",
     "nuzlocke",
+    "nuzlockes",
     "pokeball",
     "sinnoh",
     "unova"
-  ]
+  ],
+  "cSpell.ignorePaths": [
+    "**/package-lock.json",
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/objects/**",
+    ".vscode",
+    "**/resources/**/*.ts"
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/resources": false,
+    "**/assets": true
+  }
 }

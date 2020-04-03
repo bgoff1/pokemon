@@ -22,9 +22,15 @@ module.exports = {
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
+    // anything in app
     'src/app/**/*.ts',
+    // not resources (json as .ts)
     '!src/app/**/resources/**/*.ts',
+    // not modules
     '!src/app/**/*.module.ts',
+    // not mocks
+    '!src/**/*.mock.ts',
+    // not pouchdb
     '!src/app/shared/models/pouchdb.model.ts'
   ],
 
@@ -87,10 +93,15 @@ module.exports = {
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '@models/(.*)': '<rootDir>/src/app/shared/models/$1',
-    '@shared/(.*)': '<rootDir>/src/app/shared/$1',
     '@features/(.*)': '<rootDir>/src/app/features/$1',
+    '@models/(.*)': '<rootDir>/src/app/shared/models/$1',
+    '@services/(.*)': '<rootDir>/src/app/shared/services/$1',
     '@resources/(.*)': '<rootDir>/src/app/shared/resources/$1',
+    '@nuzlocke/(.*)': '<rootDir>/src/app/features/nuzlocke/$1',
+    '@team/(.*)': '<rootDir>/src/app/features/team-builder/$1',
+    '@pipes/(.*)': '<rootDir>/src/app/shared/pipes/$1',
+    '@util/(.*)': '<rootDir>/src/app/shared/util/$1',
+    '@shared/(.*)': '<rootDir>/src/app/shared/$1',
     '@mocks/(.*)': '<rootDir>/src/mocks/$1'
   },
 

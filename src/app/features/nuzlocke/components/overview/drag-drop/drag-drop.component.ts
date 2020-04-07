@@ -19,6 +19,7 @@ export class DragDropComponent {
   drop(event: CdkDragDrop<Pokemon[]>) {
     if (event.previousContainer !== event.container) {
       if (
+        event.container.data[0] &&
         event.container.data[0].status === Status.Party &&
         event.container.data.length === 6
       ) {

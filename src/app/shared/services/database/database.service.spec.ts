@@ -10,4 +10,9 @@ describe('Database Service', () => {
   test('should create', () => {
     expect(service).toBeTruthy();
   });
+
+  test('should count the routes in game', () => {
+    service.routes.where = jest.fn(() => ({ count: jest.fn(() => 1) })) as any;
+    expect(service.countRoutesInGame('a')).toBe(1);
+  });
 });

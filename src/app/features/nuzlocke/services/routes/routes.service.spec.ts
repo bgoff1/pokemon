@@ -39,7 +39,8 @@ describe('RoutesService', () => {
 
   test('should be able to add a route to a game', async () => {
     databaseServiceMock.routes.add = jest.fn();
-    service.addRouteToGame({} as any);
+    nuzlockeServiceMock.convertDialogToRoute = jest.fn(() => Promise.resolve());
+    await service.addRouteToGame({} as any);
     expect(databaseServiceMock.routes.add).toBeCalled();
   });
 });

@@ -35,7 +35,7 @@ export class TeamService {
   }
 
   private loadTeam(): Pokemon[] {
-    const team = JSON.parse(localStorage.getItem('team')) || [];
+    const team = JSON.parse(localStorage.getItem('team') || '[]');
     this.team = team.map((member: PokemonInterface) => new Pokemon(member));
     return this.team;
   }

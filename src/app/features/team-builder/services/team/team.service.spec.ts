@@ -10,12 +10,21 @@ describe('Team Service', () => {
   let service: TeamService;
   let newPokemon: Pokemon;
   beforeEach(() => {
+    localStorage.getItem = jest.fn(() => '["a", "b"]');
+    localStorage.setItem = jest.fn();
     service = new TeamService(filterServiceMock, pokemonServiceMock);
     newPokemon = new Pokemon(pokemon[0]);
     service.team = [];
   });
 
   test('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  test('should default to an empty team', () => {
+    localStorage.getItem = jest.fn();
+    service = new TeamService(filterServiceMock, pokemonServiceMock);
+    newPokemon = new Pokemon(pokemon[0]);
     expect(service).toBeTruthy();
   });
 

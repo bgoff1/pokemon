@@ -10,6 +10,6 @@ export class PokemonImagePipe implements PipeTransform {
       return '';
     }
     const imageName = NameUtility.replaceImageCharacters(value);
-    return `assets/pokemon/${imageName}.png`;
+    return `assets/pokemon/${imageName.toLowerCase()}.png`;
   }
 }

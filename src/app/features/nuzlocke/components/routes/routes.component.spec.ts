@@ -16,6 +16,7 @@ describe('RoutesComponent', () => {
       nuzlockeServiceMock,
       dialogRefMock
     );
+    component.nuzlocke = {} as any;
   });
 
   test('should create', () => {
@@ -30,6 +31,7 @@ describe('RoutesComponent', () => {
       pokemon: [{ routeName: 'a' }],
       extraRoutes: []
     } as any;
+    localStorage.setItem = jest.fn();
     await component.updateAvailableRoutes();
     expect(component.routes.length).toBe(1);
   });
@@ -46,11 +48,28 @@ describe('RoutesComponent', () => {
     expect(component.routes.length).toBe(2);
   });
 
+  test('should setup on init (storage return true)', async () => {
+    activatedRouteMock.data = of({ nuzlocke: null });
+    component.updateAvailableRoutes = jest.fn();
+    localStorage.getItem = jest.fn(() => 'true');
+    await component.ngOnInit();
+    expect(component.updateAvailableRoutes).toBeCalledWith(true);
+  });
+
   test('should setup on init', async () => {
     activatedRouteMock.data = of({ nuzlocke: null });
     component.updateAvailableRoutes = jest.fn();
+    localStorage.getItem = jest.fn(() => 'false');
     await component.ngOnInit();
-    expect(component.updateAvailableRoutes).toBeCalled();
+    expect(component.updateAvailableRoutes).toBeCalledWith(false);
+  });
+
+  test('should default call true', async () => {
+    activatedRouteMock.data = of({ nuzlocke: null });
+    component.updateAvailableRoutes = jest.fn();
+    localStorage.getItem = jest.fn(() => null);
+    await component.ngOnInit();
+    expect(component.updateAvailableRoutes).toBeCalledWith(true);
   });
 
   test('should add route', () => {
@@ -58,10 +77,11 @@ describe('RoutesComponent', () => {
     dialogRefMock.open = jest.fn(() => ({
       afterClosed: () => of({ current: true })
     }));
-    nuzlockeServiceMock.convertRouteDialogToRoute = jest.fn(() => 1);
     nuzlockeServiceMock.addRouteToCurrentGame = jest.fn();
+    component.updateAvailableRoutes = jest.fn();
     component.addRoute();
-    expect(component.routes.length).toBe(1);
+    expect(component.updateAvailableRoutes).toBeCalled();
+    expect(nuzlockeServiceMock.addRouteToCurrentGame).toBeCalled();
   });
 
   test('should add route permanently', () => {
@@ -69,10 +89,11 @@ describe('RoutesComponent', () => {
     dialogRefMock.open = jest.fn(() => ({
       afterClosed: () => of({ current: false })
     }));
-    nuzlockeServiceMock.convertRouteDialogToRoute = jest.fn(() => 1);
     routesServiceMock.addRouteToGame = jest.fn();
+    component.updateAvailableRoutes = jest.fn();
     component.addRoute();
-    expect(component.routes.length).toBe(1);
+    expect(component.updateAvailableRoutes).toBeCalled();
+    expect(routesServiceMock.addRouteToGame).toBeCalled();
   });
 
   test('should do nothing if observable is falsy', () => {
@@ -104,12 +125,6 @@ describe('RoutesComponent', () => {
     expect(component.addEncounter).toBeCalled();
   });
 
-  test('should do nothing if route is visited', () => {
-    dialogRefMock.open = jest.fn();
-    component.selectRoute({ visited: true } as any);
-    expect(dialogRefMock.open).not.toBeCalled();
-  });
-
   test('should add missed pokemon', () => {
     dialogRefMock.open = jest.fn(() => ({
       afterClosed: () => of({ caught: true })
@@ -131,15 +146,5 @@ describe('RoutesComponent', () => {
 
     component.selectRoute({} as any);
     expect(component.addEncounter).not.toBeCalled();
-  });
-
-  test('should not throw errors on open filter', () => {
-    let error = null;
-    try {
-      component.openFilters();
-    } catch (e) {
-      error = e;
-    }
-    expect(error).toBeNull();
   });
 });

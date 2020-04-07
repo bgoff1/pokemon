@@ -66,4 +66,15 @@ describe('DragDropComponent', () => {
     } as any);
     expect(component.update.next).not.toBeCalled();
   });
+  test('should move if they are not in same party', () => {
+    component.update.next = jest.fn();
+    const container = { name: 'a', data: [1, 2, 3] };
+    component.drop({
+      previousContainer: {},
+      container,
+      previousIndex: null,
+      currentIndex: 0
+    } as any);
+    expect(component.update.next).toBeCalled();
+  });
 });

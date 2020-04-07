@@ -47,3 +47,12 @@ export class NameUtility {
     return name === 'Empty Team Member' ? ' ' : NameUtility.stripExtras(name);
   }
 }
+
+export const titlecase = (name: string): string => {
+  if (name && name.length > 1) {
+    return name[0].toUpperCase() + name.slice(1).toLowerCase();
+  } else if (name && name.length === 1) {
+    return name[0].toUpperCase();
+  }
+  return '';
+};

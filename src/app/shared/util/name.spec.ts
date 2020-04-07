@@ -1,4 +1,4 @@
-import { NameUtility } from './name';
+import { NameUtility, titlecase } from './name';
 
 describe('Name Replacement Utility', () => {
   test('should replace characters in an image', () => {
@@ -31,5 +31,10 @@ describe('Name Replacement Utility', () => {
     expect(NameUtility.getDisplayName('Empty Team aMember')).toEqual(
       'Empty Team aMember'
     );
+  });
+  test('should titlecase name', () => {
+    expect(titlecase('abc')).toEqual('Abc');
+    expect(titlecase('a')).toEqual('A');
+    expect(titlecase(null)).toEqual('');
   });
 });

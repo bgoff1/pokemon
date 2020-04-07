@@ -3,6 +3,7 @@ export interface Pokemon {
   nickName?: string;
   routeName: string;
   status: Status;
+  routeId?: number;
 }
 
 export enum Status {

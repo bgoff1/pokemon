@@ -11,7 +11,7 @@
       <span class="text-right"></span>
       <img
         [class.hidden]="!route.visited"
-        src="{{ route.capturedPokemon | pokemonImage }}">
+        src="{{ route.capturedPokemon?.name | pokemonImage }}">
     </div>
 
     <mat-divider></mat-divider>

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { DatabaseService } from '@services/database/database.service';
 import { allRoutes } from '@resources/game-locations';
 import { Route } from '@nuzlocke/models/route.model';
-import { NuzlockeService } from '../nuzlocke/nuzlocke.service';
 import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { CreateRouteDialogResult } from '@features/nuzlocke/models/create-route-dialog.model';
+import { NuzlockeService } from '../nuzlocke/nuzlocke.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,8 @@ export class RoutesService {
     return res.sort((a, b) => Number(a.order) - Number(b.order));
   }
 
-  addRouteToGame(route: Route) {
+  async addRouteToGame(input: CreateRouteDialogResult) {
+    const route = await this.nuzlockeService.convertDialogToRoute(input);
     this.databaseService.routes.add(route);
   }
 }

@@ -30,6 +30,10 @@ export class PokemonService {
     );
   }
 
+  async getPokemonNames() {
+    return (await this.databaseService.pokemon.toArray()).map(row => row.name);
+  }
+
   async find(names: string[]) {
     return (await this.getPokemon()).filter(mon =>
       names.some(name =>

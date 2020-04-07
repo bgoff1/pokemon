@@ -1,6 +1,6 @@
 import { MatDialogRef } from '@angular/material/dialog';
-import { CreateRouteDialogComponent } from '../create-route-dialog/create-route-dialog.component';
-import { RoutesComponent } from '../routes.component';
+import { CreateRouteDialogComponent } from '../components/routes/create-route-dialog/create-route-dialog.component';
+import { RoutesComponent } from '../components/routes/routes.component';
 
 export interface CreateRouteDialogResult {
   route: string;

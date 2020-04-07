@@ -44,13 +44,14 @@ describe('NuzlockeService', () => {
     expect(await service.createNuzlocke({} as any)).toEqual({ id: 1 });
   });
 
-  test('should convert route dialog to route', () => {
+  test('should convert route dialog to route', async () => {
     service.currentRun.game = 4;
+    databaseServiceMock.countRoutesInGame = jest.fn(() => 1);
     expect(
-      service.convertRouteDialogToRoute({ route: '', current: false })
+      await service.convertDialogToRoute({ route: '', current: false })
     ).toEqual({
       type: 2,
-      order: -1,
+      order: 1,
       pokemon: [],
       game: 4,
       location: ''
@@ -72,16 +73,17 @@ describe('NuzlockeService', () => {
   });
 
   test('should add encounter to box if party is full', async () => {
+    let routeId: 0;
     service.currentRun.pokemon = [
-      { status: 0 },
-      { status: 0 },
-      { status: 0 },
-      { status: 0 },
-      { status: 0 },
-      { status: 0 }
+      { status: 0, routeId: routeId++ },
+      { status: 0, routeId: routeId++ },
+      { status: 0, routeId: routeId++ },
+      { status: 0, routeId: routeId++ },
+      { status: 0, routeId: routeId++ },
+      { status: 0, routeId: routeId++ }
     ] as any;
     databaseServiceMock.nuzlockes.put = jest.fn(() => Promise.resolve());
-    await service.addEncounter({ status: 1 } as any);
+    await service.addEncounter({ status: 1, routeId: routeId++ } as any);
     expect(service.currentRun.pokemon.length).toBe(7);
   });
 

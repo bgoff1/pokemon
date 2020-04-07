@@ -50,4 +50,12 @@ describe('PokemonService', () => {
     ) as any;
     expect((await service.find(['ABc'])).length).toBe(2);
   });
+
+  test('should get all pokemon names', async () => {
+    databaseServiceMock.pokemon.toArray = jest.fn(() => [
+      { name: 'a' },
+      { name: 'b' }
+    ]);
+    expect(await service.getPokemonNames()).toEqual(['a', 'b']);
+  });
 });

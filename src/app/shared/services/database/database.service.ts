@@ -21,4 +21,8 @@ export class DatabaseService extends Dexie {
       nuzlockes: '++id, runName, game, random, status'
     });
   }
+
+  countRoutesInGame(game: any) {
+    return this.routes.where({ game }).count();
+  }
 }

@@ -1,6 +1,6 @@
 import { MatDialogRef } from '@angular/material/dialog';
-import { RoutesComponent } from '../routes.component';
-import { SelectRouteDialogComponent } from '../select-route-dialog/select-route-dialog.component';
+import { RoutesComponent } from '../components/routes/routes.component';
+import { SelectRouteDialogComponent } from '../components/routes/select-route-dialog/select-route-dialog.component';
 
 export interface SelectRouteDialogResult {
   pokemon: string;

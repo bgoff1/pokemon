@@ -6150,11 +6150,6 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-ngx-long-press@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/ngx-long-press/-/ngx-long-press-0.0.1.tgz#2bc0a42595825b55895cb9461617d6a475a3550a"
-  integrity sha1-K8CkJZWCW1WJXLlGFhfWpHWjVQo=
-
 ngx-virtual-scroller@^4.0.2:
   version "4.0.3"
   resolved "https://registry.npmjs.org/ngx-virtual-scroller/-/ngx-virtual-scroller-4.0.3.tgz#2d2ce26dbdbfd89507cca7f58c5e4e9cc1285f48"

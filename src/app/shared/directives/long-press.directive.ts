@@ -32,6 +32,11 @@ export class LongPressDirective implements OnDestroy {
     this.clearTimer();
   }
 
+  @HostListener('mouseleave')
+  public onMouseLeave(): void {
+    this.clearTimer();
+  }
+
   @HostListener('pointerdown')
   public onMouseDown(): void {
     this.start = Date.now();

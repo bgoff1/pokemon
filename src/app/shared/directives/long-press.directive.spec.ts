@@ -44,7 +44,8 @@ describe('Long Press Directive', () => {
   test('should call clear timer on destroy and mouse up', () => {
     directive.clearTimer = jest.fn();
     directive.ngOnDestroy();
+    directive.onMouseLeave();
     directive.onMouseUp();
-    expect(directive.clearTimer).toBeCalledTimes(2);
+    expect(directive.clearTimer).toBeCalledTimes(3);
   });
 });

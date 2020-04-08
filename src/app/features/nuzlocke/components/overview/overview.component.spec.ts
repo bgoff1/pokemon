@@ -29,7 +29,7 @@ describe('Nuzlocke Overview Component', () => {
   test('should update encounter on drag drop', () => {
     nuzlockeServiceMock.updateEncounter = jest.fn();
     component.dragDropChange({} as any);
-    expect(nuzlockeServiceMock.updateEncounter).toBeCalledWith({});
+    expect(nuzlockeServiceMock.updateEncounter).toBeCalled();
   });
 
   test('should update on earning a badge', () => {

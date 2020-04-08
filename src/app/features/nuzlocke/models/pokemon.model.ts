@@ -1,6 +1,6 @@
 export interface Pokemon {
   name: string;
-  nickName?: string;
+  nickname?: string;
   routeName: string;
   status: Status;
   routeId?: number;

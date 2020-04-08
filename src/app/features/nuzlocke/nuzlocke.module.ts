@@ -28,6 +28,7 @@ import { PipesModule } from '@pipes';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { SaveDialogComponent } from './components/saves/save-dialog/save-dialog.component';
 import { DeleteRouteDialogComponent } from './components/routes/delete-route-dialog/delete-route-dialog.component';
+import { EvolveDialogComponent } from './components/overview/drag-drop/evolve-dialog/evolve-dialog.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'saves', pathMatch: 'full' },
@@ -77,7 +78,8 @@ const materialModules = [
     SelectRouteDialogComponent,
     DragDropComponent,
     SaveDialogComponent,
-    DeleteRouteDialogComponent
+    DeleteRouteDialogComponent,
+    EvolveDialogComponent
   ],
   imports: [
     CommonModule,

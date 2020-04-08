@@ -10,6 +10,7 @@
         *ngFor="let pokemon of data"
         class="pokemon"
         [src]="pokemon?.name | pokemonImage"
+        (click)="selectPokemon(pokemon)"
         cdkDrag
         (cdkDragStarted)="startDragging()"
         (cdkDragEnded)="stopDragging()">

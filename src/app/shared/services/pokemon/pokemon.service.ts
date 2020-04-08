@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from '@services/database/database.service';
-import { Pokemon } from '@models/pokemon';
+import { Pokemon, PokemonInterface } from '@models/pokemon';
 import pokemon from '@resources/pokemon';
 import { NameUtility } from '@util/name';
 
@@ -42,5 +42,25 @@ export class PokemonService {
           .includes(name.toLowerCase())
       )
     );
+  }
+
+  async findEvolution(name: string): Promise<PokemonInterface[]> {
+    const pokemonToFind = await this.databaseService.pokemon
+      .where({ name: name.toLowerCase() })
+      .limit(1)
+      .toArray();
+    const siblings = (
+      await this.databaseService.pokemon
+        .where({
+          evolutionChain: pokemonToFind[0]?.evolutionChain
+        })
+        .toArray()
+    ).filter(
+      mon =>
+        mon &&
+        !mon.name.toLowerCase().includes('mega') &&
+        mon.name !== name.toLowerCase()
+    );
+    return siblings;
   }
 }

@@ -20,6 +20,12 @@ export class DatabaseService extends Dexie {
       routes: '++id, location, type, game',
       nuzlockes: '++id, runName, game, random, status'
     });
+    this.version(2).stores({
+      filters: '++id, filter, enabled, value',
+      pokemon: '++id, name, generation, evolutionChain',
+      routes: '++id, location, type, game',
+      nuzlockes: '++id, runName, game, random, status'
+    });
   }
 
   countRoutesInGame(game: any) {

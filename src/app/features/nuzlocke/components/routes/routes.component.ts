@@ -100,7 +100,7 @@ export class RoutesComponent implements OnInit {
         const pokemon: Pokemon = {
           routeName: route.location,
           name: res.pokemon,
-          nickName: res.nickname,
+          nickname: res.nickname,
           status: res.caught ? Status.Boxed : Status.Missed
         };
         this.addEncounter(pokemon, route);

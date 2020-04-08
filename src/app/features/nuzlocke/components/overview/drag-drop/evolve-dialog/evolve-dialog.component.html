@@ -1,26 +1,9 @@
-<div class="text-center">
-  <h1 mat-dialog-title>Encounter</h1>
-  <div
-    mat-dialog-content
-    [class.hidden]="page === 2">
-    <h3>Did you obtain a pokemon?</h3>
-    <div class="center-buttons mb-2">
-      <button
-        mat-raised-button
-        (click)="obtained('yes')">
-        Yes
-      </button>
-      <button
-        mat-raised-button
-        (click)="obtained('no')">
-        No
-      </button>
-    </div>
-  </div>
-  <div
-    mat-dialog-content
-    [class.hidden]="page === 1">
-    <form [formGroup]="routeFormControl">
+<form [formGroup]="evolveFormGroup">
+  <h1 mat-dialog-title>
+    Evolution of {{ pokemonControl?.value }}
+  </h1>
+  <div mat-dialog-content>
+    <div>
       <mat-form-field>
         <input
           matInput
@@ -29,7 +12,9 @@
           placeholder="Pokemon"
           [matAutocomplete]="auto">
       </mat-form-field>
-      <mat-autocomplete #auto="matAutocomplete">
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="selectPokemon()">
         <mat-option
           *ngFor="let option of filteredOptions | async"
           [value]="option">
@@ -40,24 +25,18 @@
             [alt]="option">
         </mat-option>
       </mat-autocomplete>
-      <mat-form-field *ngIf="caught">
+      <mat-form-field>
         <input
           autocomplete="off"
           matInput
           formControlName="nickname"
           placeholder="Nickname">
       </mat-form-field>
-    </form>
+    </div>
   </div>
   <div
     mat-dialog-actions
     class="center-buttons">
-    <button
-      mat-raised-button
-      [class.hidden]="page === 1"
-      (click)="goBack()">
-      Back
-    </button>
     <button
       mat-raised-button
       (click)="onClose('cancel')">
@@ -69,4 +48,4 @@
       Ok
     </button>
   </div>
-</div>
+</form>

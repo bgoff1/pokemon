@@ -6,7 +6,7 @@ jest.mock('@util/name', () => ({
 import dialogRefMock from '@mocks/dialog-ref.mock';
 import pokemonServiceMock from '@mocks/pokemon.service.mock';
 
-describe('SelectRouteDialogComponent', () => {
+describe('Select Route Dialog Component', () => {
   let component: SelectRouteDialogComponent;
 
   beforeEach(() => {
@@ -87,7 +87,7 @@ describe('SelectRouteDialogComponent', () => {
       dialogRefMock,
       {
         visited: true,
-        capturedPokemon: { name: 'pidgey', nickName: 'Johnny' },
+        capturedPokemon: { name: 'pidgey', nickname: 'Johnny' },
         random: true
       } as any,
       pokemonServiceMock

@@ -6,7 +6,7 @@ jest.mock('@models/pokemon/game-groups', () => ({
 import { NuzlockeService } from './nuzlocke.service';
 import databaseServiceMock from '@mocks/database.service.mock';
 
-describe('NuzlockeService', () => {
+describe('Nuzlocke Service', () => {
   let service: NuzlockeService;
 
   beforeEach(() => {
@@ -87,18 +87,72 @@ describe('NuzlockeService', () => {
     expect(service.currentRun.pokemon.length).toBe(7);
   });
 
-  test('should update an encounter', async () => {
+  test('should update an encounter status', async () => {
     service.currentRun.pokemon = [
-      { name: 'a', routeName: 'a', nickName: '', status: 1 }
+      { name: 'a', routeName: 'a', nickname: '', status: 1 }
     ];
     databaseServiceMock.nuzlockes.put = jest.fn(() => Promise.resolve());
-    await service.updateEncounter({
-      name: 'a',
-      routeName: 'a',
-      nickName: '',
-      status: 2
-    });
+    await service.updateEncounter(
+      {
+        name: 'a',
+        routeName: 'a',
+        nickname: '',
+        status: 2
+      },
+      { status: 2 }
+    );
     expect(databaseServiceMock.nuzlockes.put).toBeCalled();
+  });
+
+  test('should update an encounter pokemon', async () => {
+    service.currentRun.pokemon = [
+      { name: 'a', routeName: 'a', nickname: '', status: 1 }
+    ];
+    databaseServiceMock.nuzlockes.put = jest.fn(() => Promise.resolve());
+    await service.updateEncounter(
+      {
+        name: 'a',
+        routeName: 'a',
+        nickname: '',
+        status: 1
+      },
+      { name: 'b' }
+    );
+    expect(databaseServiceMock.nuzlockes.put).toBeCalled();
+  });
+
+  test('should update an encounter nickname', async () => {
+    service.currentRun.pokemon = [
+      { name: 'a', routeName: 'a', nickname: '', status: 1 }
+    ];
+    databaseServiceMock.nuzlockes.put = jest.fn(() => Promise.resolve());
+    await service.updateEncounter(
+      {
+        name: 'a',
+        routeName: 'a',
+        nickname: '',
+        status: 1
+      },
+      { nickname: 'johnny' }
+    );
+    expect(databaseServiceMock.nuzlockes.put).toBeCalled();
+  });
+
+  test('should not call put if nothing changed', async () => {
+    service.currentRun.pokemon = [
+      { name: 'a', routeName: 'a', nickname: '', status: 1 }
+    ];
+    databaseServiceMock.nuzlockes.put = jest.fn(() => Promise.resolve());
+    await service.updateEncounter(
+      {
+        name: 'a',
+        routeName: 'a',
+        nickname: '',
+        status: 1
+      },
+      {}
+    );
+    expect(databaseServiceMock.nuzlockes.put).not.toBeCalled();
   });
 
   test('should be able to earn a badge', async () => {

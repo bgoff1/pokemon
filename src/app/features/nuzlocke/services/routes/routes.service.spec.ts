@@ -3,7 +3,7 @@ import { RoutesService } from './routes.service';
 import nuzlockeServiceMock from '@features/nuzlocke/mocks/nuzlocke.service.mock';
 import databaseServiceMock from '@mocks/database.service.mock';
 
-describe('RoutesService', () => {
+describe('Routes Service', () => {
   let service: RoutesService;
 
   beforeEach(() => {

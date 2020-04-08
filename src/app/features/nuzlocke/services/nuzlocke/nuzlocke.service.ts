@@ -37,6 +37,17 @@ export class NuzlockeService {
     return game;
   }
 
+  async deleteNuzlocke(run: Nuzlocke) {
+    await this.databaseService.nuzlockes.delete(run.id);
+  }
+
+  async updateNuzlocke(run: Nuzlocke, res: { name: string; random: boolean }) {
+    await this.databaseService.nuzlockes.update(run.id, {
+      runName: res.name,
+      random: res.random
+    });
+  }
+
   startGame(run: CreateNuzlocke): Nuzlocke {
     return {
       runName: run.runName,
@@ -44,6 +55,7 @@ export class NuzlockeService {
       random: run.random,
       badgesEarned: [],
       extraRoutes: [],
+      ignoreRoutes: [],
       pokemon: [],
       startDate: new Date(),
       status: NuzlockeStatus.Started
@@ -63,6 +75,11 @@ export class NuzlockeService {
   async addRouteToCurrentGame(input: CreateRouteDialogResult) {
     const route = await this.convertDialogToRoute(input);
     this.currentRun.extraRoutes.push(route);
+    await this.databaseService.nuzlockes.put(this.currentRun);
+  }
+
+  async removeRouteFromRun(route: Route) {
+    this.currentRun.ignoreRoutes.push(route);
     await this.databaseService.nuzlockes.put(this.currentRun);
   }
 

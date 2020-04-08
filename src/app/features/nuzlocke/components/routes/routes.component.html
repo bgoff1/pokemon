@@ -5,6 +5,8 @@
   <button
     mat-list-item
     *ngFor="let route of routes"
+    [longPress]
+    (release)="showDelete(route)"
     (click)="selectRoute(route)">
     <div [class.strike-through]="route.visited">
       <span class="route">{{ route.location }}</span>

@@ -11,6 +11,8 @@ import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
 import { RoutesService } from '@nuzlocke/services/routes/routes.service';
 import { CreateRouteDialogComponent } from './create-route-dialog/create-route-dialog.component';
 import { SelectRouteDialogComponent } from './select-route-dialog/select-route-dialog.component';
+import { DeleteRouteDialog } from '@features/nuzlocke/models/delete-route-dialog.model';
+import { DeleteRouteDialogComponent } from './delete-route-dialog/delete-route-dialog.component';
 
 @Component({
   selector: 'routes',
@@ -40,18 +42,24 @@ export class RoutesComponent implements OnInit {
 
   async updateAvailableRoutes(filter = true) {
     const routes = await this.routesService.getRoutes(this.nuzlocke);
-    this.routes = [...routes, ...this.nuzlocke.extraRoutes].map(route => {
-      return {
-        ...route,
-        visited: this.nuzlocke.pokemon.some(
-          pokemon => pokemon.routeName === route.location
-        ),
-        capturedPokemon: this.nuzlocke.pokemon.find(
-          mon => mon.routeName === route.location
-        ),
-        random: this.nuzlocke.random
-      };
-    });
+
+    this.routes = [...routes, ...this.nuzlocke.extraRoutes]
+      .filter(
+        route => !this.nuzlocke.ignoreRoutes.map(r => r.id).includes(route.id)
+      )
+      .map(route => {
+        return {
+          ...route,
+          visited: this.nuzlocke.pokemon.some(
+            pokemon => pokemon.routeName === route.location
+          ),
+          capturedPokemon: this.nuzlocke.pokemon.find(
+            mon => mon.routeName === route.location
+          ),
+          random: this.nuzlocke.random
+        };
+      });
+
     localStorage.setItem('route filter', filter ? 'true' : 'false');
     if (filter) {
       this.routes = this.routes.filter(route => !route.visited);
@@ -96,6 +104,23 @@ export class RoutesComponent implements OnInit {
           status: res.caught ? Status.Boxed : Status.Missed
         };
         this.addEncounter(pokemon, route);
+      }
+    });
+  }
+
+  showDelete(route: DisplayRoute) {
+    const dialog: DeleteRouteDialog = this.dialog.open(
+      DeleteRouteDialogComponent,
+      { data: { name: route.location } }
+    );
+    dialog.afterClosed().subscribe(async res => {
+      if (res) {
+        if (res.onlyFromCurrent) {
+          this.nuzlockeService.removeRouteFromRun(route);
+        } else {
+          this.routesService.removeRouteFromGame(route);
+        }
+        this.updateAvailableRoutes();
       }
     });
   }

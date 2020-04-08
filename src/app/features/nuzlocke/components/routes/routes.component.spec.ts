@@ -6,7 +6,7 @@ import dialogRefMock from '@mocks/dialog-ref.mock';
 import routesServiceMock from '@features/nuzlocke/mocks/routes.service.mock';
 import { of } from 'rxjs';
 
-describe('RoutesComponent', () => {
+describe('Routes Component', () => {
   let component: RoutesComponent;
 
   beforeEach(() => {
@@ -29,7 +29,8 @@ describe('RoutesComponent', () => {
     );
     component.nuzlocke = {
       pokemon: [{ routeName: 'a' }],
-      extraRoutes: []
+      extraRoutes: [],
+      ignoreRoutes: []
     } as any;
     localStorage.setItem = jest.fn();
     await component.updateAvailableRoutes();
@@ -42,7 +43,8 @@ describe('RoutesComponent', () => {
     );
     component.nuzlocke = {
       pokemon: [{ routeName: 'a' }],
-      extraRoutes: []
+      extraRoutes: [],
+      ignoreRoutes: [{ id: 1 }]
     } as any;
     await component.updateAvailableRoutes(false);
     expect(component.routes.length).toBe(2);
@@ -146,5 +148,46 @@ describe('RoutesComponent', () => {
 
     component.selectRoute({} as any);
     expect(component.addEncounter).not.toBeCalled();
+  });
+
+  test('should show and handle delete for only current', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: () => of({ onlyFromCurrent: true })
+    }));
+    nuzlockeServiceMock.removeRouteFromRun = jest.fn();
+    component.updateAvailableRoutes = jest.fn();
+
+    component.showDelete({
+      location: 'a'
+    } as any);
+    expect(component.updateAvailableRoutes).toBeCalled();
+    expect(nuzlockeServiceMock.removeRouteFromRun).toBeCalled();
+  });
+
+  test('should handle delete for all', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: () => of({ onlyFromCurrent: false })
+    }));
+    routesServiceMock.removeRouteFromGame = jest.fn();
+    component.updateAvailableRoutes = jest.fn();
+
+    component.showDelete({
+      location: 'a'
+    } as any);
+    expect(component.updateAvailableRoutes).toBeCalled();
+    expect(routesServiceMock.removeRouteFromGame).toBeCalled();
+  });
+
+  test('should handle delete with exit', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: () => of(null)
+    }));
+
+    component.updateAvailableRoutes = jest.fn();
+
+    component.showDelete({
+      location: 'a'
+    } as any);
+    expect(component.updateAvailableRoutes).not.toBeCalled();
   });
 });

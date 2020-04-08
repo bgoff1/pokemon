@@ -1,9 +1,16 @@
-import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  HostListener,
+  Output,
+  Input
+} from '@angular/core';
 
 @Directive({
   selector: '[longPress]'
 })
 export class LongPressDirective {
+  @Input() longPress = 500;
   timeout: any;
 
   @Output()
@@ -14,7 +21,7 @@ export class LongPressDirective {
   startPress() {
     this.timeout = setTimeout(() => {
       this.release.emit();
-    }, 500);
+    }, this.longPress);
   }
 
   @HostListener('touchend')

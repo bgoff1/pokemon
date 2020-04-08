@@ -46,7 +46,7 @@ export class SelectRouteDialogComponent implements OnInit {
     }
     this.filteredOptions = this.pokemonControl.valueChanges.pipe(
       startWith(this.pokemonControl.value),
-      map(this.filterOptions)
+      map((input: string) => this.filterOptions(input))
     );
   }
 

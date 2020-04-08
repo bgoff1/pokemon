@@ -25,6 +25,9 @@ import { CreateRouteDialogComponent } from './components/routes/create-route-dia
 import { SelectRouteDialogComponent } from './components/routes/select-route-dialog/select-route-dialog.component';
 import { DragDropComponent } from './components/overview/drag-drop/drag-drop.component';
 import { PipesModule } from '@pipes';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { SaveDialogComponent } from './components/saves/save-dialog/save-dialog.component';
+import { DeleteRouteDialogComponent } from './components/routes/delete-route-dialog/delete-route-dialog.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'saves', pathMatch: 'full' },
@@ -72,13 +75,16 @@ const materialModules = [
     CreateComponent,
     CreateRouteDialogComponent,
     SelectRouteDialogComponent,
-    DragDropComponent
+    DragDropComponent,
+    SaveDialogComponent,
+    DeleteRouteDialogComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     PipesModule,
+    DirectivesModule,
     ...materialModules,
     RouterModule.forChild(routes)
   ],

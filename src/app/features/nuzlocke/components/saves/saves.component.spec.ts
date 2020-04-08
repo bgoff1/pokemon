@@ -6,12 +6,18 @@ jest.mock('@models/pokemon/game-groups', () => ({
 import { SavesComponent } from './saves.component';
 import nuzlockeServiceMock from '@nuzlocke/mocks/nuzlocke.service.mock';
 import routerServiceMock from '@mocks/router.service.mock';
+import dialogRefMock from '@mocks/dialog-ref.mock';
+import { of } from 'rxjs';
 
 describe('SavesComponent', () => {
   let component: SavesComponent;
 
   beforeEach(() => {
-    component = new SavesComponent(nuzlockeServiceMock, routerServiceMock);
+    component = new SavesComponent(
+      dialogRefMock,
+      nuzlockeServiceMock,
+      routerServiceMock
+    );
   });
 
   test('should create', () => {
@@ -54,5 +60,41 @@ describe('SavesComponent', () => {
     routerServiceMock.changeTab = jest.fn();
     component.navigateToCreate();
     expect(routerServiceMock.changeTab).toBeCalled();
+  });
+
+  test('should handle long press cancel', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: jest.fn(() => of(null))
+    }));
+    component.loadSaves = jest.fn();
+    component.onLongPress({} as any);
+
+    expect(component.loadSaves).not.toBeCalled();
+  });
+
+  test('should handle long press delete', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: jest.fn(() => of({ delete: true }))
+    }));
+
+    component.loadSaves = jest.fn();
+    nuzlockeServiceMock.deleteNuzlocke = jest.fn();
+    component.onLongPress({} as any);
+
+    expect(component.loadSaves).toBeCalled();
+    expect(nuzlockeServiceMock.deleteNuzlocke).toBeCalled();
+  });
+
+  test('should handle long press no delete', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: jest.fn(() => of({ delete: false }))
+    }));
+
+    component.loadSaves = jest.fn();
+    nuzlockeServiceMock.updateNuzlocke = jest.fn();
+    component.onLongPress({} as any);
+
+    expect(component.loadSaves).toBeCalled();
+    expect(nuzlockeServiceMock.updateNuzlocke).toBeCalled();
   });
 });

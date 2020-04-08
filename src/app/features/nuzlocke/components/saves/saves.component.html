@@ -1,27 +1,31 @@
 <div>
   <mat-action-list>
-    <button
-      mat-list-item
-      *ngFor="let save of saves"
-      (click)="selectSave(save)">
-      <table class="w-100">
-        <tbody>
-          <tr>
-            <td>{{ save.runName }}</td>
-            <td class="text-right">
-              {{ save.startDate | date: 'MMMM dd, yyyy' }}
-            </td>
-          </tr>
-          <tr>
-            <td class="font-small">
-              {{ save.random ? 'Random' : '' }} {{ getGame(save.game) }}
-            </td>
-            <td class="text-right">{{ getStatus(save.status) }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div *ngFor="let save of saves">
+      <button
+        mat-list-item
+        class="each-save"
+        [longPress]
+        (release)="onLongPress(save)"
+        (click)="selectSave(save)">
+        <table class="w-100">
+          <tbody>
+            <tr>
+              <td>{{ save.runName }}</td>
+              <td class="text-right">
+                {{ save.startDate | date: 'MMMM dd, yyyy' }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-small">
+                {{ save.random ? 'Random' : '' }} {{ getGame(save.game) }}
+              </td>
+              <td class="text-right">{{ getStatus(save.status) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </button>
       <mat-divider></mat-divider>
-    </button>
+    </div>
   </mat-action-list>
 </div>
 <button

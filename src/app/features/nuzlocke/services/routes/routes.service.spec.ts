@@ -43,4 +43,13 @@ describe('RoutesService', () => {
     await service.addRouteToGame({} as any);
     expect(databaseServiceMock.routes.add).toBeCalled();
   });
+
+  test('should remove route from all games', async () => {
+    databaseServiceMock.routes = {
+      delete: jest.fn(() => Promise.resolve())
+    };
+
+    await service.removeRouteFromGame({} as any);
+    expect(databaseServiceMock.routes.delete).toBeCalled();
+  });
 });

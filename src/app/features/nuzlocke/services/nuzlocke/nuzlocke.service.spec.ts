@@ -113,4 +113,27 @@ describe('NuzlockeService', () => {
   test('should get games', () => {
     expect(service.gameNames).toEqual([]);
   });
+
+  test('should delete nuzlocke', async () => {
+    databaseServiceMock.nuzlockes = {
+      delete: jest.fn(() => Promise.resolve())
+    };
+    await service.deleteNuzlocke({ id: 1 } as any);
+    expect(databaseServiceMock.nuzlockes.delete).toBeCalled();
+  });
+
+  test('should update nuzlocke', async () => {
+    databaseServiceMock.nuzlockes = {
+      update: jest.fn(() => Promise.resolve())
+    };
+    await service.updateNuzlocke({ id: 1 } as any, { name: 'a', random: true });
+    expect(databaseServiceMock.nuzlockes.update).toBeCalled();
+  });
+
+  test('should remove route from run', async () => {
+    service.currentRun.ignoreRoutes = [];
+    databaseServiceMock.nuzlockes.put = jest.fn(() => Promise.resolve());
+    await service.removeRouteFromRun({} as any);
+    expect(service.currentRun.ignoreRoutes.length).toBe(1);
+  });
 });

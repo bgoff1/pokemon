@@ -11,6 +11,7 @@ export interface Nuzlocke {
   startDate: Date;
   badgesEarned: number[];
   extraRoutes: Route[];
+  ignoreRoutes: Route[];
   pokemon: Pokemon[];
   status: NuzlockeStatus;
 }

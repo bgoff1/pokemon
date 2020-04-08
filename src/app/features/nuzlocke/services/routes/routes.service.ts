@@ -34,4 +34,8 @@ export class RoutesService {
     const route = await this.nuzlockeService.convertDialogToRoute(input);
     this.databaseService.routes.add(route);
   }
+
+  async removeRouteFromGame(route: Route) {
+    await this.databaseService.routes.delete(route.id);
+  }
 }

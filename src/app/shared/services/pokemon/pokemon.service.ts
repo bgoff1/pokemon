@@ -47,12 +47,11 @@ export class PokemonService {
   async findEvolution(name: string): Promise<PokemonInterface[]> {
     const pokemonToFind = await this.databaseService.pokemon
       .where({ name: name.toLowerCase() })
-      .limit(1)
       .toArray();
     const siblings = (
       await this.databaseService.pokemon
         .where({
-          evolutionChain: pokemonToFind[0]?.evolutionChain
+          evolutionChain: pokemonToFind[0]?.evolutionChain || -1
         })
         .toArray()
     ).filter(

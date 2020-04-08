@@ -18,6 +18,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'team-builder',
     pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'team-builder'
   }
 ];
 

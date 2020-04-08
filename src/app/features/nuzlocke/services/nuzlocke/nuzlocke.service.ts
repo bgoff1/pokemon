@@ -108,16 +108,22 @@ export class NuzlockeService {
         mon.routeName === pokemon.routeName
     );
     let changed = false;
-    if (updatedData.status && updatedData.status !== pokemonEntry.status) {
+    if (
+      updatedData.status !== undefined &&
+      updatedData.status !== pokemonEntry.status
+    ) {
       changed = true;
       pokemonEntry.status = pokemon.status;
     }
-    if (updatedData.name && updatedData.name !== pokemonEntry.name) {
+    if (
+      updatedData.name !== undefined &&
+      updatedData.name !== pokemonEntry.name
+    ) {
       changed = true;
       pokemonEntry.name = updatedData.name;
     }
     if (
-      updatedData.nickname &&
+      updatedData.nickname !== undefined &&
       updatedData.nickname !== pokemonEntry.nickname
     ) {
       changed = true;

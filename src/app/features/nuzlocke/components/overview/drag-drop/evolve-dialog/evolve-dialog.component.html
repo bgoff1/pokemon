@@ -1,7 +1,5 @@
 <form [formGroup]="evolveFormGroup">
-  <h1 mat-dialog-title>
-    Evolution of {{ pokemonControl?.value }}
-  </h1>
+  <h1 mat-dialog-title>Evolution of {{ evolutionName }}</h1>
   <div mat-dialog-content>
     <div>
       <mat-form-field>
@@ -39,11 +37,13 @@
     class="center-buttons">
     <button
       mat-raised-button
+      cdk
       (click)="onClose('cancel')">
       Cancel
     </button>
     <button
       mat-raised-button
+      cdkFocusInitial
       (click)="onClose('ok')">
       Ok
     </button>

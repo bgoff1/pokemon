@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EvolveDialogRef } from '@features/nuzlocke/models/evolve-dialog.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Pokemon } from '@nuzlocke/models/pokemon.model';
 import { PokemonService } from '@services/pokemon/pokemon.service';
 import { titlecase } from '@util/name';
@@ -27,10 +27,7 @@ export class EvolveDialogComponent implements OnInit {
     private readonly pokemonService: PokemonService
   ) {
     this.evolveFormGroup = new FormGroup({
-      pokemon: new FormControl(
-        titlecase(data.pokemon.name),
-        Validators.required
-      ),
+      pokemon: new FormControl(''),
       nickname: new FormControl(data.pokemon.nickname || '')
     });
     this.pokemon = data.pokemon;
@@ -62,9 +59,7 @@ export class EvolveDialogComponent implements OnInit {
 
   onClose(button: 'cancel' | 'ok') {
     if (button === 'ok') {
-      if (this.evolveFormGroup.valid) {
-        this.dialogRef.close(this.evolveFormGroup.value);
-      }
+      this.dialogRef.close(this.evolveFormGroup.value);
     } else {
       this.dialogRef.close();
     }
@@ -76,5 +71,9 @@ export class EvolveDialogComponent implements OnInit {
 
   get pokemonControl() {
     return this.evolveFormGroup.controls.pokemon;
+  }
+
+  get evolutionName() {
+    return this.pokemon.nickname || titlecase(this.pokemon.name);
   }
 }

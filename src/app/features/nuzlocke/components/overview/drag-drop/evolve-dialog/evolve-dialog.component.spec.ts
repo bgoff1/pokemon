@@ -51,25 +51,6 @@ describe('Evolve Dialog Component', () => {
     });
   });
 
-  test('should set alternate values from input', async () => {
-    component = new EvolveDialogComponent(
-      dialogRefMock,
-      {
-        pokemon: { name: 'pidgey', nickname: 'Johnny' } as any
-      },
-      pokemonServiceMock
-    );
-
-    pokemonServiceMock.getPokemonNames = jest.fn(() => Promise.resolve(['a']));
-    pokemonServiceMock.findEvolution = jest.fn(() =>
-      Promise.resolve([{ name: 'a' }])
-    );
-    component.filterOptions = jest.fn();
-    await component.ngOnInit();
-
-    expect(component.pokemonControl.value).toBe('pidgey');
-  });
-
   test('should titlecase on select', () => {
     component.pokemonControl.setValue('abc');
 
@@ -89,15 +70,17 @@ describe('Evolve Dialog Component', () => {
     });
   });
 
-  test('should not close on invalid form', () => {
-    dialogRefMock.close = jest.fn();
-    component.onClose('ok');
-    expect(dialogRefMock.close).not.toBeCalled();
-  });
-
   test('should handle cancel', () => {
     dialogRefMock.close = jest.fn();
     component.onClose('cancel');
     expect(dialogRefMock.close).toBeCalledWith();
+  });
+
+  test('should get evolution name', () => {
+    component.pokemon.nickname = 'a';
+    expect(component.evolutionName).toEqual('a');
+    component.pokemon.nickname = '';
+    component.pokemon.name = 'b';
+    expect(component.evolutionName).toEqual('b');
   });
 });

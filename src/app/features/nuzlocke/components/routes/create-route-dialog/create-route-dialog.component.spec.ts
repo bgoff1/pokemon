@@ -1,7 +1,7 @@
 import { CreateRouteDialogComponent } from './create-route-dialog.component';
 import dialogRefMock from '@mocks/dialog-ref.mock';
 
-describe('CreateRouteDialogComponent', () => {
+describe('Create Route Dialog Component', () => {
   let component: CreateRouteDialogComponent;
 
   beforeEach(() => {

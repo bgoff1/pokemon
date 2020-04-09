@@ -3,7 +3,7 @@ import { NuzlockeResolverService } from './nuzlocke-resolver.service';
 import routerServiceMock from '@mocks/router.service.mock';
 import nuzlockeServiceMock from '../mocks/nuzlocke.service.mock';
 
-describe('NuzlockeResolverService', () => {
+describe('Nuzlocke Resolver Service', () => {
   let service: NuzlockeResolverService;
 
   beforeEach(() => {

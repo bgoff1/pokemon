@@ -1,6 +1,6 @@
 import { RoutePipe } from './route.pipe';
 
-describe('RoutePipe', () => {
+describe('Route Pipe', () => {
   let pipe: RoutePipe;
   beforeAll(() => {
     pipe = new RoutePipe();

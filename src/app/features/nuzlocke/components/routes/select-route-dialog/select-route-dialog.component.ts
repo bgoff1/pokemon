@@ -28,7 +28,7 @@ export class SelectRouteDialogComponent implements OnInit {
     this.routeFormControl = new FormGroup({
       page: new FormControl(data.visited ? 2 : 1),
       pokemon: new FormControl(titlecase(data.capturedPokemon?.name)),
-      nickname: new FormControl(data.capturedPokemon?.nickName || '')
+      nickname: new FormControl(data.capturedPokemon?.nickname || '')
     });
     this.caught = !!data.capturedPokemon;
   }

@@ -9,7 +9,7 @@ import routerServiceMock from '@mocks/router.service.mock';
 import dialogRefMock from '@mocks/dialog-ref.mock';
 import { of } from 'rxjs';
 
-describe('SavesComponent', () => {
+describe('Saves Component', () => {
   let component: SavesComponent;
 
   beforeEach(() => {

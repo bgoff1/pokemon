@@ -97,15 +97,41 @@ export class NuzlockeService {
     await this.databaseService.nuzlockes.put(this.currentRun);
   }
 
-  async updateEncounter(pokemon: Pokemon) {
+  async updateEncounter(
+    pokemon: Pokemon,
+    updatedData: { name?: string; nickname?: string; status?: Status }
+  ) {
     const pokemonEntry = this.currentRun.pokemon.find(
       mon =>
         mon.name === pokemon.name &&
-        mon.nickName === pokemon.nickName &&
+        mon.nickname === pokemon.nickname &&
         mon.routeName === pokemon.routeName
     );
-    pokemonEntry.status = pokemon.status;
-    await this.databaseService.nuzlockes.put(this.currentRun);
+    let changed = false;
+    if (
+      updatedData.status !== undefined &&
+      updatedData.status !== pokemonEntry.status
+    ) {
+      changed = true;
+      pokemonEntry.status = pokemon.status;
+    }
+    if (
+      updatedData.name !== undefined &&
+      updatedData.name !== pokemonEntry.name
+    ) {
+      changed = true;
+      pokemonEntry.name = updatedData.name;
+    }
+    if (
+      updatedData.nickname !== undefined &&
+      updatedData.nickname !== pokemonEntry.nickname
+    ) {
+      changed = true;
+      pokemonEntry.nickname = updatedData.nickname;
+    }
+    if (changed) {
+      await this.databaseService.nuzlockes.put(this.currentRun);
+    }
   }
 
   async earnBadge(badgeNumber: number) {

@@ -6,7 +6,7 @@ jest.mock('@util/enum', () => ({
 import { Coverage } from './coverage.model';
 import { Type } from '@models/pokemon/type';
 
-describe('Pokemon List', () => {
+describe('Coverage', () => {
   let coverage: Coverage;
 
   beforeAll(() => {

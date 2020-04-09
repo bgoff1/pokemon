@@ -3,7 +3,7 @@ import { CreateComponent } from './create.component';
 import nuzlockeServiceMock from '@nuzlocke/mocks/nuzlocke.service.mock';
 import routerServiceMock from '@mocks/router.service.mock';
 
-describe('CreateComponent', () => {
+describe('Create Component', () => {
   let component: CreateComponent;
 
   beforeEach(() => {

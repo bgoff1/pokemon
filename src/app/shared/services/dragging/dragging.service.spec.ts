@@ -1,6 +1,6 @@
 import { DraggingService } from './dragging.service';
 
-describe('DraggingService', () => {
+describe('Dragging Service', () => {
   let service: DraggingService;
 
   beforeEach(() => {

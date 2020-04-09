@@ -12,7 +12,7 @@ jest.mock('@resources/pokemon', () => ({
   default: [{ name: 'item' }]
 }));
 
-describe('PokemonService', () => {
+describe('Pokemon Service', () => {
   let service: PokemonService;
 
   beforeEach(() => {
@@ -57,5 +57,31 @@ describe('PokemonService', () => {
       { name: 'b' }
     ]);
     expect(await service.getPokemonNames()).toEqual(['a', 'b']);
+  });
+
+  test('should find a pokemons evolutions', async () => {
+    const arrayMock = jest.fn(() => Promise.resolve([null]));
+    databaseServiceMock.pokemon.where = jest.fn(() => ({
+      limit: jest.fn().mockReturnThis(),
+      toArray: arrayMock
+    }));
+    expect(await service.findEvolution('me')).toEqual([]);
+  });
+
+  test('should find a pokemons evolutions', async () => {
+    const arrayMock = jest.fn(() =>
+      Promise.resolve([
+        { name: 'a', evolutionChain: 4 },
+        { name: 'mega' },
+        { name: 'me' }
+      ])
+    );
+    databaseServiceMock.pokemon.where = jest.fn(() => ({
+      limit: jest.fn().mockReturnThis(),
+      toArray: arrayMock
+    }));
+    expect(await service.findEvolution('me')).toEqual([
+      { name: 'a', evolutionChain: 4 }
+    ]);
   });
 });

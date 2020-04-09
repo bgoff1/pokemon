@@ -3,7 +3,7 @@ import { CreateGuard } from './create.guard';
 import routerServiceMock from '@mocks/router.service.mock';
 import nuzlockeServiceMock from '../mocks/nuzlocke.service.mock';
 
-describe('CreateGuard', () => {
+describe('Create Guard', () => {
   let guard: CreateGuard;
 
   beforeEach(() => {

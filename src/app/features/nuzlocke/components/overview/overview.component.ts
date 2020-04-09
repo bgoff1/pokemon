@@ -42,7 +42,7 @@ export class OverviewComponent implements OnInit {
   }
 
   dragDropChange(event: Pokemon) {
-    this.nuzlockeService.updateEncounter(event);
+    this.nuzlockeService.updateEncounter(event, { status: event.status });
   }
 
   earnBadge(badge: Badge, badgeNumber: number, secondRow: boolean) {

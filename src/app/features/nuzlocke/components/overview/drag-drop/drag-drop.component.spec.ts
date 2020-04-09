@@ -5,12 +5,19 @@ jest.mock('@angular/cdk/drag-drop', () => ({
 }));
 import { DragDropComponent } from './drag-drop.component';
 import draggingServiceMock from '@mocks/dragging.service.mock';
+import dialogRefMock from '@mocks/dialog-ref.mock';
+import nuzlockeServiceMock from '@features/nuzlocke/mocks/nuzlocke.service.mock';
+import { of } from 'rxjs';
 
-describe('DragDropComponent', () => {
+describe('Drag Drop Component', () => {
   let component: DragDropComponent;
 
   beforeEach(() => {
-    component = new DragDropComponent(draggingServiceMock);
+    component = new DragDropComponent(
+      dialogRefMock,
+      draggingServiceMock,
+      nuzlockeServiceMock
+    );
   });
 
   test('should create', () => {
@@ -76,5 +83,27 @@ describe('DragDropComponent', () => {
       currentIndex: 0
     } as any);
     expect(component.update.next).toBeCalled();
+  });
+
+  test('should handle clicking on a pokemon', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: jest.fn(() => of({ pokemon: 'a', nickname: '' }))
+    }));
+    nuzlockeServiceMock.updateEncounter = jest.fn();
+
+    component.selectPokemon({} as any);
+
+    expect(nuzlockeServiceMock.updateEncounter).toBeCalled();
+  });
+
+  test('should not update if cancel after clicking on a pokemon', () => {
+    dialogRefMock.open = jest.fn(() => ({
+      afterClosed: jest.fn(() => of(null))
+    }));
+    nuzlockeServiceMock.updateEncounter = jest.fn();
+
+    component.selectPokemon({} as any);
+
+    expect(nuzlockeServiceMock.updateEncounter).not.toBeCalled();
   });
 });

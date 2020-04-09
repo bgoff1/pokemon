@@ -6,7 +6,7 @@ import { BadgeService } from './badge.service';
 import nuzlockeServiceMock from '@features/nuzlocke/mocks/nuzlocke.service.mock';
 import { getRegionFromGame } from '@models/pokemon/game-groups';
 
-describe('BadgeService', () => {
+describe('Badge Service', () => {
   let service: BadgeService;
 
   beforeEach(() => {

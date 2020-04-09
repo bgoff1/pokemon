@@ -1,7 +1,7 @@
 jest.mock('@util/name');
 import { PokemonImagePipe } from './pokemon-image.pipe';
 
-describe('PokemonImagePipe', () => {
+describe('Pokemon Image Pipe', () => {
   let pipe: PokemonImagePipe;
   beforeEach(() => {
     pipe = new PokemonImagePipe();

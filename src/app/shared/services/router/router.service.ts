@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Subject } from 'rxjs/internal/Subject';
-import { TabLink, Tab } from '@models/tab.model';
+import { NavigationEnd, Router } from '@angular/router';
 import { Link } from '@models/link.model';
-import { tabs, sidebarLinks, idTabs } from '@resources/links';
+import { Tab, TabLink } from '@models/tab.model';
+import { idTabs, sidebarLinks, tabs } from '@resources/links';
+import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

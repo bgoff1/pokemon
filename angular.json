@@ -33,7 +33,8 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/assets/style"]
             },
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": ["@tweenjs/tween.js"]
           },
           "configurations": {
             "production": {

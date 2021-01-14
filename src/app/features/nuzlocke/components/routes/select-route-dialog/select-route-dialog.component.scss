@@ -6,10 +6,18 @@ form {
   height: 48px;
   float: right;
 }
+.pokemon-big {
+  width: 50%;
+  height: 50%;
+}
 .hidden {
   display: none;
 }
 
-.center-buttons {
-  justify-content: center;
+mat-autocomplete {
+  display: block;
+}
+
+mat-form-field {
+  width: 100%;
 }

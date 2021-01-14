@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.HeartGoldSoulSilver,
@@ -579,7 +579,7 @@ const gameLocation: GameLocation = {
         'tentacruel',
         'shellder',
         'tangela',
-        'mr-mime',
+        'mr. mime',
         'magikarp',
         'chinchou',
         'lanturn',
@@ -1020,8 +1020,8 @@ const gameLocation: GameLocation = {
       location: 'Route 35',
       pokemon: [
         'pidgey',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'psyduck',
         'golduck',
         'poliwag',
@@ -1042,8 +1042,8 @@ const gameLocation: GameLocation = {
       location: 'Route 36',
       pokemon: [
         'pidgey',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'vulpix',
         'growlithe',
         'hoothoot',
@@ -1391,4 +1391,43 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export const heartGoldExclusives = [
+  'mankey',
+  'primeape',
+  'growlithe',
+  'arcanine',
+  'spinarak',
+  'ariados',
+  'gligar',
+  'mantine',
+  'phanpy',
+  'donphan',
+  'sableye',
+  'baltoy',
+  'claydol',
+  'kyogre',
+  'mantyke',
+  'gliscor'
+];
+export const soulSilverExclusives = [
+  'vulpix',
+  'ninetales',
+  'meowth',
+  'persian',
+  'ledyba',
+  'ledian',
+  'teddiursa',
+  'ursaring',
+  'delibird',
+  'skarmory',
+  'mawile',
+  'gulpin',
+  'swalot',
+  'groudon'
+];
+
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.HeartGoldSoulSilver),
+  [heartGoldExclusives, soulSilverExclusives]
+);

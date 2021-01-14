@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.Yellow,
@@ -35,7 +35,7 @@ const gameLocation: GameLocation = {
     },
     {
       location: 'Mt. Moon Fossil',
-      pokemon: ['omantye', 'kabuto'],
+      pokemon: ['omanyte', 'kabuto'],
       order: 46
     },
     {
@@ -181,7 +181,7 @@ const gameLocation: GameLocation = {
     { location: 'Route 1', pokemon: ['pidgey', 'rattata'], order: 2 },
     {
       location: 'Route 2',
-      pokemon: ['weedle', 'pidgey', 'rattata', 'nidoran-f', 'nidoran-m'],
+      pokemon: ['weedle', 'pidgey', 'rattata', 'nidoran ♀', 'nidoran ♂'],
       order: 4
     },
     {
@@ -271,9 +271,9 @@ const gameLocation: GameLocation = {
         'spearow',
         'fearow',
         'ekans',
-        'nidoran-f',
+        'nidoran ♀',
         'nidorina',
-        'nidoran-m',
+        'nidoran ♂',
         'nidorino'
       ],
       order: 22
@@ -285,8 +285,8 @@ const gameLocation: GameLocation = {
         'raticate',
         'spearow',
         'ekans',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'poliwag',
         'poliwhirl',
         'machop',
@@ -490,8 +490,8 @@ const gameLocation: GameLocation = {
       pokemon: [
         'rattata',
         'spearow',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'mankey',
         'poliwag',
         'poliwhirl',
@@ -568,9 +568,9 @@ const gameLocation: GameLocation = {
     {
       location: 'Safari Zone',
       pokemon: [
-        'nidoran-f',
+        'nidoran ♀',
         'nidorina',
-        'nidoran-m',
+        'nidoran ♂',
         'nidorino',
         'paras',
         'parasect',
@@ -672,4 +672,8 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.Yellow),
+  [[], []]
+);

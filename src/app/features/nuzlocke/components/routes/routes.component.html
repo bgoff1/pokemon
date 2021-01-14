@@ -1,45 +1,32 @@
-<div [class.hidden]="routes.length">
+<div [class.hidden]="loaded">
   <mat-spinner></mat-spinner>
 </div>
 <mat-action-list>
-  <button
-    mat-list-item
-    *ngFor="let route of routes"
-    [longPress]
-    (release)="showDelete(route)"
+  <button mat-list-item *ngFor="let route of routes" [longPress] (release)="showDelete(route)"
     (click)="selectRoute(route)">
     <div [class.strike-through]="route.visited">
       <span class="route">{{ route.location }}</span>
       <span class="text-right"></span>
-      <img
-        [class.hidden]="!route.visited"
-        src="{{ route.capturedPokemon?.name | pokemonImage }}">
+      <img [class.hidden]="!route.visited" src="{{ route.capturedPokemon?.name | pokemonImage }}">
     </div>
 
     <mat-divider></mat-divider>
   </button>
 </mat-action-list>
-<button
-  mat-fab
-  class="add-button"
-  (click)="addRoute()">
+<button mat-fab class="add-button" (click)="addRoute()">
   <mat-icon>add</mat-icon>
 </button>
-<button
-  mat-fab
-  class="filter"
-  [matMenuTriggerFor]="routeMenu">
+<button mat-fab class="filter" [matMenuTriggerFor]="routeMenu">
   <mat-icon>filter_list</mat-icon>
 </button>
 <mat-menu #routeMenu="matMenu">
-  <button
-    mat-menu-item
-    (click)="updateAvailableRoutes(false)">
+  <button mat-menu-item (click)="updateAvailableRoutes(false)">
     Show All
   </button>
-  <button
-    mat-menu-item
-    (click)="updateAvailableRoutes()">
+  <button mat-menu-item (click)="updateAvailableRoutes()">
     Only Available
+  </button>
+  <button mat-menu-item (click)="toggleSortingMethod()">
+    {{ opposingSortingMethod }}
   </button>
 </mat-menu>

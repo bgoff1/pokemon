@@ -8,6 +8,9 @@
 
 mat-sidenav-content {
   height: calc(100vh - 48px - 64px);
+}
+
+.overflow-y-off {
   overflow-y: hidden;
 }
 

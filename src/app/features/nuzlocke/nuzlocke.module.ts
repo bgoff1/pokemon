@@ -29,6 +29,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { SaveDialogComponent } from './components/saves/save-dialog/save-dialog.component';
 import { DeleteRouteDialogComponent } from './components/routes/delete-route-dialog/delete-route-dialog.component';
 import { EvolveDialogComponent } from './components/overview/drag-drop/evolve-dialog/evolve-dialog.component';
+import { PickerComponent } from './components/picker/picker.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'saves', pathMatch: 'full' },
@@ -79,7 +80,8 @@ const materialModules = [
     DragDropComponent,
     SaveDialogComponent,
     DeleteRouteDialogComponent,
-    EvolveDialogComponent
+    EvolveDialogComponent,
+    PickerComponent
   ],
   imports: [
     CommonModule,

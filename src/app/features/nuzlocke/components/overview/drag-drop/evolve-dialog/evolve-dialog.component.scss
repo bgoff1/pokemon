@@ -9,7 +9,10 @@ form {
 .hidden {
   display: none;
 }
-
-.center-buttons {
-  justify-content: center;
+mat-form-field {
+  width: 100%;
+}
+.pokemon-big {
+  width: 50%;
+  height: 50%;
 }

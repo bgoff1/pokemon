@@ -1,4 +1,4 @@
-import { GameGroup } from '@models/pokemon/game-groups';
+import { Game } from '@models/pokemon/game';
 import { NuzlockeStatus } from './status.model';
 import { Route } from './route.model';
 import { Pokemon } from './pokemon.model';
@@ -6,7 +6,7 @@ import { Pokemon } from './pokemon.model';
 export interface Nuzlocke {
   id?: number;
   runName: string;
-  game: GameGroup;
+  game: Game;
   random: boolean;
   startDate: Date;
   badgesEarned: number[];
@@ -18,6 +18,6 @@ export interface Nuzlocke {
 
 export interface CreateNuzlocke {
   runName: string;
-  game: GameGroup;
+  game: Game;
   random: boolean;
 }

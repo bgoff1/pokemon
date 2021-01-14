@@ -1,5 +1,4 @@
-import { enumValues } from '@util/enum';
-import { Region } from './region';
+import { Game } from './game';
 
 export enum GameGroup {
   RedBlue,
@@ -22,64 +21,45 @@ export enum GameGroup {
   Custom
 }
 
-export function formatGameName(
-  game: keyof typeof GameGroup | GameGroup
-): string {
-  if (typeof game !== 'string') {
-    game = GameGroup[game] as keyof typeof GameGroup;
-  }
-  switch (game) {
-    case 'Black2White2':
-      return 'Black 2 / White 2';
-    case 'FireRedLeafGreen':
-      return 'FireRed / LeafGreen';
-    case 'HeartGoldSoulSilver':
-      return 'HeartGold / SoulSilver';
-    case 'OmegaRubyAlphaSapphire':
-      return 'Omega Ruby / Alpha Sapphire';
-    case 'UltraSunUltraMoon':
-      return 'Ultra Sun / Ultra Moon';
-    default:
-      return game
-        .replace(/([A-Z])/g, ' / $1')
-        .trim()
-        .slice(1)
-        .trim();
-  }
-}
-
-export const games = enumValues(GameGroup).map(game => ({
-  game: GameGroup[game],
-  displayName: formatGameName(game)
-}));
-
-export function getRegionFromGame(game: GameGroup): Region {
-  switch (game) {
+export function getGamesFromGameGroup(
+  gameGroup: GameGroup
+): [Game, Game] | [Game] {
+  switch (gameGroup) {
     case GameGroup.RedBlue:
+      return [Game.Red, Game.Blue];
     case GameGroup.Yellow:
-    case GameGroup.FireRedLeafGreen:
-    case GameGroup.Custom:
-      return Region.Kanto;
-    case GameGroup.Crystal:
+      return [Game.Yellow];
     case GameGroup.GoldSilver:
-    case GameGroup.HeartGoldSoulSilver:
-      return Region.Johto;
+      return [Game.Gold, Game.Silver];
+    case GameGroup.Crystal:
+      return [Game.Crystal];
     case GameGroup.RubySapphire:
-    case GameGroup.OmegaRubyAlphaSapphire:
+      return [Game.Ruby, Game.Sapphire];
     case GameGroup.Emerald:
-      return Region.Hoenn;
+      return [Game.Emerald];
+    case GameGroup.FireRedLeafGreen:
+      return [Game.FireRed, Game.LeafGreen];
     case GameGroup.DiamondPearl:
+      return [Game.Diamond, Game.Pearl];
     case GameGroup.Platinum:
-      return Region.Sinnoh;
+      return [Game.Platinum];
+    case GameGroup.HeartGoldSoulSilver:
+      return [Game.HeartGold, Game.SoulSilver];
     case GameGroup.BlackWhite:
+      return [Game.Black, Game.White];
     case GameGroup.Black2White2:
-      return Region.Unova;
+      return [Game.Black2, Game.White2];
     case GameGroup.XY:
-      return Region.Kalos;
+      return [Game.X, Game.Y];
+    case GameGroup.OmegaRubyAlphaSapphire:
+      return [Game.OmegaRuby, Game.AlphaSapphire];
     case GameGroup.SunMoon:
+      return [Game.Sun, Game.Moon];
     case GameGroup.UltraSunUltraMoon:
-      return Region.Alola;
+      return [Game.UltraSun, Game.UltraMoon];
     case GameGroup.SwordShield:
-      return Region.Galar;
+      return [Game.Sword, Game.Shield];
+    case GameGroup.Custom:
+      return [Game.Red];
   }
 }

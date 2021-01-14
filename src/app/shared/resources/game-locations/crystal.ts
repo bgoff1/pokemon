@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.Crystal,
@@ -484,7 +484,7 @@ const gameLocation: GameLocation = {
         'tentacruel',
         'shellder',
         'tangela',
-        'mr-mime',
+        'mr. mime',
         'magikarp',
         'chinchou',
         'lanturn'
@@ -662,8 +662,8 @@ const gameLocation: GameLocation = {
         'caterpie',
         'weedle',
         'pidgey',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'venonat',
         'psyduck',
         'hoothoot',
@@ -789,8 +789,8 @@ const gameLocation: GameLocation = {
       location: 'Route 35',
       pokemon: [
         'pidgey',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'jigglypuff',
         'meowth',
         'psyduck',
@@ -1049,4 +1049,8 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.Crystal),
+  [[], []]
+);

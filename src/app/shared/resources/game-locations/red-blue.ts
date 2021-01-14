@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.RedBlue,
@@ -34,7 +34,7 @@ const gameLocation: GameLocation = {
     },
     {
       location: 'Mt. Moon Fossil',
-      pokemon: ['omantye', 'kabuto'],
+      pokemon: ['omanyte', 'kabuto'],
       order: 46
     },
     {
@@ -390,8 +390,8 @@ const gameLocation: GameLocation = {
       pokemon: [
         'rattata',
         'spearow',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'poliwag',
         'goldeen',
         'magikarp'
@@ -459,9 +459,9 @@ const gameLocation: GameLocation = {
     {
       location: 'Safari Zone',
       pokemon: [
-        'nidoran-f',
+        'nidoran ♀',
         'nidorina',
-        'nidoran-m',
+        'nidoran ♂',
         'nidorino',
         'paras',
         'parasect',
@@ -541,4 +541,36 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export const redExclusives = [
+  'ekans',
+  'arbok',
+  'oddish',
+  'gloom',
+  'vileplume',
+  'mankey',
+  'primeape',
+  'growlithe',
+  'arcanine',
+  'scyther',
+  'electabuzz'
+];
+
+export const blueExclusives = [
+  'sandshrew',
+  'sandslash',
+  'vulpix',
+  'ninetales',
+  'meowth',
+  'persian',
+  'bellsprout',
+  'weepinbell',
+  'victreebel',
+  'magmar',
+  'pinsir'
+];
+
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.RedBlue),
+  [redExclusives, blueExclusives]
+);

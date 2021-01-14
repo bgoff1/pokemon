@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.DiamondPearl,
@@ -341,8 +341,8 @@ const gameLocation: GameLocation = {
     {
       location: 'Route 201',
       pokemon: [
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'growlithe',
         'doduo',
         'starly',
@@ -512,7 +512,7 @@ const gameLocation: GameLocation = {
         'staravia',
         'bibarel',
         'bonsly',
-        'mime-jr'
+        'mime jr.'
       ],
       order: 26
     },
@@ -531,7 +531,7 @@ const gameLocation: GameLocation = {
         'nuzleaf',
         'kricketune',
         'bonsly',
-        'mime-jr',
+        'mime jr.',
         'psyduck',
         'golduck',
         'machop',
@@ -692,7 +692,7 @@ const gameLocation: GameLocation = {
         'tentacool',
         'tentacruel',
         'voltorb',
-        'mr-mime',
+        'mr. mime',
         'magikarp',
         'gyarados',
         'ditto',
@@ -752,7 +752,7 @@ const gameLocation: GameLocation = {
       pokemon: [
         'tentacool',
         'tentacruel',
-        'mr-mime',
+        'mr. mime',
         'magikarp',
         'gyarados',
         'flaaffy',
@@ -925,4 +925,53 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export const diamondExclusives = [
+  'seel',
+  'dewgong',
+  'scyther',
+  'murkrow',
+  'scizor',
+  'larvitar',
+  'pupitar',
+  'tyranitar',
+  'poochyena',
+  'mightyena',
+  'aron',
+  'lairon',
+  'aggron',
+  'kecleon',
+  'cranidos',
+  'rampardos',
+  'honchkrow',
+  'stunky',
+  'skuntank',
+  'dialga'
+];
+export const pearlExclusives = [
+  'slowpoke',
+  'slowbro',
+  'pinsir',
+  'slowking',
+  'misdreavus',
+  'houndour',
+  'houndoom',
+  'stantler',
+  'spheal',
+  'sealeo',
+  'walrein',
+  'bagon',
+  'shelgon',
+  'salamence',
+  'sheildon',
+  'bastiodon',
+  'mismagius',
+  'glameow',
+  'purugly',
+  'palkia'
+];
+
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.DiamondPearl),
+  [diamondExclusives, pearlExclusives]
+);

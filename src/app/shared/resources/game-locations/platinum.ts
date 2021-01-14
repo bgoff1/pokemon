@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.Platinum,
@@ -323,8 +323,8 @@ const gameLocation: GameLocation = {
     {
       location: 'Route 201',
       pokemon: [
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'growlithe',
         'doduo',
         'starly',
@@ -662,7 +662,7 @@ const gameLocation: GameLocation = {
         'tentacool',
         'tentacruel',
         'voltorb',
-        'mr-mime',
+        'mr. mime',
         'magikarp',
         'gyarados',
         'floatzel',
@@ -903,4 +903,8 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.Platinum),
+  [[], []]
+);

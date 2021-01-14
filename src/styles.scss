@@ -24,7 +24,7 @@
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .hover:hover {
@@ -63,4 +63,14 @@ mat-spinner {
   position: fixed !important;
   bottom: 7.5vh;
   right: 5vw;
+}
+
+.test-button {
+  position: fixed !important;
+  bottom: 7.5vh;
+  left: 5vw;
+}
+
+.center-buttons {
+  justify-content: center;
 }

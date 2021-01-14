@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
 import { firstNum } from '@util/select';
 import { TeamService } from '@team/services/team/team.service';
+import { Type } from '@models/pokemon/type';
 
 @Component({
   selector: 'team',
@@ -33,7 +34,19 @@ export class TeamComponent implements OnInit {
     return firstNum(this.team, 3);
   }
 
+  get firstThreeTypes() {
+    return this.firstThree.map(item =>
+      item.types.map(type => Type[type].toLowerCase())
+    );
+  }
+
   get lastThree() {
     return firstNum(this.team, 3, 3);
+  }
+
+  get lastThreeTypes() {
+    return this.lastThree.map(item =>
+      item.types.map(type => Type[type].toLowerCase())
+    );
   }
 }

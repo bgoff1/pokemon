@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.FireRedLeafGreen,
@@ -34,7 +34,7 @@ const gameLocation: GameLocation = {
     },
     {
       location: 'Mt. Moon Fossil',
-      pokemon: ['omantye', 'kabuto'],
+      pokemon: ['omanyte', 'kabuto'],
       order: 46
     },
     {
@@ -321,8 +321,8 @@ const gameLocation: GameLocation = {
       pokemon: [
         'pidgey',
         'spearow',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran ♀',
+        'nidoran ♂',
         'jigglypuff',
         'mankey'
       ],
@@ -642,9 +642,9 @@ const gameLocation: GameLocation = {
     {
       location: 'Safari Zone',
       pokemon: [
-        'nidoran-f',
+        'nidoran ♀',
         'nidorina',
-        'nidoran-m',
+        'nidoran ♂',
         'nidorino',
         'paras',
         'parasect',
@@ -760,4 +760,59 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export const fireRedExclusives = [
+  'ekans',
+  'arbok',
+  'oddish',
+  'gloom',
+  'vileplume',
+  'bellossom',
+  'psyduck',
+  'golduck',
+  'growlithe',
+  'arcanine',
+  'shellder',
+  'cloyster',
+  'electabuzz',
+  'elekid',
+  'scyther',
+  'scizor',
+  'wooper',
+  'quagsire',
+  'murkrow',
+  'qwilfish',
+  'delibird',
+  'skarmory',
+  'deoxys'
+];
+export const leafGreenExclusives = [
+  'sandshrew',
+  'sandslash',
+  'vulpix',
+  'ninetales',
+  'bellsprout',
+  'weepinbell',
+  'victreebel',
+  'slowpoke',
+  'slowbro',
+  'slowking',
+  'staryu',
+  'starmie',
+  'magmar',
+  'magby',
+  'pinsir',
+  'azurill',
+  'marill',
+  'azumarill',
+  'misdreavus',
+  'sneasel',
+  'remoraid',
+  'octillery',
+  'mantine'
+];
+
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.FireRedLeafGreen),
+  [fireRedExclusives, leafGreenExclusives]
+);

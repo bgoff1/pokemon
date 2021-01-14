@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { DatabaseService } from '@services/database/database.service';
-import { games } from '@models/pokemon/game-groups';
 import { CreateRouteDialogResult } from '@nuzlocke/models/create-route-dialog.model';
-import { Route, EncounterType } from '@nuzlocke/models/route.model';
+import { CreateNuzlocke, Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { EncounterType, Route } from '@nuzlocke/models/route.model';
 import { NuzlockeStatus } from '@nuzlocke/models/status.model';
-import { Nuzlocke, CreateNuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { DatabaseService } from '@services/database/database.service';
+import { formatGameName, Game, games } from '@shared/models/pokemon/game';
+import { enumValues } from '@shared/util/enum';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +61,16 @@ export class NuzlockeService {
       startDate: new Date(),
       status: NuzlockeStatus.Started
     };
+  }
+
+  async generateTestSaves() {
+    for (const game of enumValues(Game)) {
+      await this.createNuzlocke({
+        runName: formatGameName(game),
+        game: Game[game],
+        random: false
+      });
+    }
   }
 
   async convertDialogToRoute(input: CreateRouteDialogResult): Promise<Route> {

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { RouterService } from '@services/router/router.service';
-import { GameGroup } from '@models/pokemon/game-groups';
-import { Game } from '@nuzlocke/models/game.model';
+import { DisplayGame } from '@features/nuzlocke/models/display-game';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
+import { Game } from '@models/pokemon/game';
+import { environment } from '@environment';
 
 @Component({
   selector: 'create',
@@ -12,7 +13,7 @@ import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
 })
 export class CreateComponent {
   formGroup: FormGroup;
-  games: Game[] = [];
+  games: DisplayGame[] = [];
 
   constructor(
     private readonly nuzlockeService: NuzlockeService,
@@ -40,15 +41,26 @@ export class CreateComponent {
     }
   }
 
+  async generateTestRoutes() {
+    if (this.development) {
+      await this.nuzlockeService.generateTestSaves();
+      this.routerService.redirect('/nuzlocke');
+    }
+  }
+
   get runName(): string {
     return this.formGroup.controls.runName.value;
   }
 
-  get game(): GameGroup {
+  get game(): Game {
     return this.formGroup.controls.game.value;
   }
 
   get random(): boolean {
     return this.formGroup.controls.random.value;
+  }
+
+  get development(): boolean {
+    return !environment.production;
   }
 }

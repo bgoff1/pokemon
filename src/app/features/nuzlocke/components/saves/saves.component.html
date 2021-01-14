@@ -1,12 +1,7 @@
 <div>
   <mat-action-list>
     <div *ngFor="let save of saves">
-      <button
-        mat-list-item
-        class="each-save"
-        [longPress]
-        (release)="onLongPress(save)"
-        (click)="selectSave(save)">
+      <button mat-list-item class="each-save" [longPress] (release)="onLongPress(save)" (click)="selectSave(save)">
         <table class="w-100">
           <tbody>
             <tr>
@@ -28,9 +23,6 @@
     </div>
   </mat-action-list>
 </div>
-<button
-  mat-fab
-  class="add-button"
-  (click)="navigateToCreate()">
+<button mat-fab class="add-button" (click)="navigateToCreate()">
   <mat-icon>add</mat-icon>
 </button>

@@ -1,25 +1,18 @@
 <form [formGroup]="routeFormControl">
   <h1 mat-dialog-title>Add Route</h1>
   <div mat-dialog-content>
-    <mat-form-field>
-      <input
-        autocomplete="off"
-        matInput
-        formControlName="route"
-        placeholder="Route Name">
-    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <input autocomplete="off" matInput formControlName="route" placeholder="Route Name">
+      </mat-form-field>
+    </div>
     <mat-slide-toggle formControlName="current">Save for this run?</mat-slide-toggle>
   </div>
-  <div mat-dialog-actions>
-    <button
-      mat-raised-button
-      (click)="onClose('cancel')">
+  <div mat-dialog-actions class="center-buttons">
+    <button color="warn" mat-raised-button (click)="onClose('cancel')">
       Cancel
     </button>
-    <button
-      mat-raised-button
-      (click)="onClose('ok')"
-      cdkFocusInitial>
+    <button color="accent" mat-raised-button (click)="onClose('ok')">
       Ok
     </button>
   </div>

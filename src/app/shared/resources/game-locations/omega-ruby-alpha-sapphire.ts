@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.OmegaRubyAlphaSapphire,
@@ -652,4 +652,53 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export const ORExclusives = [
+  'kabuto',
+  'kabutops',
+  'ho-oh',
+  'seedot',
+  'nuzleaf',
+  'shiftry',
+  'mawile',
+  'zangoose',
+  'solrock',
+  'groudon',
+  'shieldon',
+  'bastiodon',
+  'palkia',
+  'throh',
+  'archen',
+  'archeops',
+  'tornadus',
+  'reshiram',
+  'skrelp',
+  'dragalge'
+];
+export const ASExclusives = [
+  'omanyte',
+  'omastar',
+  'lugia',
+  'lotad',
+  'lombre',
+  'ludicolo',
+  'sableye',
+  'seviper',
+  'lunatone',
+  'kyogre',
+  'cranidos',
+  'rampardos',
+  'dialga',
+  'sawk',
+  'tirtouga',
+  'carracosta',
+  'thundurus',
+  'zekrom',
+  'clauncher',
+  'clawitzer'
+];
+
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.OmegaRubyAlphaSapphire),
+  [ORExclusives, ASExclusives]
+);

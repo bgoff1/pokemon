@@ -1,9 +1,10 @@
 form {
   text-align: center;
 }
-.mat-dialog-actions {
-  justify-content: center;
-}
 .mat-dialog-content {
   overflow-y: hidden;
+}
+
+mat-form-field {
+  width: 100%;
 }

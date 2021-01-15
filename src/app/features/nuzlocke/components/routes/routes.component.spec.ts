@@ -16,7 +16,7 @@ describe('Routes Component', () => {
       nuzlockeServiceMock,
       dialogRefMock
     );
-    component.nuzlocke = {} as any;
+    component.nuzlocke = { pokemon: [{ name: 'a' }] } as any;
   });
 
   test('should create', () => {

@@ -34,7 +34,7 @@
               "includePaths": ["src/assets/style"]
             },
             "scripts": [],
-            "allowedCommonJsDependencies": ["@tweenjs/tween.js"]
+            "allowedCommonJsDependencies": ["@tweenjs/tween.js", "hammerjs"]
           },
           "configurations": {
             "production": {
@@ -47,7 +47,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,

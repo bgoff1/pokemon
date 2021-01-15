@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { HideFormService } from '../services/hide-form/hide-form.service';
+import { HideFormService } from '@services/hide-form/hide-form.service';
 
 @Pipe({
   name: 'hideForm'

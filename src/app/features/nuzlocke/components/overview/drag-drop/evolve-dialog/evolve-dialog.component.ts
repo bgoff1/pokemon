@@ -1,9 +1,9 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EvolveDialogRef } from '@features/nuzlocke/models/evolve-dialog.model';
+import { PickerComponent } from '@nuzlocke/components/picker/picker.component';
 import { Pokemon } from '@nuzlocke/models/pokemon.model';
 import { titlecase } from '@util/name';
-import { PickerComponent } from '../../../picker/picker.component';
 
 @Component({
   selector: 'evolve-dialog',

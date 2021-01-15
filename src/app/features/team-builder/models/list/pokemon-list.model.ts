@@ -1,20 +1,23 @@
+import { Injectable } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
 import { Pokedex } from '@models/pokemon/pokedex';
-import { Region, getRegion, RegionDisplayName } from '@models/pokemon/region';
+import { getRegion, Region, RegionDisplayName } from '@models/pokemon/region';
 import { Type } from '@models/pokemon/type';
+import { PokemonImageService } from '@services/pokemon-image/pokemon-image.service';
 import { NameUtility } from '@util/name';
 import { Filter, FilterProperties } from '../filter';
 import { Coverage } from '../type-coverage/coverage.model';
 
-export class PokemonList {
+@Injectable({
+  providedIn: 'root'
+})
+export class PokemonListService {
   pokemon: Pokemon[];
   filteredPokemon: Pokemon[];
   coverage: Coverage;
+  alive: boolean;
 
-  constructor(allPokemon: Pokemon[]) {
-    this.pokemon = allPokemon;
-    this.coverage = new Coverage();
-  }
+  constructor(private readonly pokemonImageService: PokemonImageService) {}
 
   callFilters(filters: Filter[], team: Pokemon[]) {
     filters = filters.filter(filter => filter.enabled);
@@ -32,6 +35,12 @@ export class PokemonList {
     return this.filteredPokemon;
   }
 
+  setPokemon(allPokemon: Pokemon[]) {
+    this.pokemon = allPokemon;
+    this.coverage = new Coverage();
+    this.alive = true;
+  }
+
   filterSearch(filters: Filter[]) {
     const search = filters.filter(
       filter => filter.filter === FilterProperties.Search
@@ -39,7 +48,8 @@ export class PokemonList {
     if (search.length) {
       this.filteredPokemon = this.filteredPokemon.filter(mon =>
         search.some(({ value }) =>
-          NameUtility.characterReplace(mon.name)
+          this.pokemonImageService
+            .characterReplace(mon.name)
             .toLowerCase()
             .includes(value.trim().toLowerCase())
         )

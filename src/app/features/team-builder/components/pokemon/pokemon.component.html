@@ -1,9 +1,7 @@
-<div *ngIf="pokemon" class="sprite inline-block {{ pokemon.cssClasses }}" title="{{ pokemon.displayName | titlecase }}">
-  <img [class.hidden]="empty" src="{{ pokemon?.imageName | pokemonImage }}" [alt]="imageAlt">
-  <span *ngIf="empty" class="empty-item"></span>
-  <span *ngIf="row === 1 || row === 2" class="name-type-container">
-    <span [class.pokemon-name]="rowOne" class="inline-block">
-      {{ pokemon.displayName | hideForm }}
-    </span>
-  </span>
+<div>
+  <div *ngIf="pokemon" class="sprite inline-block {{ pokemon.cssClasses }}"
+    title="{{ pokemon.displayName | titlecase }}">
+    <img *ngIf="!empty" src="{{ pokemon?.name | pokemonImage }}" [alt]="imageAlt">
+    <span *ngIf="empty" class="empty-item"></span>
+  </div>
 </div>

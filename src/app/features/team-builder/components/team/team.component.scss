@@ -1,7 +1,7 @@
 .container {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 40% 10% 40% 10%;
+  grid-template-rows: 2.5% 47.5% 47.5% 2.5%;
   height: 100%;
   @media screen and (min-width: 700px) {
     width: 33.3%;
@@ -30,12 +30,19 @@ mat-card-content {
 }
 
 .idk {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 70% 30%;
 }
 
 .wat {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: auto;
+}
+
+$width: 75px;
+.pokemon-name {
+  max-width: #{$width};
+  padding-left: calc(calc(100% - #{$width}) / 2);
 }

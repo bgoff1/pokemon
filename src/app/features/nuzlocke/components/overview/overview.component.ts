@@ -7,6 +7,9 @@ import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
 import { RouteData } from '@nuzlocke/models/route-data.model';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
+import { PokemonImageService } from '@services/pokemon-image/pokemon-image.service';
+import { RouterService } from '@shared/services/router/router.service';
+import { TeamService } from '@team/services/team/team.service';
 import { enumValues } from '@util/enum';
 
 @Component({
@@ -21,8 +24,11 @@ export class OverviewComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly router: RouterService,
+    private readonly pokemonImageService: PokemonImageService,
     private readonly badgeService: BadgeService,
-    private readonly nuzlockeService: NuzlockeService
+    private readonly nuzlockeService: NuzlockeService,
+    private readonly teamService: TeamService
   ) {}
 
   ngOnInit() {
@@ -48,6 +54,15 @@ export class OverviewComponent implements OnInit {
   earnBadge(badge: Badge, badgeNumber: number, secondRow: boolean) {
     badge.earned = !badge.earned;
     this.nuzlockeService.earnBadge(secondRow ? badgeNumber + 8 : badgeNumber);
+  }
+
+  async exportToTeamBuilder() {
+    const members = this.party.map(mon =>
+      this.pokemonImageService.transform(mon.name)
+    );
+
+    await this.teamService.exportToTeamBuilder(members);
+    this.router.redirect('/team-builder');
   }
 
   get rows(): Badge[][] {
@@ -76,6 +91,11 @@ export class OverviewComponent implements OnInit {
       }
     }
     return i;
+  }
+
+  get party() {
+    return this.groups.find(group => group?.title === Status[Status.Party])
+      ?.data;
   }
 
   get alive() {

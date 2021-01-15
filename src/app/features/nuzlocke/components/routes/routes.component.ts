@@ -71,7 +71,7 @@ export class RoutesComponent implements OnInit {
 
   setUpSorting() {
     if (localStorage.getItem('route sorting') === null) {
-      localStorage.setItem('route sorting', 'false');
+      localStorage.setItem('route sorting', 'true');
     }
     this.updateSortingMethod();
   }

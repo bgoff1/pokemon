@@ -1,5 +1,5 @@
-import { NameUtility, titlecase } from '@util/name';
-import { PokemonInterface, AbstractPokemon } from './pokemon';
+import { titlecase } from '@util/name';
+import { AbstractPokemon, PokemonInterface } from './pokemon';
 import { Type } from './type';
 export * from './pokemon';
 
@@ -21,15 +21,11 @@ export class Pokemon extends AbstractPokemon {
     }
   }
 
-  get imageName() {
-    return NameUtility.replaceImageCharacters(this.name);
-  }
-
   get displayName() {
-    return titlecase(NameUtility.getDisplayName(this.name ?? '') ?? '');
+    return titlecase(this.name === 'Empty Team Member' ? ' ' : this.name ?? '');
   }
 
   equals(other: Pokemon) {
-    return this.imageName === other.imageName;
+    return this.displayName === other.displayName;
   }
 }

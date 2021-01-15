@@ -36,7 +36,7 @@ export class CreateComponent {
           random: this.random
         })
         .then(run => {
-          this.routerService.changeTab(`overview`, run.id);
+          this.routerService.changeTab('routes', run.id);
         });
     }
   }

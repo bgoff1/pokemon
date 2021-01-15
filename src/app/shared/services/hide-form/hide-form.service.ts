@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { titlecase } from '../../util/name';
+import { titlecase } from '@util/name';
 
 @Injectable({
   providedIn: 'root'

@@ -12,12 +12,13 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { PokemonService } from '@services/pokemon/pokemon.service';
-import { NameUtility, titlecase } from '@util/name';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { Pokemon } from '@nuzlocke/models/pokemon.model';
 import { HideFormService } from '@services/hide-form/hide-form.service';
+import { PokemonImageService } from '@services/pokemon-image/pokemon-image.service';
+import { PokemonService } from '@services/pokemon/pokemon.service';
+import { titlecase } from '@util/name';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { NuzlockeService } from '../../services/nuzlocke/nuzlocke.service';
 
 @Component({
@@ -43,20 +44,19 @@ export class PickerComponent implements OnInit {
   constructor(
     private readonly pokemonService: PokemonService,
     private readonly hideFormService: HideFormService,
-    private readonly nuzlockeService: NuzlockeService
+    private readonly nuzlockeService: NuzlockeService,
+    private readonly pokemonImageService: PokemonImageService
   ) {
     this.formGroup = new FormGroup({
       pokemon: new FormControl('', [
         Validators.required,
         (control: AbstractControl) => {
-          console.log(
-            this.allNames.map(name => name.toLowerCase()),
-            NameUtility.reverseImageReplace(control.value).toLowerCase()
-          );
           return this.allNames
             .map(name => name.toLowerCase())
             .includes(
-              NameUtility.reverseImageReplace(control.value).toLowerCase()
+              this.pokemonImageService
+                .reverseImageReplace(control.value)
+                .toLowerCase()
             )
             ? null
             : { invalidPokemon: true };
@@ -103,18 +103,11 @@ export class PickerComponent implements OnInit {
       option.toLowerCase().includes(input.toLowerCase())
     );
 
-    const hasMega = input.toLowerCase().includes('mega ');
     return defaultFilters.length === 0
       ? this.allNames
-          .filter(option => {
-            const optionName = NameUtility.characterReplace(
-              option.toLowerCase()
-            );
-            return hasMega
-              ? optionName.includes(input.toLowerCase().replace('mega ', '')) &&
-                  optionName.includes('-mega')
-              : optionName.includes(input.toLowerCase());
-          })
+          .filter(option =>
+            this.pokemonImageService.handleSearch(option, input)
+          )
           .slice(0, 15)
       : defaultFilters;
   }
@@ -152,7 +145,7 @@ export class PickerComponent implements OnInit {
   }
 
   get imageValue() {
-    return NameUtility.reverseImageReplace(
+    return this.pokemonImageService.reverseImageReplace(
       this.pokemonControl.valid
         ? this.pokemonControl.value.toLowerCase()
         : this.pokemon?.name.toLowerCase()

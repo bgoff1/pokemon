@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { PokemonService } from '@services/pokemon/pokemon.service';
 import { Pokemon, PokemonInterface } from '@models/pokemon';
-import { PokemonList } from '@team/models/list/pokemon-list.model';
+import { PokemonService } from '@services/pokemon/pokemon.service';
+import { PokemonListService } from '@team/models/list/pokemon-list.model';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { FilterService } from '../filter/filter.service';
 
 @Injectable({
@@ -14,19 +14,18 @@ export class TeamService {
   private pokemonChange = new Subject<Pokemon[]>();
   private teamChange: BehaviorSubject<Pokemon[]>;
 
-  private pokemonList: PokemonList;
-
   constructor(
     private readonly filterService: FilterService,
-    private readonly pokemonService: PokemonService
+    private readonly pokemonService: PokemonService,
+    private readonly pokemonListService: PokemonListService
   ) {
-    this.teamChange = new BehaviorSubject(this.team);
+    this.teamChange = new BehaviorSubject(this.loadTeam());
   }
 
   async fetchPokemon(): Promise<void> {
     await this.pokemonService.createDatabase();
     const pokemon = await this.pokemonService.getPokemon();
-    this.pokemonList = new PokemonList(pokemon);
+    this.pokemonListService.setPokemon(pokemon);
   }
 
   async fetchFilters(): Promise<void> {
@@ -45,23 +44,48 @@ export class TeamService {
     if (this.filterService.checkingCoverage) {
       this.filterService.checkCoverage(this.team);
     }
-    localStorage.setItem('team', JSON.stringify(this.team));
+    this.setLocalStorage();
     this.sendTeamChange();
   }
 
   async sendTeamChange() {
-    if (this.pokemonList) {
+    if (this.pokemonListService.alive) {
       const filters = await this.filterService.getFilters();
-      this.pokemonChange.next(this.pokemonList.callFilters(filters, this.team));
+      this.pokemonChange.next(
+        this.pokemonListService.callFilters(filters, this.team)
+      );
     }
   }
 
-  addToTeam(pokemon: Pokemon): void {
-    if (this.team.length < 6) {
+  addToTeam(pokemon: Pokemon, update = true): void {
+    if (this.team.length < 6 && pokemon) {
       this.team.unshift();
       this.team.push(pokemon);
-      this.updateTeam();
+      if (update) {
+        this.updateTeam();
+      }
     }
+  }
+
+  setLocalStorage() {
+    localStorage.setItem('team', JSON.stringify(this.team));
+  }
+
+  async exportToTeamBuilder(members: string[]) {
+    this.team = [];
+
+    await this.pokemonService.createDatabase();
+    const pokemon = await this.pokemonService.getPokemon();
+
+    for (const member of members) {
+      const memberToAdd = pokemon.find(
+        mon => mon.name.toLowerCase() === member.toLowerCase()
+      );
+
+      this.addToTeam(memberToAdd, false);
+    }
+
+    this.setLocalStorage();
   }
 
   removeFromTeam(pokemon: Pokemon): void {
@@ -69,6 +93,11 @@ export class TeamService {
       this.team = this.team.filter(({ name }) => pokemon.name !== name);
       this.updateTeam();
     }
+  }
+
+  requestUpdate() {
+    this.loadTeam();
+    this.teamChange.next(this.team);
   }
 
   get teamChange$() {

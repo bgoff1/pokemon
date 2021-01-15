@@ -12,7 +12,7 @@ export class PokemonComponent {
   @Input() row: 1 | 2;
 
   get imageUrl(): string {
-    return this.empty ? '' : `assets/pokemon/${this.pokemon.imageName}.png`;
+    return this.empty ? '' : this.pokemon.name;
   }
 
   get imageAlt(): string {

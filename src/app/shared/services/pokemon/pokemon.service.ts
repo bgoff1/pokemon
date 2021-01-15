@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { Pokemon } from '@models/pokemon';
 import pokemon from '@resources/pokemon';
 import { DatabaseService } from '@services/database/database.service';
-import { NameUtility, titlecase } from '@util/name';
+import { PokemonImageService } from '@services/pokemon-image/pokemon-image.service';
+import { titlecase } from '@util/name';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly pokemonImageService: PokemonImageService
+  ) {}
 
   async createDatabase(): Promise<void> {
     const count = await this.databaseService.pokemon.count();
@@ -39,7 +43,8 @@ export class PokemonService {
   async find(names: string[]) {
     return (await this.getPokemon()).filter(mon =>
       names.some(name =>
-        NameUtility.replaceImageCharacters(mon.name)
+        this.pokemonImageService
+          .transform(mon.name)
           .toLowerCase()
           .includes(name.toLowerCase())
       )
@@ -48,7 +53,9 @@ export class PokemonService {
 
   async findEvolutionNames(name: string): Promise<string[]> {
     const pokemonToFind = await this.databaseService.pokemon
-      .where({ name: NameUtility.reverseImageReplace(name.toLowerCase()) })
+      .where({
+        name: this.pokemonImageService.reverseImageReplace(name.toLowerCase())
+      })
       .toArray();
 
     const siblings = (
@@ -62,7 +69,10 @@ export class PokemonService {
       .filter(
         mon =>
           mon &&
-          mon !== titlecase(NameUtility.reverseImageReplace(name.toLowerCase()))
+          mon !==
+            titlecase(
+              this.pokemonImageService.reverseImageReplace(name.toLowerCase())
+            )
       );
 
     return siblings;

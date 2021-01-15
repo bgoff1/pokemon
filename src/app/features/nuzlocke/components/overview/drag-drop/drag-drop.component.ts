@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DraggingService } from '@services/dragging/dragging.service';
-import { NameUtility } from '@util/name';
 import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
 import { MatDialog } from '@angular/material/dialog';
 import { EvolveDialogComponent } from './evolve-dialog/evolve-dialog.component';
@@ -46,11 +45,6 @@ export class DragDropComponent {
     }
   }
 
-  getPokemonImage(pokemonName: string): string {
-    const imageName = NameUtility.replaceImageCharacters(pokemonName);
-    return `assets/pokemon/${imageName}.png`;
-  }
-
   startDragging() {
     this.draggingService.isDragging = true;
   }
@@ -61,7 +55,8 @@ export class DragDropComponent {
 
   selectPokemon(pokemon: Pokemon) {
     const dialog = this.dialog.open(EvolveDialogComponent, {
-      data: { pokemon }
+      data: { pokemon },
+      width: '80%'
     });
     dialog
       .afterClosed()

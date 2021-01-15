@@ -1,50 +1,14 @@
-<form [formGroup]="evolveFormGroup">
-  <h1 mat-dialog-title>Evolution of {{ evolutionName }}</h1>
+<form>
+  <h1 mat-dialog-title>Evolution of {{ evolutionName | hideForm }}</h1>
   <div mat-dialog-content>
-    <div>
-      <mat-form-field>
-        <input
-          matInput
-          formControlName="pokemon"
-          #pokemon
-          placeholder="Pokemon"
-          [matAutocomplete]="auto">
-      </mat-form-field>
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="selectPokemon()">
-        <mat-option
-          *ngFor="let option of filteredOptions | async"
-          [value]="option">
-          {{ option | titlecase }}
-          <img
-            class="pokemon"
-            [src]="option | pokemonImage"
-            [alt]="option">
-        </mat-option>
-      </mat-autocomplete>
-      <mat-form-field>
-        <input
-          autocomplete="off"
-          matInput
-          formControlName="nickname"
-          placeholder="Nickname">
-      </mat-form-field>
-    </div>
+    <picker-dialog [random]="false" [nickname]="evolutionName" [limitOptionsByEvolution]="true" [pokemon]="pokemon">
+    </picker-dialog>
   </div>
-  <div
-    mat-dialog-actions
-    class="center-buttons">
-    <button
-      mat-raised-button
-      cdk
-      (click)="onClose('cancel')">
+  <div mat-dialog-actions class="center-buttons">
+    <button mat-raised-button color="warn" (click)="onClose('cancel')">
       Cancel
     </button>
-    <button
-      mat-raised-button
-      cdkFocusInitial
-      (click)="onClose('ok')">
+    <button mat-raised-button color="accent" (click)="onClose('ok')">
       Ok
     </button>
   </div>

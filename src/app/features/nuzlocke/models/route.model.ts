@@ -1,5 +1,5 @@
 import { Location } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { Game } from '@models/pokemon/game';
 import { Pokemon } from './pokemon.model';
 
 export interface Route extends Location {
@@ -7,7 +7,7 @@ export interface Route extends Location {
   location: string;
   pokemon: string[];
   type: EncounterType;
-  game: GameGroup;
+  game: Game;
 }
 
 export enum EncounterType {
@@ -20,4 +20,5 @@ export interface DisplayRoute extends Route {
   visited: boolean;
   capturedPokemon?: Pokemon;
   random: boolean;
+  ownedPokemon?: string[];
 }

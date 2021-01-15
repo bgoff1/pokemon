@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.GoldSilver,
@@ -290,8 +290,8 @@ const gameLocation: GameLocation = {
       location: 'Route 35',
       pokemon: [
         'pidgey',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran♀',
+        'nidoran♂',
         'psyduck',
         'golduck',
         'poliwag',
@@ -308,8 +308,8 @@ const gameLocation: GameLocation = {
       location: 'Route 36',
       pokemon: [
         'pidgey',
-        'nidoran-f',
-        'nidoran-m',
+        'nidoran♀',
+        'nidoran♂',
         'vulpix',
         'growlithe',
         'hoothoot',
@@ -745,7 +745,7 @@ const gameLocation: GameLocation = {
         'tentacruel',
         'shellder',
         'tangela',
-        'mr-mime',
+        'mr. mime',
         'magikarp',
         'chinchou',
         'lanturn'
@@ -964,4 +964,33 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export const goldExclusives = [
+  'mankey',
+  'primeape',
+  'growlithe',
+  'arcanine',
+  'spinarak',
+  'ariados',
+  'gligar',
+  'teddiursa',
+  'ursaring',
+  'mantine'
+];
+export const silverExclusives = [
+  'vulpix',
+  'ninetales',
+  'meowth',
+  'persian',
+  'ledyba',
+  'ledian',
+  'delibird',
+  'skarmory',
+  'phanpy',
+  'donphan'
+];
+
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.GoldSilver),
+  [goldExclusives, silverExclusives]
+);

@@ -2,7 +2,7 @@ import {
   convertGameLocationToRoutes,
   GameLocation
 } from '@models/game-location.model';
-import { GameGroup } from '@models/pokemon/game-groups';
+import { GameGroup, getGamesFromGameGroup } from '@models/pokemon/game-groups';
 
 const gameLocation: GameLocation = {
   game: GameGroup.RubySapphire,
@@ -652,4 +652,27 @@ const gameLocation: GameLocation = {
   ]
 };
 
-export default convertGameLocationToRoutes(gameLocation);
+export const rubyExclusives = [
+  'seedot',
+  'nuzleaf',
+  'shiftry',
+  'mawile',
+  'zangoose',
+  'solrock',
+  'groudon'
+];
+export const sapphireExclusives = [
+  'lotad',
+  'lombre',
+  'ludicolo',
+  'sableye',
+  'seviper',
+  'lunatone',
+  'kyogre'
+];
+
+export default convertGameLocationToRoutes(
+  gameLocation,
+  getGamesFromGameGroup(GameGroup.RubySapphire),
+  [rubyExclusives, sapphireExclusives]
+);

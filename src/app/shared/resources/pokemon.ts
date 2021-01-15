@@ -2287,7 +2287,7 @@ export default [
     generation: 'Generation I'
   },
   {
-    name: 'mr-mime-galar',
+    name: 'mr. mime-galar',
     pokedexNumbers: [
       { entryNumber: 264, name: 8 },
       { entryNumber: 158, name: 4 },
@@ -7094,7 +7094,7 @@ export default [
     generation: 'Generation IV'
   },
   {
-    name: 'mime-jr',
+    name: 'mime jr.',
     pokedexNumbers: [
       { entryNumber: 263, name: 8 },
       { entryNumber: 94, name: 5 },
@@ -12130,7 +12130,7 @@ export default [
     generation: 'Generation VIII'
   },
   {
-    name: 'sirfetchd',
+    name: "sirfetch'd",
     pokedexNumbers: [
       { entryNumber: 219, name: 12 },
       { entryNumber: 851, name: 13 }

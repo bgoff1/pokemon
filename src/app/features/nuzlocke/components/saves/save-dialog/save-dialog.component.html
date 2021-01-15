@@ -5,43 +5,19 @@
   <div mat-dialog-content>
     <div [class.hidden]="confirmDelete">
       <mat-form-field>
-        <input
-          autocomplete="off"
-          matInput
-          formControlName="runName"
-          placeholder="Nuzlocke Name">
+        <input autocomplete="off" matInput formControlName="runName" placeholder="Nuzlocke Name">
       </mat-form-field>
     </div>
-    <div
-      class="my-3"
-      [class.hidden]="confirmDelete">
+    <div class="my-3" [class.hidden]="confirmDelete">
       <mat-slide-toggle formControlName="random">Randomized Run?</mat-slide-toggle>
     </div>
-    <div
-      class="pb-2"
-      [class.hidden]="!confirmDelete">
+    <div class="pb-2" [class.hidden]="!confirmDelete">
       You cannot get this save back once you delete it. Are you sure you want to delete this save?
     </div>
     <div class="text-center">
-      <button
-        color="warn"
-        mat-raised-button
-        (click)="delete()">
+      <button color="warn" mat-raised-button (click)="delete()">
         Delete Run
       </button>
     </div>
-  </div>
-  <div mat-dialog-actions>
-    <button
-      mat-raised-button
-      (click)="onClose('cancel')">
-      Cancel
-    </button>
-    <button
-      mat-raised-button
-      (click)="onClose('ok')"
-      cdkFocusInitial>
-      Ok
-    </button>
   </div>
 </form>

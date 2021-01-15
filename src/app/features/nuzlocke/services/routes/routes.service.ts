@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { DatabaseService } from '@services/database/database.service';
-import { allRoutes } from '@resources/game-locations';
-import { Route } from '@nuzlocke/models/route.model';
-import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 import { CreateRouteDialogResult } from '@features/nuzlocke/models/create-route-dialog.model';
+import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Route } from '@nuzlocke/models/route.model';
+import { allRoutes } from '@resources/game-locations';
+import { DatabaseService } from '@services/database/database.service';
 import { NuzlockeService } from '../nuzlocke/nuzlocke.service';
 
 @Injectable({

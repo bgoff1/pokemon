@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { enumValues } from '@util/enum';
 import { BadgeService } from '@features/nuzlocke/services/badge/badge.service';
 import { Badge } from '@nuzlocke/models/badge.model';
-import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
-import { RouteData } from '@nuzlocke/models/route-data.model';
-import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
-import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 import { Group } from '@nuzlocke/models/group.model';
+import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { RouteData } from '@nuzlocke/models/route-data.model';
+import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
+import { enumValues } from '@util/enum';
 
 @Component({
   selector: 'nuzlocke-overview',

@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { RouteData } from '@nuzlocke/models/route-data.model';
-import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
-import { Route, DisplayRoute } from '@nuzlocke/models/route.model';
-import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { ActivatedRoute } from '@angular/router';
+import { DeleteRouteDialog } from '@features/nuzlocke/models/delete-route-dialog.model';
 import { CreateRouteDialog } from '@nuzlocke/models/create-route-dialog.model';
+import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { RouteData } from '@nuzlocke/models/route-data.model';
+import { DisplayRoute, Route } from '@nuzlocke/models/route.model';
 import { SelectRouteDialog } from '@nuzlocke/models/select-route-dialog.model';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
 import { RoutesService } from '@nuzlocke/services/routes/routes.service';
 import { CreateRouteDialogComponent } from './create-route-dialog/create-route-dialog.component';
-import { SelectRouteDialogComponent } from './select-route-dialog/select-route-dialog.component';
-import { DeleteRouteDialog } from '@features/nuzlocke/models/delete-route-dialog.model';
 import { DeleteRouteDialogComponent } from './delete-route-dialog/delete-route-dialog.component';
+import { SelectRouteDialogComponent } from './select-route-dialog/select-route-dialog.component';
 
 @Component({
   selector: 'routes',
@@ -23,6 +23,7 @@ export class RoutesComponent implements OnInit {
   routes: DisplayRoute[] = [];
   nuzlocke: Nuzlocke;
   shouldFilter: boolean;
+  loaded: boolean;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -64,11 +65,43 @@ export class RoutesComponent implements OnInit {
     if (filter) {
       this.routes = this.routes.filter(route => !route.visited);
     }
+
+    this.setUpSorting();
+  }
+
+  setUpSorting() {
+    if (localStorage.getItem('route sorting') === null) {
+      localStorage.setItem('route sorting', 'false');
+    }
+    this.updateSortingMethod();
+  }
+
+  toggleSortingMethod() {
+    localStorage.setItem('route sorting', this.sortByOrder ? 'false' : 'true');
+    this.updateSortingMethod();
+  }
+
+  updateSortingMethod() {
+    if (this.sortByOrder) {
+      this.routes = this.routes.sort((a, b) => a.order - b.order);
+    } else {
+      const giftOrStaticRegex = /(Gift|Static) - /;
+
+      this.routes = this.routes.sort((a, b) => {
+        const locationA = a.location.replace(giftOrStaticRegex, '').trim();
+        const locationB = b.location.replace(giftOrStaticRegex, '').trim();
+
+        return locationA.localeCompare(locationB);
+      });
+    }
+
+    this.loaded = true;
   }
 
   addRoute() {
     const dialog: CreateRouteDialog = this.dialog.open(
-      CreateRouteDialogComponent
+      CreateRouteDialogComponent,
+      { width: '80%' }
     );
     dialog.afterClosed().subscribe(async res => {
       if (res) {
@@ -93,7 +126,14 @@ export class RoutesComponent implements OnInit {
   selectRoute(route: DisplayRoute) {
     const dialog: SelectRouteDialog = this.dialog.open(
       SelectRouteDialogComponent,
-      { data: { ...route, random: this.nuzlocke.random } }
+      {
+        data: {
+          ...route,
+          random: this.nuzlocke.random,
+          ownedPokemon: this.nuzlocke.pokemon.map(mon => mon.name.toLowerCase())
+        },
+        width: '80%'
+      }
     );
     dialog.afterClosed().subscribe(res => {
       if (res) {
@@ -111,7 +151,7 @@ export class RoutesComponent implements OnInit {
   showDelete(route: DisplayRoute) {
     const dialog: DeleteRouteDialog = this.dialog.open(
       DeleteRouteDialogComponent,
-      { data: { name: route.location } }
+      { data: { name: route.location }, width: '80%' }
     );
     dialog.afterClosed().subscribe(async res => {
       if (res) {
@@ -123,5 +163,18 @@ export class RoutesComponent implements OnInit {
         this.updateAvailableRoutes();
       }
     });
+  }
+
+  private get sortByOrder() {
+    const sorting = localStorage.getItem('route sorting');
+    return sorting ? sorting === 'true' : true;
+  }
+
+  get opposingSortingMethod() {
+    if (this.sortByOrder) {
+      return 'Sort By Name';
+    } else {
+      return 'Sort By Order';
+    }
   }
 }

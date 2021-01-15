@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterService } from '@services/router/router.service';
-import { GameGroup, formatGameName } from '@models/pokemon/game-groups';
-import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SaveRouteDialog } from '@features/nuzlocke/models/save-dialog.model';
 import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 import { NuzlockeStatus } from '@nuzlocke/models/status.model';
-import { SaveRouteDialog } from '@features/nuzlocke/models/save-dialog.model';
+import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
+import { RouterService } from '@services/router/router.service';
+import { formatGameName, Game } from '@shared/models/pokemon/game';
 import { SaveDialogComponent } from './save-dialog/save-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'saves',
@@ -41,7 +41,7 @@ export class SavesComponent implements OnInit {
     return NuzlockeStatus[status];
   }
 
-  getGame(game: GameGroup): string {
+  getGame(game: Game): string {
     return formatGameName(game);
   }
 
@@ -51,7 +51,8 @@ export class SavesComponent implements OnInit {
 
   onLongPress(save: Nuzlocke) {
     const dialog: SaveRouteDialog = this.dialog.open(SaveDialogComponent, {
-      data: { name: save.runName, random: save.random }
+      data: { name: save.runName, random: save.random },
+      width: '80%'
     });
     dialog.afterClosed().subscribe(async res => {
       if (res) {

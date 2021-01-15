@@ -9,7 +9,13 @@ export class PokemonImagePipe implements PipeTransform {
     if (!value || value === 'Empty-Team Member') {
       return '';
     }
-    const imageName = NameUtility.replaceImageCharacters(value);
-    return `assets/pokemon/${imageName.toLowerCase()}.png`;
+    if (value.toLowerCase().includes('char')) {
+      console.log(
+        value,
+        NameUtility.replaceImageCharacters(value.toLowerCase())
+      );
+    }
+    const imageName = NameUtility.replaceImageCharacters(value.toLowerCase());
+    return `assets/pokemon/${imageName}.png`;
   }
 }

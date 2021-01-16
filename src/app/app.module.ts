@@ -1,16 +1,13 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-
-import { HeaderModule } from '@features/header/header.module';
+import { environment } from '@environment';
 import { FooterModule } from '@features/footer/footer.module';
+import { HeaderModule } from '@features/header/header.module';
 import { SidebarModule } from '@features/sidebar/sidebar.module';
-
 import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

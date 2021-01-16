@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Region } from '@models/pokemon/region';
+import { Region } from '@models/pokemon/region.model';
 import { Badge } from '@nuzlocke/models/badge.model';
 import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
-import { Game, getRegionFromGame } from '@shared/models/pokemon/game';
+import { Game, getRegionFromGame } from '@models/pokemon/game.model';
 import { NuzlockeService } from '../nuzlocke/nuzlocke.service';
 
 @Injectable({
@@ -16,14 +16,14 @@ export class BadgeService {
     const region = Region[getRegionFromGame(run.game)].toLowerCase();
     return this.getUpdatedBadges(
       run,
-      [...Array(region === 'johto' ? 16 : 8).keys()].map(item => ({
+      [...Array(region === 'johto' ? 16 : 8).keys()].map((item) => ({
         url: `assets/badges/${this.getUrl(item, region)}.png`,
         earned: !!run.badgesEarned?.includes(item)
       }))
     );
   }
 
-  private getUpdatedBadges(run: Nuzlocke, badges: Badge[]) {
+  private getUpdatedBadges(run: Nuzlocke, badges: Badge[]): Badge[] {
     switch (run.game) {
       case Game.Platinum:
         [badges[2], badges[3], badges[4]] = [badges[4], badges[2], badges[3]];
@@ -41,14 +41,14 @@ export class BadgeService {
     return badges;
   }
 
-  updateURL(index: number, result: Badge[], game: Game) {
+  updateURL(index: number, result: Badge[], game: Game): void {
     result[index].url = result[index].url.replace(
       '.png',
       this.getImageCodeFromGame(game) + '.png'
     );
   }
 
-  getImageCodeFromGame(game: Game) {
+  getImageCodeFromGame(game: Game): string {
     if (game === Game.Sword) {
       return 'a';
     } else if (game === Game.Shield) {

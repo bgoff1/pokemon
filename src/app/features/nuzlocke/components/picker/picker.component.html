@@ -1,4 +1,4 @@
-<img class="pokemon-big" *ngIf="showImage" [src]="imageValue | pokemonImage" [alt]="imageValue">
+<img class="pokemon-big" *ngIf="showImage" [src]="imageValue | image" [alt]="imageValue">
 <form [formGroup]="formGroup">
   <mat-form-field>
     <input matInput formControlName="pokemon" #pokemon placeholder="Pokemon" (click)="onInputClick()"
@@ -8,7 +8,7 @@
     <mat-option *ngFor="let option of (random ? (filteredOptions | async | slice : 0 : 5) : (filteredOptions | async))"
       [value]="option">
       {{ option | hideForm }}
-      <img class="pokemon" [src]="option | pokemonImage" [alt]="option">
+      <img class="pokemon" [src]="option | image" [alt]="option">
     </mat-option>
   </mat-autocomplete>
   <mat-form-field *ngIf="!hideNickname">

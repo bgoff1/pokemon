@@ -1,21 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { PipesModule } from '@pipes';
 import { HeaderComponent } from './header.component';
 
+const materialModules = [MatToolbarModule, MatIconModule, MatButtonModule];
+
 @NgModule({
   declarations: [HeaderComponent],
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    PipesModule
-  ],
+  imports: [CommonModule, PipesModule, ...materialModules],
   exports: [HeaderComponent]
 })
 export class HeaderModule {}

@@ -7,7 +7,7 @@ import { NuzlockeService } from '../services/nuzlocke/nuzlocke.service';
   providedIn: 'root'
 })
 export class CreateGuard implements CanActivate {
-  private hasNuzlockes: boolean;
+  private hasNuzlockes = false;
   constructor(
     private readonly nuzlockeService: NuzlockeService,
     private readonly routerService: RouterService
@@ -16,7 +16,7 @@ export class CreateGuard implements CanActivate {
   canActivate(): Promise<boolean> | boolean {
     return (
       this.hasNuzlockes ||
-      this.nuzlockeService.hasNuzlockeSaved().then(canActivate => {
+      this.nuzlockeService.hasNuzlockeSaved().then((canActivate) => {
         if (!canActivate) {
           this.routerService.canChangeTabs = false;
           this.routerService.redirect('nuzlocke/create');

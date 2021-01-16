@@ -1,24 +1,24 @@
-import { HeaderComponent } from './header.component';
-import routerServiceMock from '@mocks/router.service.mock';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('Header Component', () => {
+import { HeaderComponent } from './header.component';
+
+describe('HeaderComponent', () => {
   let component: HeaderComponent;
+  let fixture: ComponentFixture<HeaderComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [HeaderComponent]
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    component = new HeaderComponent(routerServiceMock);
+    fixture = TestBed.createComponent(HeaderComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  test('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  test('should call click menu on toggle menu', () => {
-    component.toggleMenu();
-    expect(routerServiceMock.clickMenu).toHaveBeenCalled();
-  });
-
-  test('should subscribe on ng on init', () => {
-    component.ngOnInit();
-    expect(component.title).not.toEqual('Pokemon');
   });
 });

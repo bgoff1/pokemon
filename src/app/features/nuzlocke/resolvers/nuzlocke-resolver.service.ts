@@ -7,26 +7,26 @@ import { NuzlockeService } from '../services/nuzlocke/nuzlocke.service';
 @Injectable({
   providedIn: 'root'
 })
-export class NuzlockeResolverService implements Resolve<Nuzlocke> {
-  previous: { id: number; nuzlocke: Nuzlocke };
+export class NuzlockeResolverService implements Resolve<Nuzlocke | null> {
+  previous?: { id: number; nuzlocke: Nuzlocke };
   constructor(
     private readonly nuzlockeService: NuzlockeService,
     private readonly routerService: RouterService
   ) {
-    this.nuzlockeService.update$.subscribe(updates => {
-      this.previous.nuzlocke = updates;
+    this.nuzlockeService.update$.subscribe((updates) => {
+      this.previous = { id: this.previous?.id ?? 0, nuzlocke: updates };
     });
   }
 
-  resolve(route: ActivatedRouteSnapshot): Promise<Nuzlocke> | Nuzlocke {
-    const id = +route.paramMap.get('id');
+  resolve(route: ActivatedRouteSnapshot): Promise<Nuzlocke | null> | Nuzlocke {
+    const id = +(route.paramMap.get('id') ?? -1);
 
     if (id === this.previous?.id) {
       this.routerService.id = this.previous.id;
       return this.previous.nuzlocke;
     }
-    return this.nuzlockeService.getSaves().then(saves => {
-      const currentSave = saves.find(save => save.id === id);
+    return this.nuzlockeService.getSaves().then((saves) => {
+      const currentSave = saves.find((save) => save.id === id);
       if (!!currentSave) {
         this.previous = { id, nuzlocke: currentSave };
         this.routerService.id = this.previous.id;

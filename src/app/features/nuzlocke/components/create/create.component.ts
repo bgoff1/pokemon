@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { RouterService } from '@services/router/router.service';
-import { DisplayGame } from '@features/nuzlocke/models/display-game';
+import { DisplayGame } from '@features/nuzlocke/models/display-game.model';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
-import { Game } from '@models/pokemon/game';
+import { Game } from '@models/pokemon/game.model';
 import { environment } from '@environment';
 
 @Component({
-  selector: 'create',
+  selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss']
 })
@@ -27,7 +27,7 @@ export class CreateComponent {
     });
   }
 
-  async submit() {
+  async submit(): Promise<void> {
     if (!this.formGroup.invalid) {
       await this.nuzlockeService
         .createNuzlocke({
@@ -35,13 +35,13 @@ export class CreateComponent {
           game: this.game,
           random: this.random
         })
-        .then(run => {
+        .then((run) => {
           this.routerService.changeTab('routes', run.id);
         });
     }
   }
 
-  async generateTestRoutes() {
+  async generateTestRoutes(): Promise<void> {
     if (this.development) {
       await this.nuzlockeService.generateTestSaves();
       this.routerService.redirect('/nuzlocke');

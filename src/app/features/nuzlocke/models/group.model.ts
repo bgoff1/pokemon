@@ -1,6 +1,6 @@
-import { Pokemon } from './pokemon.model';
+import { Pokemon, Status } from './pokemon.model';
 
 export interface Group {
-  title: string;
+  title: keyof typeof Status;
   data: Pokemon[];
 }

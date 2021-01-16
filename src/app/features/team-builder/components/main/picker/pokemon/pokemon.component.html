@@ -1,0 +1,4 @@
+<div *ngIf="pokemon" class="sprite inline-block {{ pokemon.cssClasses }}" title="{{ pokemon.name | titlecase }}">
+  <img *ngIf="!empty" src="{{ pokemon.name | image }}" [alt]="imageAlt">
+  <span *ngIf="empty" class="empty-item"></span>
+</div>

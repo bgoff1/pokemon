@@ -3,31 +3,31 @@ import { RouterService } from '@services/router/router.service';
 import { TabLink } from '@models/tab.model';
 
 @Component({
-  selector: 'nav-footer',
+  selector: 'app-nav-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
   tabs: TabLink[] = [];
-  route: string;
+  route = '';
   constructor(private readonly routerService: RouterService) {}
 
-  ngOnInit() {
-    this.routerService.route$.subscribe(route => {
+  ngOnInit(): void {
+    this.routerService.route$.subscribe((route) => {
       this.tabs = this.routerService.getTabs(route);
       this.route = route;
     });
   }
 
-  navigate(path: string) {
+  navigate(path: string): void {
     this.routerService.changeTab(path);
   }
 
-  isActive(path: string) {
+  isActive(path: string): boolean {
     return this.routerService.isCurrentRoute(path);
   }
 
-  get disabledTabs() {
+  get disabledTabs(): boolean {
     return this.routerService.sidebarOpen || !this.routerService.canChangeTabs;
   }
 }

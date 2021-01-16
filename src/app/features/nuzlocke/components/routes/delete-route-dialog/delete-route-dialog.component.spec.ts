@@ -1,26 +1,24 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { DeleteRouteDialogComponent } from './delete-route-dialog.component';
-import dialogRefMock from '@mocks/dialog-ref.mock';
 
-describe('Delete Route Dialog Component', () => {
+describe('DeleteRouteDialogComponent', () => {
   let component: DeleteRouteDialogComponent;
+  let fixture: ComponentFixture<DeleteRouteDialogComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DeleteRouteDialogComponent]
+    }).compileComponents();
+  });
+
   beforeEach(() => {
-    component = new DeleteRouteDialogComponent(dialogRefMock, { name: 'john' });
+    fixture = TestBed.createComponent(DeleteRouteDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  test('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  test('should handle close', () => {
-    dialogRefMock.close = jest.fn();
-    component.routeFormControl.patchValue({ current: true });
-    component.onClose('ok');
-    expect(dialogRefMock.close).toBeCalledWith({ onlyFromCurrent: true });
-  });
-
-  test('should handle cancel', () => {
-    dialogRefMock.close = jest.fn();
-    component.onClose('cancel');
-    expect(dialogRefMock.close).toBeCalledWith();
   });
 });

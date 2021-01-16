@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, Event } from '@angular/router';
 import { Link } from '@models/link.model';
 import { Tab, TabLink } from '@models/tab.model';
 import { idTabs, sidebarLinks, tabs } from '@resources/links';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class RouterService {
   sidebarOpen = false;
   canChangeTabs = true;
   tabs: Tab[] = tabs;
-  id: number;
+  id: number | null = null;
 
   private menuClick: Subject<boolean> = new Subject();
   private route: Subject<string> = new Subject();
@@ -24,24 +24,23 @@ export class RouterService {
     return this.router.url.substring(1, this.router.url.indexOf('/', 2));
   }
 
-  get menuClick$() {
+  get menuClick$(): Observable<boolean> {
     return this.menuClick.asObservable();
   }
 
-  get route$() {
+  get route$(): Observable<string> {
     return this.route.asObservable();
   }
 
   constructor(private readonly router: Router) {
     router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((route: NavigationEnd) => {
-        this.route.next(
-          route.urlAfterRedirects.substring(
-            1,
-            route.urlAfterRedirects.lastIndexOf('/')
-          )
-        );
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((route: Event) => {
+        const url = (route as NavigationEnd)?.urlAfterRedirects;
+        if (url) {
+          const finalUrl = url.substring(1, url.lastIndexOf('/'));
+          this.route.next(finalUrl);
+        }
       });
   }
 
@@ -54,7 +53,7 @@ export class RouterService {
   }
 
   changeTab(route: string, id?: number): void {
-    if (idTabs.some(tab => tab === route)) {
+    if (idTabs.some((tab) => tab === route)) {
       if (id) {
         this.id = id;
       }
@@ -79,19 +78,20 @@ export class RouterService {
 
   getTabs(path: string): TabLink[] {
     path = path.split('/')[0];
-    return this.tabs.find(tab => tab.path === path)?.links || [];
+    return this.tabs.find((tab) => tab.path === path)?.links || [];
   }
 
   isViewMode(parent: string): boolean {
     return (
       this.tabs
-        .find(tab => tab.path === parent)
-        ?.links.some(link => this.isCurrentRoute(`${parent}/${link.route}`)) ||
-      false
+        .find((tab) => tab.path === parent)
+        ?.links.some((link) =>
+          this.isCurrentRoute(`${parent}/${link.route}`)
+        ) || false
     );
   }
 
-  redirect(path: string) {
+  redirect(path: string): void {
     if (!this.isExactRoute(path)) {
       this.router.navigateByUrl(path);
     }

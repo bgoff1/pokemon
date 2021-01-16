@@ -5,11 +5,11 @@ import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 import { NuzlockeStatus } from '@nuzlocke/models/status.model';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
 import { RouterService } from '@services/router/router.service';
-import { formatGameName, Game } from '@shared/models/pokemon/game';
+import { formatGameName, Game } from '@models/pokemon/game.model';
 import { SaveDialogComponent } from './save-dialog/save-dialog.component';
 
 @Component({
-  selector: 'saves',
+  selector: 'app-saves',
   templateUrl: './saves.component.html',
   styleUrls: ['./saves.component.scss']
 })
@@ -22,18 +22,18 @@ export class SavesComponent implements OnInit {
     private readonly routerService: RouterService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadSaves();
   }
 
-  async loadSaves() {
+  async loadSaves(): Promise<void> {
     this.saves = await this.nuzlockeService.getSaves();
-    if (this.saves.length === 1) {
+    if (this.saves.length === 1 && this.saves[0].id) {
       this.routerService.id = this.saves[0].id;
     }
   }
 
-  selectSave(save: Nuzlocke) {
+  selectSave(save: Nuzlocke): void {
     this.routerService.changeTab(`overview`, save.id);
   }
 
@@ -45,16 +45,16 @@ export class SavesComponent implements OnInit {
     return formatGameName(game);
   }
 
-  navigateToCreate() {
+  navigateToCreate(): void {
     this.routerService.changeTab('create');
   }
 
-  onLongPress(save: Nuzlocke) {
+  onLongPress(save: Nuzlocke): void {
     const dialog: SaveRouteDialog = this.dialog.open(SaveDialogComponent, {
       data: { name: save.runName, random: save.random },
       width: '80%'
     });
-    dialog.afterClosed().subscribe(async res => {
+    dialog.afterClosed().subscribe(async (res) => {
       if (res) {
         if (res.delete) {
           this.nuzlockeService.deleteNuzlocke(save);

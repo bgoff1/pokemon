@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +9,7 @@ export class PokemonImageService {
     return this.imageReplace(this.characterReplace(value.toLowerCase()));
   }
 
-  handleSearch(option: string, input: string) {
+  handleSearch(option: string, input: string): boolean {
     const optionName = this.characterReplace(option.toLowerCase());
     if (input.toLowerCase().includes('mega ')) {
       return (
@@ -40,10 +39,7 @@ export class PokemonImageService {
   }
 
   characterReplace(name: string): string {
-    return name
-      .replace(/é/g, 'e')
-      .replace(/♂/, 'm')
-      .replace(/♀/, 'f');
+    return name.replace(/é/g, 'e').replace(/♂/, 'm').replace(/♀/, 'f');
   }
 
   private imageReplace(name: string): string {
@@ -64,28 +60,28 @@ export class PokemonImageService {
   }
 
   private reverseAlolaReplace(name: string): string {
-    if (name.match(/(A|a)lolan(- |\s)/)?.length) {
-      return name.replace(/(A|a)lolan(- |\s)/, '') + '-alola';
+    if (name.match(/(Alolan|alolan)(- |\s)/)?.length) {
+      return name.replace(/(Alolan|alolan)(- |\s)/, '') + '-alola';
     }
     return name;
   }
 
   private reverseGalarReplace(name: string): string {
-    if (name.match(/(g|G)alarian(- |\s)/)?.length) {
-      return name.replace(/(g|G)alarian(- |\s)/, '') + '-galar';
+    if (name.match(/(galarian|Galarian)(- |\s)/)?.length) {
+      return name.replace(/(galarian|Galarian)(- |\s)/, '') + '-galar';
     }
     return name;
   }
 
   private reverseMegaReplace(name: string): string {
-    if (name.match(/(m|M)ega(- |\s)/)?.length) {
-      return name.replace(/(m|M)ega(- |\s)/, '') + '-mega';
+    if (name.match(/(mega|Mega)(- |\s)/)?.length) {
+      return name.replace(/(mega|Mega)(- |\s)/, '') + '-mega';
     }
     return name;
   }
 
   reverseImageReplace(name: string): string {
-    if (name.match(/(m|M)ega (\w+) (\w)$/)?.length) {
+    if (name.match(/(mega|Mega) (\w+) (\w)$/)?.length) {
       const result = name.replace(/(Mega|mega) (\w+) (\w)$/, '$2-$1-$3');
       return (
         result.slice(0, result.length - 1) +
@@ -93,6 +89,8 @@ export class PokemonImageService {
       );
     } else if (name.match(/(\w+) (\w)-(mega)/)?.length) {
       return name.replace(/(\w+) (\w)-(mega)/, '$1-$3-$2');
+    } else if (name.includes('♂') || name.includes('♀')) {
+      return name.replace(' ', '-');
     }
     return this.formReverse(
       this.reverseMegaReplace(

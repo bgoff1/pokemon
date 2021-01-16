@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
+import { formatGameName, Game, games } from '@models/pokemon/game.model';
 import { CreateRouteDialogResult } from '@nuzlocke/models/create-route-dialog.model';
 import { CreateNuzlocke, Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
 import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
 import { EncounterType, Route } from '@nuzlocke/models/route.model';
 import { NuzlockeStatus } from '@nuzlocke/models/status.model';
 import { DatabaseService } from '@services/database/database.service';
-import { formatGameName, Game, games } from '@shared/models/pokemon/game';
-import { enumValues } from '@shared/util/enum';
-import { Subject } from 'rxjs';
+import { enumValues } from '@util/enum/enum';
+import { Observable, Subject } from 'rxjs';
+import { DisplayGame } from '../../models/display-game.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,10 @@ import { Subject } from 'rxjs';
 export class NuzlockeService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  currentRun: Nuzlocke;
+  currentRun?: Nuzlocke;
 
   private update = new Subject<Nuzlocke>();
-  get update$() {
+  get update$(): Observable<Nuzlocke> {
     return this.update.asObservable();
   }
 
@@ -32,21 +33,28 @@ export class NuzlockeService {
 
   async createNuzlocke(run: CreateNuzlocke): Promise<Nuzlocke> {
     const game: Nuzlocke = this.startGame(run);
-    await this.databaseService.nuzlockes.add(game).then(res => {
+    await this.databaseService.nuzlockes.add(game).then((res) => {
       game.id = res;
     });
     return game;
   }
 
-  async deleteNuzlocke(run: Nuzlocke) {
-    await this.databaseService.nuzlockes.delete(run.id);
+  async deleteNuzlocke(run: Nuzlocke): Promise<void> {
+    if (run.id) {
+      await this.databaseService.nuzlockes.delete(run.id);
+    }
   }
 
-  async updateNuzlocke(run: Nuzlocke, res: { name: string; random: boolean }) {
-    await this.databaseService.nuzlockes.update(run.id, {
-      runName: res.name,
-      random: res.random
-    });
+  async updateNuzlocke(
+    run: Nuzlocke,
+    res: { name: string; random: boolean }
+  ): Promise<void> {
+    if (run.id) {
+      await this.databaseService.nuzlockes.update(run.id, {
+        runName: res.name,
+        random: res.random
+      });
+    }
   }
 
   startGame(run: CreateNuzlocke): Nuzlocke {
@@ -63,7 +71,7 @@ export class NuzlockeService {
     };
   }
 
-  async generateTestSaves() {
+  async generateTestSaves(): Promise<void> {
     for (const game of enumValues(Game)) {
       await this.createNuzlocke({
         runName: formatGameName(game),
@@ -74,90 +82,110 @@ export class NuzlockeService {
   }
 
   async convertDialogToRoute(input: CreateRouteDialogResult): Promise<Route> {
-    return {
-      type: EncounterType.Encounter,
-      order: await this.databaseService.countRoutesInGame(this.currentRun.game),
-      pokemon: [],
-      game: this.currentRun.game,
-      location: input.route
-    };
-  }
-
-  async addRouteToCurrentGame(input: CreateRouteDialogResult) {
-    const route = await this.convertDialogToRoute(input);
-    this.currentRun.extraRoutes.push(route);
-    await this.databaseService.nuzlockes.put(this.currentRun);
-  }
-
-  async removeRouteFromRun(route: Route) {
-    this.currentRun.ignoreRoutes.push(route);
-    await this.databaseService.nuzlockes.put(this.currentRun);
-  }
-
-  async addEncounter(pokemon: Pokemon) {
-    const partyCount = this.currentRun.pokemon.filter(
-      mon => mon.status === Status.Party
-    ).length;
-    if (partyCount < 6 && pokemon.status !== Status.Missed) {
-      pokemon.status = Status.Party;
+    if (this.currentRun) {
+      return {
+        type: EncounterType.Encounter,
+        order: await this.databaseService.countRoutesInGame(
+          this.currentRun?.game
+        ),
+        pokemon: [],
+        game: this.currentRun.game,
+        location: input.route
+      };
+    } else {
+      throw new Error();
     }
-    this.currentRun.pokemon = [
-      ...this.currentRun.pokemon.filter(mon => mon.routeId !== pokemon.routeId),
-      pokemon
-    ];
-    await this.databaseService.nuzlockes.put(this.currentRun);
+  }
+
+  async addRouteToCurrentGame(input: CreateRouteDialogResult): Promise<void> {
+    const route = await this.convertDialogToRoute(input);
+    if (this.currentRun) {
+      this.currentRun.extraRoutes.push(route);
+      await this.databaseService.nuzlockes.put(this.currentRun);
+    }
+  }
+
+  async removeRouteFromRun(route: Route): Promise<void> {
+    if (this.currentRun) {
+      this.currentRun.ignoreRoutes.push(route);
+      await this.databaseService.nuzlockes.put(this.currentRun);
+    }
+  }
+
+  async addEncounter(pokemon: Pokemon): Promise<void> {
+    if (this.currentRun) {
+      const partyCount = this.currentRun.pokemon.filter(
+        (mon) => mon.status === Status.Party
+      ).length;
+      if (partyCount < 6 && pokemon.status !== Status.Missed) {
+        pokemon.status = Status.Party;
+      }
+      this.currentRun.pokemon = [
+        ...this.currentRun.pokemon.filter(
+          (mon) => mon.routeId !== pokemon.routeId
+        ),
+        pokemon
+      ];
+      await this.databaseService.nuzlockes.put(this.currentRun);
+    }
   }
 
   async updateEncounter(
     pokemon: Pokemon,
     updatedData: { name?: string; nickname?: string; status?: Status }
-  ) {
-    const pokemonEntry = this.currentRun.pokemon.find(
-      mon =>
-        mon.name === pokemon.name &&
-        mon.nickname === pokemon.nickname &&
-        mon.routeName === pokemon.routeName
-    );
-    let changed = false;
-    if (
-      updatedData.status !== undefined &&
-      updatedData.status !== pokemonEntry.status
-    ) {
-      changed = true;
-      pokemonEntry.status = pokemon.status;
-    }
-    if (
-      updatedData.name !== undefined &&
-      updatedData.name !== pokemonEntry.name
-    ) {
-      changed = true;
-      pokemonEntry.name = updatedData.name;
-    }
-    if (
-      updatedData.nickname !== undefined &&
-      updatedData.nickname !== pokemonEntry.nickname
-    ) {
-      changed = true;
-      pokemonEntry.nickname = updatedData.nickname;
-    }
-    if (changed) {
-      await this.databaseService.nuzlockes.put(this.currentRun);
-    }
-  }
-
-  async earnBadge(badgeNumber: number) {
-    if (this.currentRun.badgesEarned.includes(badgeNumber)) {
-      this.currentRun.badgesEarned = this.currentRun.badgesEarned.filter(
-        num => badgeNumber !== num
+  ): Promise<void> {
+    if (this.currentRun) {
+      const pokemonEntry = this.currentRun.pokemon.find(
+        (mon) =>
+          mon.name === pokemon.name &&
+          mon.nickname === pokemon.nickname &&
+          mon.routeName === pokemon.routeName
       );
-    } else {
-      this.currentRun.badgesEarned.push(badgeNumber);
+      if (pokemonEntry) {
+        let changed = false;
+        if (
+          updatedData.status !== undefined &&
+          updatedData.status !== pokemonEntry?.status
+        ) {
+          changed = true;
+          pokemonEntry.status = pokemon.status;
+        }
+        if (
+          updatedData.name !== undefined &&
+          updatedData.name !== pokemonEntry?.name
+        ) {
+          changed = true;
+          pokemonEntry.name = updatedData.name;
+        }
+        if (
+          updatedData.nickname !== undefined &&
+          updatedData.nickname !== pokemonEntry?.nickname
+        ) {
+          changed = true;
+          pokemonEntry.nickname = updatedData.nickname;
+        }
+        if (changed) {
+          await this.databaseService.nuzlockes.put(this.currentRun);
+        }
+      }
     }
-    await this.databaseService.nuzlockes.put(this.currentRun);
-    this.update.next(this.currentRun);
   }
 
-  get gameNames() {
+  async earnBadge(badgeNumber: number): Promise<void> {
+    if (this.currentRun) {
+      if (this.currentRun.badgesEarned.includes(badgeNumber)) {
+        this.currentRun.badgesEarned = this.currentRun.badgesEarned.filter(
+          (num) => badgeNumber !== num
+        );
+      } else {
+        this.currentRun.badgesEarned.push(badgeNumber);
+      }
+      await this.databaseService.nuzlockes.put(this.currentRun);
+      this.update.next(this.currentRun);
+    }
+  }
+
+  get gameNames(): DisplayGame[] {
     return games;
   }
 }

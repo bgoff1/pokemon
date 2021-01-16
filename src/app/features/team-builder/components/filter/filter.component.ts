@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilterProperties, Filter } from '@team/models/filter';
+import { FilterProperties, Filter } from '@team/models/filter/filter.model';
 import { TreeNode } from '@team/models/tree-node.model';
 import { FilterService } from '@team/services/filter/filter.service';
 import { TeamService } from '@team/services/team/team.service';
 import { FilterTreeService } from '@team/services/filter-tree/filter-tree.service';
 
 @Component({
-  selector: 'filter',
+  selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
@@ -21,7 +21,7 @@ export class FilterOptionsComponent implements OnInit {
 
   treeData = new MatTreeNestedDataSource<TreeNode>();
 
-  searchFilter: Promise<Filter>;
+  searchFilter!: Promise<Filter>;
   checkingCoverage = false;
 
   constructor(
@@ -30,7 +30,7 @@ export class FilterOptionsComponent implements OnInit {
     private readonly teamService: TeamService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.filterService.createDatabase().then(() => this.initializeFilters());
   }
 
@@ -41,7 +41,7 @@ export class FilterOptionsComponent implements OnInit {
     this.treeData.data = this.optionsService.generateTree(filters);
   }
 
-  get treeHasData() {
+  get treeHasData(): boolean {
     return !!this.treeData.data.length;
   }
 
@@ -57,8 +57,8 @@ export class FilterOptionsComponent implements OnInit {
       }
     }
     this.filterService.updateFilters(
-      node.children.map(child => ({
-        id: child.id,
+      node.children.map((child) => ({
+        id: child.id ?? -1,
         filter: FilterProperties[child.name],
         value: child.value,
         enabled: child.checked ? 1 : 0
@@ -69,7 +69,7 @@ export class FilterOptionsComponent implements OnInit {
   handleNodeChange(node: TreeNode): void {
     node.checked = !node.checked;
     this.filterService.updateFilter({
-      id: node.id,
+      id: node.id ?? -1,
       filter: FilterProperties[node.name],
       value: node.value,
       enabled: node.checked ? 1 : 0
@@ -86,7 +86,7 @@ export class FilterOptionsComponent implements OnInit {
     this.filterService.createDatabase().then(() => this.initializeFilters());
   }
 
-  get coverageText() {
+  get coverageText(): string {
     return this.checkingCoverage
       ? 'Showing Pokemon with Coverage'
       : 'Check Coverage';

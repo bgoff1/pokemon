@@ -10,20 +10,20 @@ import { DisplayRoute, Route } from '@nuzlocke/models/route.model';
 import { SelectRouteDialog } from '@nuzlocke/models/select-route-dialog.model';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
 import { RoutesService } from '@nuzlocke/services/routes/routes.service';
+import { Observable } from 'rxjs';
 import { CreateRouteDialogComponent } from './create-route-dialog/create-route-dialog.component';
 import { DeleteRouteDialogComponent } from './delete-route-dialog/delete-route-dialog.component';
 import { SelectRouteDialogComponent } from './select-route-dialog/select-route-dialog.component';
 
 @Component({
-  selector: 'routes',
+  selector: 'app-routes',
   templateUrl: './routes.component.html',
   styleUrls: ['./routes.component.scss']
 })
 export class RoutesComponent implements OnInit {
   routes: DisplayRoute[] = [];
-  nuzlocke: Nuzlocke;
-  shouldFilter: boolean;
-  loaded: boolean;
+  nuzlocke!: Nuzlocke;
+  loaded = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -32,30 +32,33 @@ export class RoutesComponent implements OnInit {
     private readonly dialog: MatDialog
   ) {}
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     await this.routesService.createDatabase();
-    this.activatedRoute.data.subscribe(({ nuzlocke }: RouteData) => {
-      this.nuzlocke = nuzlocke;
-      const filter = localStorage.getItem('route filter');
-      this.updateAvailableRoutes(filter ? filter === 'true' : true);
-    });
+    (this.activatedRoute.data as Observable<RouteData>).subscribe(
+      ({ nuzlocke }: RouteData) => {
+        this.nuzlocke = nuzlocke;
+        const filter = localStorage.getItem('route filter');
+        this.updateAvailableRoutes(filter ? filter === 'true' : true);
+      }
+    );
   }
 
-  async updateAvailableRoutes(filter = true) {
+  async updateAvailableRoutes(filter = true): Promise<void> {
     const routes = await this.routesService.getRoutes(this.nuzlocke);
 
     this.routes = [...routes, ...this.nuzlocke.extraRoutes]
       .filter(
-        route => !this.nuzlocke.ignoreRoutes.map(r => r.id).includes(route.id)
+        (route) =>
+          !this.nuzlocke.ignoreRoutes.map((r) => r.id).includes(route.id)
       )
-      .map(route => {
+      .map((route) => {
         return {
           ...route,
           visited: this.nuzlocke.pokemon.some(
-            pokemon => pokemon.routeName === route.location
+            (pokemon) => pokemon.routeName === route.location
           ),
           capturedPokemon: this.nuzlocke.pokemon.find(
-            mon => mon.routeName === route.location
+            (mon) => mon.routeName === route.location
           ),
           random: this.nuzlocke.random
         };
@@ -63,25 +66,25 @@ export class RoutesComponent implements OnInit {
 
     localStorage.setItem('route filter', filter ? 'true' : 'false');
     if (filter) {
-      this.routes = this.routes.filter(route => !route.visited);
+      this.routes = this.routes.filter((route) => !route.visited);
     }
 
     this.setUpSorting();
   }
 
-  setUpSorting() {
+  setUpSorting(): void {
     if (localStorage.getItem('route sorting') === null) {
-      localStorage.setItem('route sorting', 'false');
+      localStorage.setItem('route sorting', 'true');
     }
     this.updateSortingMethod();
   }
 
-  toggleSortingMethod() {
+  toggleSortingMethod(): void {
     localStorage.setItem('route sorting', this.sortByOrder ? 'false' : 'true');
     this.updateSortingMethod();
   }
 
-  updateSortingMethod() {
+  updateSortingMethod(): void {
     if (this.sortByOrder) {
       this.routes = this.routes.sort((a, b) => a.order - b.order);
     } else {
@@ -98,12 +101,12 @@ export class RoutesComponent implements OnInit {
     this.loaded = true;
   }
 
-  addRoute() {
+  addRoute(): void {
     const dialog: CreateRouteDialog = this.dialog.open(
       CreateRouteDialogComponent,
       { width: '80%' }
     );
-    dialog.afterClosed().subscribe(async res => {
+    dialog.afterClosed().subscribe(async (res) => {
       if (res) {
         if (res.current) {
           this.nuzlockeService.addRouteToCurrentGame(res);
@@ -115,7 +118,7 @@ export class RoutesComponent implements OnInit {
     });
   }
 
-  async addEncounter(pokemon: Pokemon, route: Route) {
+  async addEncounter(pokemon: Pokemon, route: Route): Promise<void> {
     pokemon.routeId = route.id;
     await this.nuzlockeService.addEncounter(pokemon);
     this.routes = this.routes.filter(
@@ -123,19 +126,21 @@ export class RoutesComponent implements OnInit {
     );
   }
 
-  selectRoute(route: DisplayRoute) {
+  selectRoute(route: DisplayRoute): void {
     const dialog: SelectRouteDialog = this.dialog.open(
       SelectRouteDialogComponent,
       {
         data: {
           ...route,
           random: this.nuzlocke.random,
-          ownedPokemon: this.nuzlocke.pokemon.map(mon => mon.name.toLowerCase())
+          ownedPokemon: this.nuzlocke.pokemon.map((mon) =>
+            mon.name.toLowerCase()
+          )
         },
         width: '80%'
       }
     );
-    dialog.afterClosed().subscribe(res => {
+    dialog.afterClosed().subscribe((res) => {
       if (res) {
         const pokemon: Pokemon = {
           routeName: route.location,
@@ -148,12 +153,12 @@ export class RoutesComponent implements OnInit {
     });
   }
 
-  showDelete(route: DisplayRoute) {
+  showDelete(route: DisplayRoute): void {
     const dialog: DeleteRouteDialog = this.dialog.open(
       DeleteRouteDialogComponent,
       { data: { name: route.location }, width: '80%' }
     );
-    dialog.afterClosed().subscribe(async res => {
+    dialog.afterClosed().subscribe(async (res) => {
       if (res) {
         if (res.onlyFromCurrent) {
           this.nuzlockeService.removeRouteFromRun(route);
@@ -165,12 +170,12 @@ export class RoutesComponent implements OnInit {
     });
   }
 
-  private get sortByOrder() {
+  private get sortByOrder(): boolean {
     const sorting = localStorage.getItem('route sorting');
     return sorting ? sorting === 'true' : true;
   }
 
-  get opposingSortingMethod() {
+  get opposingSortingMethod(): 'Sort By Name' | 'Sort By Order' {
     if (this.sortByOrder) {
       return 'Sort By Name';
     } else {

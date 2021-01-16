@@ -5,13 +5,13 @@ import { DraggingService } from '@services/dragging/dragging.service';
 import { Link } from '@models/link.model';
 
 @Component({
-  selector: 'nav-sidebar',
+  selector: 'app-nav-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
   opened = false;
-  links: Link[];
+  links: Link[] = [];
   hammer: HammerManager;
 
   constructor(
@@ -20,7 +20,7 @@ export class SidebarComponent implements OnInit {
     elementRef: ElementRef
   ) {
     this.hammer = new Hammer(elementRef.nativeElement, {});
-    this.hammer.on('panright', event => {
+    this.hammer.on('panright', (event) => {
       if (
         !draggingService.isDragging &&
         event.pointerType !== 'mouse' &&
@@ -32,18 +32,18 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  setOpen(opened: boolean) {
+  setOpen(opened: boolean): void {
     this.opened = this.routerService.sidebarOpen = opened;
   }
 
   ngOnInit(): void {
     this.links = this.routerService.links;
-    this.routerService.menuClick$.subscribe(open => {
+    this.routerService.menuClick$.subscribe((open) => {
       this.setOpen(open);
     });
   }
 
-  isActive(link: string) {
+  isActive(link: string): boolean {
     return this.routerService.isViewMode(link);
   }
 }

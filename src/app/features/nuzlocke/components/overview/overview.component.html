@@ -8,10 +8,16 @@
       <tbody>
         <tr>
           <td>Alive: {{ alive }}</td>
+          <td></td>
           <td class="right-align">Boxed: {{ boxed }}</td>
         </tr>
         <tr>
           <td>Dead: {{ dead }}</td>
+          <td class="text-center">
+            <button mat-raised-button *ngIf="party.length" (click)="exportToTeamBuilder()">
+              Export to Team Builder
+            </button>
+          </td>
           <td class="right-align">Missed: {{ missed }}</td>
         </tr>
       </tbody>
@@ -19,7 +25,7 @@
   </div>
   <div cdkDropListGroup>
     <div *ngFor="let group of groups">
-      <drag-drop [title]="group.title" [data]="group.data" (update)="dragDropChange($event)"></drag-drop>
+      <app-drag-drop [title]="group.title" [data]="group.data" (update)="dragDropChange($event)"></app-drag-drop>
     </div>
   </div>
 </div>

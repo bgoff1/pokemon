@@ -1,4 +1,4 @@
-import { Game } from './game';
+import { Game } from './game.model';
 
 export enum GameGroup {
   RedBlue,

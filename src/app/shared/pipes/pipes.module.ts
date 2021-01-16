@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { HideFormPipe } from './hide-form.pipe';
-import { PokemonImagePipe } from './pokemon-image.pipe';
-import { RoutePipe } from './route.pipe';
+import { CommonModule } from '@angular/common';
+import { RoutePipe } from './route/route.pipe';
+import { HideFormPipe } from './hide-form/hide-form.pipe';
+import { PokemonImagePipe } from './image/image.pipe';
 
 @NgModule({
-  declarations: [RoutePipe, PokemonImagePipe, HideFormPipe],
+  declarations: [RoutePipe, HideFormPipe, PokemonImagePipe],
   imports: [CommonModule],
-  exports: [RoutePipe, PokemonImagePipe, HideFormPipe]
+  exports: [RoutePipe, HideFormPipe, PokemonImagePipe]
 })
 export class PipesModule {}

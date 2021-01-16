@@ -1,27 +1,28 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EvolveDialogRef } from '@features/nuzlocke/models/evolve-dialog.model';
+import { PickerComponent } from '@nuzlocke/components/picker/picker.component';
 import { Pokemon } from '@nuzlocke/models/pokemon.model';
-import { titlecase } from '@util/name';
-import { PickerComponent } from '../../../picker/picker.component';
+import { TitleCaseService } from '@services/titlecase/titlecase.service';
 
 @Component({
-  selector: 'evolve-dialog',
-  templateUrl: './evolve-dialog.component.html',
-  styleUrls: ['./evolve-dialog.component.scss']
+  selector: 'app-evolve-dialog',
+  templateUrl: './evolve-dialog.component.html'
 })
 export class EvolveDialogComponent {
   pokemon: Pokemon;
-  @ViewChild(PickerComponent) pickerComponent: PickerComponent;
+  @ViewChild(PickerComponent) pickerComponent!: PickerComponent;
 
   constructor(
-    @Inject(MatDialogRef) private readonly dialogRef: EvolveDialogRef,
-    @Inject(MAT_DIALOG_DATA) data: { pokemon: Pokemon }
+    @Inject(MatDialogRef)
+    private readonly dialogRef: EvolveDialogRef,
+    @Inject(MAT_DIALOG_DATA) data: { pokemon: Pokemon },
+    private readonly titleCaseService: TitleCaseService
   ) {
     this.pokemon = data.pokemon;
   }
 
-  onClose(button: 'cancel' | 'ok') {
+  onClose(button: 'cancel' | 'ok'): void {
     if (button === 'ok') {
       this.dialogRef.close(this.pickerComponent.formValue);
     } else {
@@ -29,7 +30,10 @@ export class EvolveDialogComponent {
     }
   }
 
-  get evolutionName() {
-    return this.pokemon.nickname || titlecase(this.pokemon.name);
+  get evolutionName(): string {
+    return (
+      this.pokemon.nickname ||
+      this.titleCaseService.titlecase(this.pokemon.name)
+    );
   }
 }

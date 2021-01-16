@@ -10,12 +10,12 @@
           "/favicon.ico",
           "/index.html",
           "/manifest.webmanifest",
-          "/assets/*.png",
           "/*.css",
           "/*.js"
         ]
       }
-    }, {
+    },
+    {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",

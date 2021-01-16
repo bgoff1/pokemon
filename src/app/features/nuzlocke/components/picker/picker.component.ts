@@ -12,83 +12,93 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { Pokemon } from '@nuzlocke/models/pokemon.model';
+import { NameService } from '@services/name/name.service';
+import { PokemonImageService } from '@services/pokemon-image/pokemon-image.service';
 import { PokemonService } from '@services/pokemon/pokemon.service';
-import { NameUtility, titlecase } from '@util/name';
+import { TitleCaseService } from '@services/titlecase/titlecase.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { Pokemon } from '@nuzlocke/models/pokemon.model';
-import { HideFormService } from '@services/hide-form/hide-form.service';
 import { NuzlockeService } from '../../services/nuzlocke/nuzlocke.service';
+import { PickerOutput } from './model/picker-output.model';
 
 @Component({
-  selector: 'picker-dialog',
+  selector: 'app-picker-dialog',
   templateUrl: './picker.component.html',
   styleUrls: ['./picker.component.scss']
 })
 export class PickerComponent implements OnInit {
   formGroup: FormGroup;
-  @ViewChild('pokemon') pokemonInputElement: ElementRef;
-  filteredOptions: Observable<string[]>;
+  @ViewChild('pokemon') pokemonInputElement!: ElementRef;
+  filteredOptions!: Observable<string[]>;
   allNames: string[] = [];
-  previouslyFocusedElement: Element;
-  autoCompleteOptions: string[];
+  previouslyFocusedElement: Element | null = null;
+  autoCompleteOptions!: string[];
 
-  @Input() nickname: string;
-  @Input() random: boolean;
-  @Input() limitOptionsByEvolution: boolean;
-  @Input() pokemon: Pokemon;
-  @Input() pokemonOptions: string[];
-  @Input() hideNickname: boolean;
+  @Input() nickname?: string;
+  @Input() random!: boolean;
+  @Input() limitOptionsByEvolution!: boolean;
+  @Input() pokemon?: Pokemon;
+  @Input() pokemonOptions?: string[];
+  @Input() hideNickname!: boolean;
 
   constructor(
     private readonly pokemonService: PokemonService,
-    private readonly hideFormService: HideFormService,
-    private readonly nuzlockeService: NuzlockeService
+    private readonly nameService: NameService,
+    private readonly nuzlockeService: NuzlockeService,
+    private readonly pokemonImageService: PokemonImageService,
+    private readonly titleCaseService: TitleCaseService
   ) {
     this.formGroup = new FormGroup({
       pokemon: new FormControl('', [
         Validators.required,
         (control: AbstractControl) => {
           console.log(
-            this.allNames.map(name => name.toLowerCase()),
-            NameUtility.reverseImageReplace(control.value).toLowerCase()
+            this.allNames,
+            this.pokemonImageService
+              .reverseImageReplace(control.value)
+              .toLowerCase()
           );
           return this.allNames
-            .map(name => name.toLowerCase())
+            .map((name) => name.toLowerCase())
             .includes(
-              NameUtility.reverseImageReplace(control.value).toLowerCase()
+              this.pokemonImageService
+                .reverseImageReplace(control.value)
+                .toLowerCase()
             )
             ? null
             : { invalidPokemon: true };
         }
       ]),
-      nickname: new FormControl(this.nickname || '')
+      nickname: new FormControl('')
     });
   }
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.allNames = await this.pokemonService.getPokemonNames();
 
-    if (this.limitOptionsByEvolution) {
+    if (this.limitOptionsByEvolution && this.pokemon?.name) {
       this.autoCompleteOptions = await this.pokemonService.findEvolutionNames(
         this.pokemon.name
       );
     } else {
       if (this.random) {
         this.autoCompleteOptions = this.allNames;
-      } else {
+      } else if (this.pokemonOptions) {
         const filteredByOwned = this.pokemonOptions.filter(
-          mon =>
-            !this.nuzlockeService.currentRun.pokemon
-              .map(pokemon => pokemon.name)
+          (mon) =>
+            !this.nuzlockeService?.currentRun?.pokemon
+              .map((pokemon) => pokemon.name)
               .includes(mon)
         );
         if (filteredByOwned.length === 0 && this.pokemonOptions.length !== 0) {
-          this.autoCompleteOptions = this.pokemonOptions.map(mon =>
-            titlecase(mon)
+          this.autoCompleteOptions = this.pokemonOptions.map((mon) =>
+            this.titleCaseService.titlecase(mon)
           );
         } else {
-          this.autoCompleteOptions = filteredByOwned.map(mon => titlecase(mon));
+          this.autoCompleteOptions = filteredByOwned.map((mon) =>
+            this.titleCaseService.titlecase(mon)
+          );
         }
       }
     }
@@ -98,28 +108,21 @@ export class PickerComponent implements OnInit {
     );
   }
 
-  private filterOptions(input: string) {
-    const defaultFilters = this.autoCompleteOptions.filter(option =>
+  private filterOptions(input: string): string[] {
+    const defaultFilters = this.autoCompleteOptions.filter((option) =>
       option.toLowerCase().includes(input.toLowerCase())
     );
 
-    const hasMega = input.toLowerCase().includes('mega ');
     return defaultFilters.length === 0
       ? this.allNames
-          .filter(option => {
-            const optionName = NameUtility.characterReplace(
-              option.toLowerCase()
-            );
-            return hasMega
-              ? optionName.includes(input.toLowerCase().replace('mega ', '')) &&
-                  optionName.includes('-mega')
-              : optionName.includes(input.toLowerCase());
-          })
+          .filter((option) =>
+            this.pokemonImageService.handleSearch(option, input)
+          )
           .slice(0, 15)
       : defaultFilters;
   }
 
-  onInputClick() {
+  onInputClick(): void {
     if (
       this.pokemonControl.value &&
       this.pokemonInputElement.nativeElement !== this.previouslyFocusedElement
@@ -128,14 +131,14 @@ export class PickerComponent implements OnInit {
     }
   }
 
-  selectPokemon() {
+  selectPokemon(): void {
     this.pokemonControl.setValue(
-      this.hideFormService.transform(this.pokemonControl.value)
+      this.nameService.transform(this.pokemonControl.value)
     );
   }
 
   @HostListener('document:click')
-  click() {
+  click(): void {
     this.previouslyFocusedElement = document.activeElement;
   }
 
@@ -143,16 +146,16 @@ export class PickerComponent implements OnInit {
     return this.formGroup.controls.pokemon as FormControl;
   }
 
-  get formValue() {
+  get formValue(): PickerOutput {
     return this.formGroup.value;
   }
 
-  get showImage() {
-    return this.pokemonControl.valid || this.pokemon?.name;
+  get showImage(): boolean {
+    return this.pokemonControl.valid || !!this.pokemon?.name;
   }
 
-  get imageValue() {
-    return NameUtility.reverseImageReplace(
+  get imageValue(): string {
+    return this.pokemonImageService.reverseImageReplace(
       this.pokemonControl.valid
         ? this.pokemonControl.value.toLowerCase()
         : this.pokemon?.name.toLowerCase()

@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
-import { PokemonInterface } from '@models/pokemon';
-import { Filter } from '@team/models/filter';
-import { Route } from '@nuzlocke/models/route.model';
+import { defaultFilter, Filter } from '@team/models/filter/filter.model';
+import { PokemonInterface } from '@models/pokemon/pokemon.model';
 import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Route } from '@nuzlocke/models/route.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class DatabaseService extends Dexie {
-  filters: Dexie.Table<Filter, number>;
-  pokemon: Dexie.Table<PokemonInterface, number>;
-  routes: Dexie.Table<Route, number>;
-  nuzlockes: Dexie.Table<Nuzlocke, number>;
+  filters!: Dexie.Table<Filter, number>;
+  pokemon!: Dexie.Table<PokemonInterface, number>;
+  routes!: Dexie.Table<Route, number>;
+  nuzlockes!: Dexie.Table<Nuzlocke, number>;
 
   constructor() {
     super('PokemonDatabase');
@@ -28,7 +30,12 @@ export class DatabaseService extends Dexie {
     });
   }
 
-  countRoutesInGame(game: any) {
+  async getFilter(key: number): Promise<Filter> {
+    const value = await this.filters.get(key);
+    return value ?? defaultFilter;
+  }
+
+  countRoutesInGame(game: any): Promise<number> {
     return this.routes.where({ game }).count();
   }
 }

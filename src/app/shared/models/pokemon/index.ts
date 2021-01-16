@@ -1,14 +1,13 @@
-import { NameUtility, titlecase } from '@util/name';
-import { PokemonInterface, AbstractPokemon } from './pokemon';
-import { Type } from './type';
-export * from './pokemon';
+import { AbstractPokemon, PokemonInterface } from './pokemon.model';
+import { Type } from './type.model';
+export * from './pokemon.model';
 
 export class Pokemon extends AbstractPokemon {
   cssClasses: string;
   constructor(pokemon?: PokemonInterface) {
     if (pokemon) {
       super(pokemon);
-      const types = this.types.map(t => Type[t].toLowerCase());
+      const types = this.types.map((t) => Type[t].toLowerCase());
       this.cssClasses =
         this.types.length === 1
           ? `circle ${types[0]}`
@@ -21,15 +20,7 @@ export class Pokemon extends AbstractPokemon {
     }
   }
 
-  get imageName() {
-    return NameUtility.replaceImageCharacters(this.name);
-  }
-
-  get displayName() {
-    return titlecase(NameUtility.getDisplayName(this.name ?? '') ?? '');
-  }
-
-  equals(other: Pokemon) {
-    return this.imageName === other.imageName;
+  equals(other: Pokemon): boolean {
+    return this.name === other.name;
   }
 }

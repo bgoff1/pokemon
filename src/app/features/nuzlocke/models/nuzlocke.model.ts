@@ -1,5 +1,4 @@
-import { Game } from '@models/pokemon/game';
-import { NuzlockeStatus } from './status.model';
+import { Game } from '@models/pokemon/game.model';
 import { Route } from './route.model';
 import { Pokemon } from './pokemon.model';
 
@@ -20,4 +19,10 @@ export interface CreateNuzlocke {
   runName: string;
   game: Game;
   random: boolean;
+}
+
+export enum NuzlockeStatus {
+  Started,
+  Failed,
+  Success
 }

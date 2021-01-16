@@ -1,5 +1,5 @@
 import { Location } from '@models/game-location.model';
-import { Game } from '@models/pokemon/game';
+import { Game } from '@models/pokemon/game.model';
 import { Pokemon } from './pokemon.model';
 
 export interface Route extends Location {

@@ -15,7 +15,7 @@ export class RoutesService {
     private readonly databaseService: DatabaseService
   ) {}
 
-  async createDatabase() {
+  async createDatabase(): Promise<void> {
     const count = await this.databaseService.routes.count();
     if (count === 0) {
       await this.databaseService.routes.bulkAdd(allRoutes);
@@ -30,12 +30,14 @@ export class RoutesService {
     return res.sort((a, b) => Number(a.order) - Number(b.order));
   }
 
-  async addRouteToGame(input: CreateRouteDialogResult) {
+  async addRouteToGame(input: CreateRouteDialogResult): Promise<void> {
     const route = await this.nuzlockeService.convertDialogToRoute(input);
     this.databaseService.routes.add(route);
   }
 
-  async removeRouteFromGame(route: Route) {
-    await this.databaseService.routes.delete(route.id);
+  async removeRouteFromGame(route: Route): Promise<void> {
+    if (route.id) {
+      await this.databaseService.routes.delete(route.id);
+    }
   }
 }

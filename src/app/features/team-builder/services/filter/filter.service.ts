@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
-import { DatabaseService } from '@services/database/database.service';
 import { Pokemon } from '@models/pokemon';
-import { Region } from '@models/pokemon/region';
+import { Region } from '@models/pokemon/region.model';
 import defaultFilters from '@resources/default-filters';
-import { UpdateFilter } from '@team/models/filter/update.model';
-import { Filter, FilterProperties } from '@team/models/filter';
-
+import { DatabaseService } from '@services/database/database.service';
+import { Filter, FilterProperties } from '@team/models/filter/filter.model';
+import { UpdateFilter } from '@team/models/filter/update-filter.model';
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
-  checkingCoverage: boolean;
+  checkingCoverage = false;
 
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async setDefaultFilters() {
+  async setDefaultFilters(): Promise<void> {
     const count = await this.databaseService.filters.count();
     if (count === 0) {
       await this.databaseService.filters.bulkAdd(defaultFilters);
@@ -23,8 +22,8 @@ export class FilterService {
 
   async createDatabase(): Promise<void> {
     await this.setDefaultFilters();
-    this.getCoverageFilter().then(doc => {
-      this.checkingCoverage = doc.enabled === 1;
+    this.getCoverageFilter().then((doc) => {
+      this.checkingCoverage = doc?.enabled === 1;
     });
   }
 
@@ -53,7 +52,7 @@ export class FilterService {
   }
 
   async getSearchFilter(): Promise<Filter> {
-    return this.databaseService.filters.get(FilterProperties.Search);
+    return this.databaseService.getFilter(FilterProperties.Search);
   }
 
   async addSearchFilter(searchQuery: string): Promise<void> {
@@ -64,8 +63,8 @@ export class FilterService {
     });
   }
 
-  async getCoverageFilter(): Promise<Filter | null> {
-    return this.databaseService.filters.get(FilterProperties.Coverage);
+  async getCoverageFilter(): Promise<Filter> {
+    return this.databaseService.getFilter(FilterProperties.Coverage);
   }
 
   async changeCoverageDocument(value: string): Promise<void> {

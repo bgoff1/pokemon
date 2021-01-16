@@ -1,20 +1,20 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
-import { DraggingService } from '@services/dragging/dragging.service';
-import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { EvolveDialogComponent } from './evolve-dialog/evolve-dialog.component';
 import { NuzlockeService } from '@features/nuzlocke/services/nuzlocke/nuzlocke.service';
+import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
+import { DraggingService } from '@services/dragging/dragging.service';
+import { PickerOutput } from '../../picker/model/picker-output.model';
+import { EvolveDialogComponent } from './evolve-dialog/evolve-dialog.component';
 
 @Component({
-  selector: 'drag-drop',
+  selector: 'app-drag-drop',
   templateUrl: './drag-drop.component.html',
   styleUrls: ['./drag-drop.component.scss']
 })
 export class DragDropComponent {
-  @Input() title: keyof typeof Status;
-  @Input() data: Pokemon[];
-  @Input() random: boolean;
+  @Input() title!: keyof typeof Status;
+  @Input() data!: Pokemon[];
   @Output() update: EventEmitter<Pokemon> = new EventEmitter();
 
   constructor(
@@ -23,7 +23,7 @@ export class DragDropComponent {
     private readonly nuzlockeService: NuzlockeService
   ) {}
 
-  drop(event: CdkDragDrop<Pokemon[]>) {
+  drop(event: CdkDragDrop<Pokemon[]>): void {
     if (event.previousContainer !== event.container) {
       if (
         event.container.data[0] &&
@@ -45,28 +45,26 @@ export class DragDropComponent {
     }
   }
 
-  startDragging() {
+  startDragging(): void {
     this.draggingService.isDragging = true;
   }
 
-  stopDragging() {
+  stopDragging(): void {
     this.draggingService.isDragging = false;
   }
 
-  selectPokemon(pokemon: Pokemon) {
+  selectPokemon(pokemon: Pokemon): void {
     const dialog = this.dialog.open(EvolveDialogComponent, {
       data: { pokemon },
       width: '80%'
     });
-    dialog
-      .afterClosed()
-      .subscribe((res: { pokemon: string; nickname: string }) => {
-        if (res) {
-          this.nuzlockeService.updateEncounter(pokemon, {
-            name: res.pokemon.toLowerCase(),
-            nickname: res.nickname
-          });
-        }
-      });
+    dialog.afterClosed().subscribe((res: PickerOutput) => {
+      if (res) {
+        this.nuzlockeService.updateEncounter(pokemon, {
+          name: res.pokemon.toLowerCase(),
+          nickname: res.nickname
+        });
+      }
+    });
   }
 }

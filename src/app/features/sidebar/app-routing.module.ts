@@ -6,13 +6,13 @@ const routes: Routes = [
     path: 'team-builder',
     loadChildren: () =>
       import('../team-builder/team-builder.module').then(
-        m => m.TeamBuilderModule
+        (m) => m.TeamBuilderModule
       )
   },
   {
     path: 'nuzlocke',
     loadChildren: () =>
-      import('../nuzlocke/nuzlocke.module').then(m => m.NuzlockeModule)
+      import('../nuzlocke/nuzlocke.module').then((m) => m.NuzlockeModule)
   },
   {
     path: '',

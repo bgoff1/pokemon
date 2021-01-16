@@ -1,42 +1,24 @@
-import { FooterComponent } from './footer.component';
-import routerServiceMock from '@mocks/router.service.mock';
-import { of } from 'rxjs/internal/observable/of';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('Footer Component', () => {
+import { FooterComponent } from './footer.component';
+
+describe('FooterComponent', () => {
   let component: FooterComponent;
+  let fixture: ComponentFixture<FooterComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [FooterComponent]
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    component = new FooterComponent(routerServiceMock);
+    fixture = TestBed.createComponent(FooterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  test('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  test('should navigate on navigate', () => {
-    component.route = '';
-    component.navigate('/nuzlocke');
-    expect(routerServiceMock.changeTab).toHaveBeenCalledWith('/nuzlocke');
-  });
-
-  test('should tell if it is the current route', () => {
-    routerServiceMock.isCurrentRoute = jest.fn(() => true);
-    expect(component.isActive('/nuzlocke')).toBe(true);
-  });
-
-  test('should get values in on init', () => {
-    routerServiceMock.route$ = of('abc');
-    routerServiceMock.getTabs = jest.fn(() => []);
-    component.ngOnInit();
-    expect(component.route).toEqual('abc');
-    expect(component.tabs).toEqual([]);
-  });
-
-  test('should get disabled tabs', () => {
-    routerServiceMock.sidebarOpen = true;
-    expect(component.disabledTabs).toBe(true);
-    routerServiceMock.sidebarOpen = false;
-    routerServiceMock.canChangeTabs = false;
-    expect(component.disabledTabs).toBe(true);
   });
 });

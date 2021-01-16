@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Pokemon } from '@models/pokemon';
+import { DatabaseService } from '../database/database.service';
+import { PokemonImageService } from '../pokemon-image/pokemon-image.service';
 import pokemon from '@resources/pokemon';
-import { DatabaseService } from '@services/database/database.service';
-import { NameUtility, titlecase } from '@util/name';
+import { Pokemon } from '../../models/pokemon';
+import { TitleCaseService } from '../titlecase/titlecase.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonService {
-  constructor(private readonly databaseService: DatabaseService) {}
-
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly pokemonImageService: PokemonImageService,
+    private readonly titleCaseService: TitleCaseService
+  ) {}
   async createDatabase(): Promise<void> {
     const count = await this.databaseService.pokemon.count();
     if (count === 0) {
@@ -23,34 +27,36 @@ export class PokemonService {
       );
     }
   }
-
-  async getPokemon() {
-    return (await this.databaseService.pokemon.toArray()).map(
-      row => new Pokemon(row)
-    );
+  async getPokemon(): Promise<Pokemon[]> {
+    return this.databaseService.pokemon
+      .toArray()
+      .then((rows) => rows.map((entry) => new Pokemon(entry)));
   }
-
-  async getPokemonNames() {
-    return (await this.databaseService.pokemon.toArray()).map(row =>
-      titlecase(row.name)
-    );
+  async getPokemonNames(): Promise<string[]> {
+    return this.databaseService.pokemon
+      .toArray()
+      .then((rows) =>
+        rows.map((entry) => this.titleCaseService.titlecase(entry.name))
+      );
   }
-
-  async find(names: string[]) {
-    return (await this.getPokemon()).filter(mon =>
-      names.some(name =>
-        NameUtility.replaceImageCharacters(mon.name)
-          .toLowerCase()
-          .includes(name.toLowerCase())
+  async find(names: string[]): Promise<Pokemon[]> {
+    return this.getPokemon().then((allPokemon) =>
+      allPokemon.filter((mon) =>
+        names.some((name) =>
+          this.pokemonImageService
+            .transform(mon.name)
+            .toLowerCase()
+            .includes(name.toLowerCase())
+        )
       )
     );
   }
-
   async findEvolutionNames(name: string): Promise<string[]> {
     const pokemonToFind = await this.databaseService.pokemon
-      .where({ name: NameUtility.reverseImageReplace(name.toLowerCase()) })
+      .where({
+        name: this.pokemonImageService.reverseImageReplace(name.toLowerCase())
+      })
       .toArray();
-
     const siblings = (
       await this.databaseService.pokemon
         .where({
@@ -58,13 +64,17 @@ export class PokemonService {
         })
         .toArray()
     )
-      .map(sibling => sibling && titlecase(sibling.name))
+      .map(
+        (sibling) => sibling && this.titleCaseService.titlecase(sibling.name)
+      )
       .filter(
-        mon =>
+        (mon) =>
           mon &&
-          mon !== titlecase(NameUtility.reverseImageReplace(name.toLowerCase()))
+          mon !==
+            this.titleCaseService.titlecase(
+              this.pokemonImageService.reverseImageReplace(name.toLowerCase())
+            )
       );
-
     return siblings;
   }
 }

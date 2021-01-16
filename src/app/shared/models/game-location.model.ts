@@ -1,6 +1,6 @@
 import { EncounterType, Route } from '@nuzlocke/models/route.model';
 import { filterExclusives } from '../resources/game-locations/exclusives';
-import { Game } from './pokemon/game';
+import { Game } from './pokemon/game.model';
 import { GameGroup } from './pokemon/game-groups';
 
 export interface Location {
@@ -21,7 +21,7 @@ function getPokemon(
   game: Game,
   pokemon: string[],
   exclusives: [string[], string[]]
-) {
+): string[] {
   return gamesFromGroup.length > 1
     ? filterExclusives(game === gamesFromGroup[0], pokemon, exclusives)
     : pokemon;
@@ -32,16 +32,16 @@ export function convertGameLocationToRoutes(
   gamesFromGroup: [Game, Game] | [Game],
   exclusives: [string[], string[]]
 ): Route[][] {
-  return gamesFromGroup.map(game => {
+  return gamesFromGroup.map((game) => {
     return [
-      ...gameLocation.gifts.map(encounter => ({
+      ...gameLocation.gifts.map((encounter) => ({
         location: 'Gift - ' + encounter.location,
         pokemon: encounter.pokemon,
         order: encounter.order,
         game,
         type: EncounterType.Gift
       })),
-      ...gameLocation.statics.map(encounter => ({
+      ...gameLocation.statics.map((encounter) => ({
         location: 'Static - ' + encounter.location,
         pokemon: getPokemon(
           gamesFromGroup,
@@ -53,7 +53,7 @@ export function convertGameLocationToRoutes(
         game,
         type: EncounterType.Static
       })),
-      ...gameLocation.encounters.map(encounter => ({
+      ...gameLocation.encounters.map((encounter) => ({
         location: encounter.location,
         pokemon: getPokemon(
           gamesFromGroup,

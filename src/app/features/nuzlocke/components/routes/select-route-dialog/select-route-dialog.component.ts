@@ -3,24 +3,20 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DisplayRoute } from '@nuzlocke/models/route.model';
 import { SelectRouteDialogRef } from '@nuzlocke/models/select-route-dialog.model';
-import { Observable } from 'rxjs';
 import { PickerComponent } from '../../picker/picker.component';
 
 @Component({
-  selector: 'select-route-dialog',
-  templateUrl: './select-route-dialog.component.html',
-  styleUrls: ['./select-route-dialog.component.scss']
+  selector: 'app-select-route-dialog',
+  templateUrl: './select-route-dialog.component.html'
 })
 export class SelectRouteDialogComponent implements OnInit {
   routeFormControl: FormGroup;
   caught: boolean;
-  autocompleteOptions: string[];
   allNames: string[] = [];
-  filteredOptions: Observable<string[]>;
   random: boolean;
   encounter: string;
-  previouslyFocusedElement: Element;
-  @ViewChild(PickerComponent) pickerComponent: PickerComponent;
+  previouslyFocusedElement: Element | null = null;
+  @ViewChild(PickerComponent) pickerComponent!: PickerComponent;
 
   constructor(
     @Inject(MatDialogRef) private readonly dialogRef: SelectRouteDialogRef,
@@ -34,13 +30,13 @@ export class SelectRouteDialogComponent implements OnInit {
     this.encounter = data.location;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.encounter.includes('Gift')) {
       this.obtained('yes');
     }
   }
 
-  onClose(button: 'cancel' | 'ok') {
+  onClose(button: 'cancel' | 'ok'): void {
     if (button === 'ok' && this.pickerComponent.formGroup.valid) {
       this.dialogRef.close({
         ...this.pickerComponent.formValue,
@@ -51,17 +47,17 @@ export class SelectRouteDialogComponent implements OnInit {
     }
   }
 
-  goBack() {
+  goBack(): void {
     this.routeFormControl.patchValue({ page: 1 });
     this.routeFormControl.markAsPristine();
   }
 
-  obtained(result: 'yes' | 'no') {
+  obtained(result: 'yes' | 'no'): void {
     this.routeFormControl.patchValue({ page: 2 });
     this.caught = result === 'yes';
   }
 
-  get pokemonOptions() {
+  get pokemonOptions(): string[] {
     return this.data.pokemon;
   }
 

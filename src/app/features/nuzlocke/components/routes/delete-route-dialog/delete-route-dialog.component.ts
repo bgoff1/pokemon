@@ -4,9 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DeleteRouteDialogRef } from '@features/nuzlocke/models/delete-route-dialog.model';
 
 @Component({
-  selector: 'delete-route-dialog',
-  templateUrl: './delete-route-dialog.component.html',
-  styleUrls: ['./delete-route-dialog.component.scss']
+  selector: 'app-delete-route-dialog',
+  templateUrl: './delete-route-dialog.component.html'
 })
 export class DeleteRouteDialogComponent {
   routeFormControl: FormGroup;
@@ -22,7 +21,7 @@ export class DeleteRouteDialogComponent {
     });
   }
 
-  onClose(button: 'cancel' | 'ok') {
+  onClose(button: 'cancel' | 'ok'): void {
     if (button === 'ok') {
       this.dialogRef.close({
         onlyFromCurrent: this.routeFormControl.controls.current.value

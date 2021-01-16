@@ -1,43 +1,24 @@
-import { SaveDialogComponent } from './save-dialog.component';
-import dialogRefMock from '@mocks/dialog-ref.mock';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('Save Dialog Component', () => {
+import { SaveDialogComponent } from './save-dialog.component';
+
+describe('SaveDialogComponent', () => {
   let component: SaveDialogComponent;
-  const dataMock = { name: '', random: true };
+  let fixture: ComponentFixture<SaveDialogComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [SaveDialogComponent]
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    component = new SaveDialogComponent(dialogRefMock, dataMock);
-    dialogRefMock.close = jest.fn();
+    fixture = TestBed.createComponent(SaveDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  test('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  test('should not delete on first delete call', () => {
-    component.delete();
-    expect(dialogRefMock.close).not.toBeCalled();
-  });
-
-  test('should close on second delete call', () => {
-    component.delete();
-    component.delete();
-    expect(dialogRefMock.close).toBeCalledTimes(1);
-  });
-
-  test('should close on cancel', () => {
-    component.onClose('cancel');
-    expect(dialogRefMock.close).toBeCalledWith();
-  });
-
-  test('should close if form is valid', () => {
-    component.saveFormControl.patchValue({ runName: 'a' });
-    component.onClose('ok');
-    expect(dialogRefMock.close).toBeCalled();
-  });
-
-  test('should not close if form is invalid', () => {
-    component.onClose('ok');
-    expect(dialogRefMock.close).not.toBeCalled();
   });
 });

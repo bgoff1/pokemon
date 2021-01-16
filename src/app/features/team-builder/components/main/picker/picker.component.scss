@@ -1,0 +1,15 @@
+.virtual-scroller {
+  @media (max-height: 700px) {
+    height: 41.5vh;
+  }
+  height: 44vh;
+  width: 100%;
+  text-align: center;
+  overflow-x: hidden !important;
+}
+
+.pokemon-container {
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+}

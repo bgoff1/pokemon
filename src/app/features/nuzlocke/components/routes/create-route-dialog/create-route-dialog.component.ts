@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { CreateRouteDialogRef } from '@nuzlocke/models/create-route-dialog.model';
 
 @Component({
-  selector: 'create-route-dialog',
+  selector: 'app-create-route-dialog',
   templateUrl: './create-route-dialog.component.html',
   styleUrls: ['./create-route-dialog.component.scss']
 })
@@ -19,7 +19,7 @@ export class CreateRouteDialogComponent {
     });
   }
 
-  onClose(button: 'cancel' | 'ok') {
+  onClose(button: 'cancel' | 'ok'): void {
     if (button === 'ok') {
       if (this.routeFormControl.valid) {
         this.dialogRef.close(this.routeFormControl.value);

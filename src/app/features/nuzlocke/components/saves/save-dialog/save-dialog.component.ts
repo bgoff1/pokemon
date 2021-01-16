@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SaveRouteDialogRef } from '@features/nuzlocke/models/save-dialog.model';
 
 @Component({
-  selector: 'save-dialog',
+  selector: 'app-save-dialog',
   templateUrl: './save-dialog.component.html',
   styleUrls: ['./save-dialog.component.scss']
 })
@@ -22,15 +22,15 @@ export class SaveDialogComponent {
     });
   }
 
-  delete() {
+  delete(): void {
     if (!this.confirmDelete) {
       this.confirmDelete = true;
     } else {
-      this.dialogRef.close({ delete: true, name: '', random: null });
+      this.dialogRef.close({ delete: true, name: '', random: false });
     }
   }
 
-  onClose(button: 'cancel' | 'ok') {
+  onClose(button: 'cancel' | 'ok'): void {
     if (button === 'ok') {
       if (this.saveFormControl.valid) {
         this.dialogRef.close({

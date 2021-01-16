@@ -1,0 +1,8 @@
+<div [class.hidden]="!filtersLoading">
+  <mat-spinner></mat-spinner>
+</div>
+<virtual-scroller #scroll [items]="pokemon" class="virtual-scroller">
+  <span *ngFor="let mon of scroll.viewPortItems" class="pokemon-container" (click)="addPokemon(mon)">
+    <app-pokemon [pokemon]="mon"></app-pokemon>
+  </span>
+</virtual-scroller>

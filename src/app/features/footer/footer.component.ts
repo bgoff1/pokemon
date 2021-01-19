@@ -28,6 +28,6 @@ export class FooterComponent implements OnInit {
   }
 
   get disabledTabs(): boolean {
-    return this.routerService.sidebarOpen || !this.routerService.canChangeTabs;
+    return this.routerService.sidebarOpen;
   }
 }

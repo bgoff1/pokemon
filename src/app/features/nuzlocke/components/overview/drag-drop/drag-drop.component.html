@@ -3,7 +3,7 @@
   <div>{{ title | titlecase }}</div>
   <div class="container">
     <span>
-      <img *ngFor="let pokemon of data" class="pokemon" [src]="pokemon.name | image" (click)="selectPokemon(pokemon)"
+      <img *ngFor="let pokemon of data" class="pokemon" [src]="pokemon?.name | image" (click)="selectPokemon(pokemon)"
         cdkDrag (cdkDragStarted)="startDragging()" (cdkDragEnded)="stopDragging()">
     </span>
   </div>

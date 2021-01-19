@@ -1,12 +1,12 @@
+import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilterProperties, Filter } from '@team/models/filter/filter.model';
+import { Filter, FilterProperties } from '@team/models/filter/filter.model';
 import { TreeNode } from '@team/models/tree-node.model';
+import { FilterTreeService } from '@team/services/filter-tree/filter-tree.service';
 import { FilterService } from '@team/services/filter/filter.service';
 import { TeamService } from '@team/services/team/team.service';
-import { FilterTreeService } from '@team/services/filter-tree/filter-tree.service';
 
 @Component({
   selector: 'app-filter',

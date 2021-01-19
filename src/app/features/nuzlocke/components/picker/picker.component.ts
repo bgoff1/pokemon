@@ -53,12 +53,6 @@ export class PickerComponent implements OnInit {
       pokemon: new FormControl('', [
         Validators.required,
         (control: AbstractControl) => {
-          console.log(
-            this.allNames,
-            this.pokemonImageService
-              .reverseImageReplace(control.value)
-              .toLowerCase()
-          );
           return this.allNames
             .map((name) => name.toLowerCase())
             .includes(

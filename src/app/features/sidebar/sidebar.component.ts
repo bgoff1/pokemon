@@ -46,4 +46,8 @@ export class SidebarComponent implements OnInit {
   isActive(link: string): boolean {
     return this.routerService.isViewMode(link);
   }
+
+  hideOverflow(): boolean {
+    return this.routerService.isExactRoute('/team-builder/home');
+  }
 }

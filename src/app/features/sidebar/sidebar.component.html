@@ -8,7 +8,7 @@
       <mat-divider></mat-divider>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content [class.overflow-y-off]="isActive('team-builder')">
+  <mat-sidenav-content [class.overflow-y-off]="hideOverflow()">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

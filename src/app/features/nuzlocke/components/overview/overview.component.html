@@ -1,8 +1,8 @@
 <div class="container">
   <div class="badge-container py-2">
     <div class="py-1 badges" *ngFor="let rowBadges of rows; let firstRow = index">
-      <img *ngFor="let badge of rowBadges; let badgeNumber = index" [src]="badge.url" class="badge"
-        [class.unearned]="!badge.earned" (click)="earnBadge(badge, badgeNumber, !!firstRow)">
+      <img *ngFor="let badge of rowBadges; let badgeNumber = index" [src]="badge?.url" class="badge"
+        [class.unearned]="!badge?.earned" (click)="earnBadge(badge, badgeNumber, !!firstRow)">
     </div>
     <table>
       <tbody>
@@ -14,7 +14,7 @@
         <tr>
           <td>Dead: {{ dead }}</td>
           <td class="text-center">
-            <button mat-raised-button *ngIf="party.length" (click)="exportToTeamBuilder()">
+            <button mat-raised-button *ngIf="party?.length" (click)="exportToTeamBuilder()">
               Export to Team Builder
             </button>
           </td>
@@ -25,7 +25,9 @@
   </div>
   <div cdkDropListGroup>
     <div *ngFor="let group of groups">
-      <app-drag-drop [title]="group.title" [data]="group.data" (update)="dragDropChange($event)"></app-drag-drop>
+      <ng-template *ngIf="group">
+        <app-drag-drop [title]="group.title" [data]="group.data" (update)="dragDropChange($event)"></app-drag-drop>
+      </ng-template>
     </div>
   </div>
 </div>

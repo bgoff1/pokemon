@@ -25,7 +25,9 @@
   </div>
   <div cdkDropListGroup>
     <div *ngFor="let group of groups">
-      <app-drag-drop [title]="group?.title" [data]="group?.data" (update)="dragDropChange($event)"></app-drag-drop>
+      <ng-template *ngIf="group">
+        <app-drag-drop [title]="group.title" [data]="group.data" (update)="dragDropChange($event)"></app-drag-drop>
+      </ng-template>
     </div>
   </div>
 </div>

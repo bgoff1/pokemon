@@ -1,6 +1,6 @@
 {
   "name": "pokemon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "format": "pretty-quick --staged",
-    "static-serve": "npm run build && npx http-server build"
+    "static-serve": "npm run build && npx http-server build",
+    "release": "standard-version"
   },
   "private": true,
   "dependencies": {
@@ -48,6 +49,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
+    "standard-version": "^9.1.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.0.2"

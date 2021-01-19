@@ -1,6 +1,6 @@
 {
   "name": "pokemon",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "format": "pretty-quick --staged",
     "static-serve": "npm run build && npx http-server build",
-    "release": "standard-version"
+    "release": "standard-version && git add package.json package-lock.json"
   },
   "private": true,
   "dependencies": {

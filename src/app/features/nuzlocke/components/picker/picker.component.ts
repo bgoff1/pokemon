@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { NuzlockeService } from '../../services/nuzlocke/nuzlocke.service';
 import { PickerOutput } from './model/picker-output.model';
+import { PickerValidationService } from './service/picker-validation.service';
 
 @Component({
   selector: 'app-picker-dialog',
@@ -47,22 +48,14 @@ export class PickerComponent implements OnInit {
     private readonly nameService: NameService,
     private readonly nuzlockeService: NuzlockeService,
     private readonly pokemonImageService: PokemonImageService,
-    private readonly titleCaseService: TitleCaseService
+    private readonly titleCaseService: TitleCaseService,
+    private readonly pickerValidationService: PickerValidationService
   ) {
     this.formGroup = new FormGroup({
       pokemon: new FormControl('', [
         Validators.required,
-        (control: AbstractControl) => {
-          return this.allNames
-            .map((name) => name.toLowerCase())
-            .includes(
-              this.pokemonImageService
-                .reverseImageReplace(control.value)
-                .toLowerCase()
-            )
-            ? null
-            : { invalidPokemon: true };
-        }
+        (control: AbstractControl) =>
+          this.pickerValidationService.validate(control, this.allNames)
       ]),
       nickname: new FormControl('')
     });
@@ -71,21 +64,28 @@ export class PickerComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.allNames = await this.pokemonService.getPokemonNames();
 
+    await this.setAutoCompleteOptions();
+
+    this.filteredOptions = this.pokemonControl.valueChanges.pipe(
+      startWith(this.pokemonControl.value),
+      map((input: string) => this.filterOptions(input))
+    );
+  }
+
+  async setAutoCompleteOptions(): Promise<void> {
     if (this.limitOptionsByEvolution && this.pokemon?.name) {
       this.autoCompleteOptions = await this.pokemonService.findEvolutionNames(
         this.pokemon.name
       );
     } else {
-      if (this.random) {
-        this.autoCompleteOptions = this.allNames;
-      } else if (this.pokemonOptions) {
+      if (this.pokemonOptions?.length && !this.random) {
         const filteredByOwned = this.pokemonOptions.filter(
           (mon) =>
-            !this.nuzlockeService?.currentRun?.pokemon
+            !this.nuzlockeService.currentRun?.pokemon
               .map((pokemon) => pokemon.name)
               .includes(mon)
         );
-        if (filteredByOwned.length === 0 && this.pokemonOptions.length !== 0) {
+        if (filteredByOwned.length === 0) {
           this.autoCompleteOptions = this.pokemonOptions.map((mon) =>
             this.titleCaseService.titlecase(mon)
           );
@@ -94,12 +94,10 @@ export class PickerComponent implements OnInit {
             this.titleCaseService.titlecase(mon)
           );
         }
+      } else {
+        this.autoCompleteOptions = this.allNames;
       }
     }
-    this.filteredOptions = this.pokemonControl.valueChanges.pipe(
-      startWith(this.pokemonControl.value),
-      map((input: string) => this.filterOptions(input))
-    );
   }
 
   private filterOptions(input: string): string[] {
@@ -145,14 +143,14 @@ export class PickerComponent implements OnInit {
   }
 
   get showImage(): boolean {
-    return this.pokemonControl.valid || !!this.pokemon?.name;
+    return this.pokemonControl.valid || !!(this.pokemon?.name ?? '');
   }
 
   get imageValue(): string {
     return this.pokemonImageService.reverseImageReplace(
       this.pokemonControl.valid
         ? this.pokemonControl.value.toLowerCase()
-        : this.pokemon?.name.toLowerCase()
+        : this.pokemon?.name.toLowerCase() ?? ''
     );
   }
 }

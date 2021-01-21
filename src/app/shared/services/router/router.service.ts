@@ -12,7 +12,6 @@ import { filter } from 'rxjs/operators';
 export class RouterService {
   open = false;
   links: Link[] = sidebarLinks;
-  sidebarOpen = false;
   canChangeTabs = true;
   tabs: Tab[] = tabs;
   id: number | null = null;
@@ -48,7 +47,7 @@ export class RouterService {
     return this.router.url.includes('/' + route);
   }
 
-  isExactRoute(route: string): boolean {
+  private isExactRoute(route: string): boolean {
     return this.router.url === route;
   }
 

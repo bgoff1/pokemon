@@ -15,6 +15,7 @@ import { EvolveDialogComponent } from './evolve-dialog/evolve-dialog.component';
 export class DragDropComponent {
   @Input() title!: keyof typeof Status;
   @Input() data!: Pokemon[];
+  @Input() active!: boolean;
   @Output() update: EventEmitter<Pokemon> = new EventEmitter();
 
   constructor(

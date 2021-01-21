@@ -1,21 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SaveDialogComponent } from './save-dialog.component';
 
-describe('SaveDialogComponent', () => {
+describe('Nuzlocke: Saves > Save Dialog Component', () => {
   let component: SaveDialogComponent;
-  let fixture: ComponentFixture<SaveDialogComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SaveDialogComponent]
-    }).compileComponents();
-  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SaveDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new SaveDialogComponent({} as any, {} as any);
   });
 
   it('should create', () => {

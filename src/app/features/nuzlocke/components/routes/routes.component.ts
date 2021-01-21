@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteRouteDialog } from '@features/nuzlocke/models/delete-route-dialog.model';
 import { CreateRouteDialog } from '@nuzlocke/models/create-route-dialog.model';
-import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Nuzlocke, NuzlockeStatus } from '@nuzlocke/models/nuzlocke.model';
 import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
 import { RouteData } from '@nuzlocke/models/route-data.model';
 import { DisplayRoute, Route } from '@nuzlocke/models/route.model';
@@ -72,6 +72,11 @@ export class RoutesComponent implements OnInit {
     this.setUpSorting();
   }
 
+  toggleAvailableRoutes(): void {
+    const filter = localStorage.getItem('route filter');
+    this.updateAvailableRoutes(filter ? filter !== 'true' : false);
+  }
+
   setUpSorting(): void {
     if (localStorage.getItem('route sorting') === null) {
       localStorage.setItem('route sorting', 'true');
@@ -102,77 +107,90 @@ export class RoutesComponent implements OnInit {
   }
 
   addRoute(): void {
-    const dialog: CreateRouteDialog = this.dialog.open(
-      CreateRouteDialogComponent,
-      { width: '80%' }
-    );
-    dialog.afterClosed().subscribe(async (res) => {
-      if (res) {
-        if (res.current) {
-          this.nuzlockeService.addRouteToCurrentGame(res);
-        } else {
-          this.routesService.addRouteToGame(res);
+    if (this.active) {
+      const dialog: CreateRouteDialog = this.dialog.open(
+        CreateRouteDialogComponent,
+        { width: '80%' }
+      );
+      dialog.afterClosed().subscribe(async (res) => {
+        if (res) {
+          if (res.current) {
+            this.nuzlockeService.addRouteToCurrentGame(res);
+          } else {
+            this.routesService.addRouteToGame(res);
+          }
+          this.updateAvailableRoutes();
         }
-        this.updateAvailableRoutes();
-      }
-    });
+      });
+    }
   }
 
   async addEncounter(pokemon: Pokemon, route: Route): Promise<void> {
-    pokemon.routeId = route.id;
-    await this.nuzlockeService.addEncounter(pokemon);
-    this.routes = this.routes.filter(
-      ({ location }) => location !== route.location
-    );
+    if (this.active) {
+      pokemon.routeId = route.id;
+      await this.nuzlockeService.addEncounter(pokemon);
+      this.routes = this.routes.filter(
+        ({ location }) => location !== route.location
+      );
+    }
   }
 
   selectRoute(route: DisplayRoute): void {
-    const dialog: SelectRouteDialog = this.dialog.open(
-      SelectRouteDialogComponent,
-      {
-        data: {
-          ...route,
-          random: this.nuzlocke.random,
-          ownedPokemon: this.nuzlocke.pokemon.map((mon) =>
-            mon.name.toLowerCase()
-          )
-        },
-        width: '80%'
-      }
-    );
-    dialog.afterClosed().subscribe((res) => {
-      if (res) {
-        const pokemon: Pokemon = {
-          routeName: route.location,
-          name: res.pokemon,
-          nickname: res.nickname,
-          status: res.caught ? Status.Boxed : Status.Missed
-        };
-        this.addEncounter(pokemon, route);
-      }
-    });
+    if (this.active && !route.location.includes('Import from')) {
+      const dialog: SelectRouteDialog = this.dialog.open(
+        SelectRouteDialogComponent,
+        {
+          data: {
+            ...route,
+            random: this.nuzlocke.random,
+            ownedPokemon: this.nuzlocke.pokemon.map((mon) =>
+              mon.name.toLowerCase()
+            )
+          },
+          width: '80%'
+        }
+      );
+      dialog.afterClosed().subscribe((res) => {
+        if (res) {
+          const pokemon: Pokemon = {
+            routeName: route.location,
+            name: res.pokemon,
+            nickname: res.nickname,
+            status: res.caught ? Status.Boxed : Status.Missed
+          };
+          this.addEncounter(pokemon, route);
+        }
+      });
+    }
   }
 
   showDelete(route: DisplayRoute): void {
-    const dialog: DeleteRouteDialog = this.dialog.open(
-      DeleteRouteDialogComponent,
-      { data: { name: route.location }, width: '80%' }
-    );
-    dialog.afterClosed().subscribe(async (res) => {
-      if (res) {
-        if (res.onlyFromCurrent) {
-          this.nuzlockeService.removeRouteFromRun(route);
-        } else {
-          this.routesService.removeRouteFromGame(route);
+    if (this.active) {
+      const dialog: DeleteRouteDialog = this.dialog.open(
+        DeleteRouteDialogComponent,
+        { data: { name: route.location }, width: '80%' }
+      );
+      dialog.afterClosed().subscribe(async (res) => {
+        if (res) {
+          if (res.onlyFromCurrent) {
+            this.nuzlockeService.removeRouteFromRun(route);
+          } else {
+            this.routesService.removeRouteFromGame(route);
+          }
+          this.updateAvailableRoutes();
         }
-        this.updateAvailableRoutes();
-      }
-    });
+      });
+    }
   }
 
-  private get sortByOrder(): boolean {
+  get sortByOrder(): boolean {
     const sorting = localStorage.getItem('route sorting');
     return sorting ? sorting === 'true' : true;
+  }
+
+  get filterAll(): boolean {
+    const filtering = localStorage.getItem('route filter');
+    return filtering ? filtering === 'true' : false;
   }
 
   get opposingSortingMethod(): 'Sort By Name' | 'Sort By Order' {
@@ -181,5 +199,17 @@ export class RoutesComponent implements OnInit {
     } else {
       return 'Sort By Order';
     }
+  }
+
+  get opposingFilterMethod(): 'Only Available' | 'Show All' {
+    if (this.filterAll) {
+      return 'Show All';
+    } else {
+      return 'Only Available';
+    }
+  }
+
+  get active(): boolean {
+    return this.nuzlocke?.status === NuzlockeStatus.Started;
   }
 }

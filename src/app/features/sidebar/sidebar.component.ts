@@ -1,8 +1,7 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import Hammer from 'hammerjs';
-import { RouterService } from '@services/router/router.service';
-import { DraggingService } from '@services/dragging/dragging.service';
+import { Component, OnInit } from '@angular/core';
 import { Link } from '@models/link.model';
+import { RouterService } from '@services/router/router.service';
+import { SwipeService } from '../../shared/services/swipe/swipe.service';
 
 @Component({
   selector: 'app-nav-sidebar',
@@ -12,28 +11,14 @@ import { Link } from '@models/link.model';
 export class SidebarComponent implements OnInit {
   opened = false;
   links: Link[] = [];
-  hammer: HammerManager;
 
   constructor(
     private readonly routerService: RouterService,
-    draggingService: DraggingService,
-    elementRef: ElementRef
-  ) {
-    this.hammer = new Hammer(elementRef.nativeElement, {});
-    this.hammer.on('panright', (event) => {
-      if (
-        !draggingService.isDragging &&
-        event.pointerType !== 'mouse' &&
-        event.center.x >= 1 &&
-        event.center.x <= 50
-      ) {
-        this.setOpen(true);
-      }
-    });
-  }
+    private readonly swipeService: SwipeService
+  ) {}
 
   setOpen(opened: boolean): void {
-    this.opened = this.routerService.sidebarOpen = opened;
+    this.opened = this.routerService.open = opened;
   }
 
   ngOnInit(): void {
@@ -48,6 +33,12 @@ export class SidebarComponent implements OnInit {
   }
 
   hideOverflow(): boolean {
-    return this.routerService.isExactRoute('/team-builder/home');
+    return this.routerService.isCurrentRoute('/team-builder/home');
+  }
+
+  swipe(e: TouchEvent, direction: string): void {
+    if (!this.opened && this.swipeService.swipe(e, direction)) {
+      this.setOpen(true);
+    }
   }
 }

@@ -25,9 +25,12 @@
   </div>
   <div cdkDropListGroup>
     <div *ngFor="let group of groups">
-      <ng-template *ngIf="group">
-        <app-drag-drop [title]="group.title" [data]="group.data" (update)="dragDropChange($event)"></app-drag-drop>
-      </ng-template>
+      <app-drag-drop *ngIf="group" [active]="active" [title]="group.title" [data]="group.data"
+        (update)="dragDropChange($event)">
+      </app-drag-drop>
     </div>
   </div>
+  <button mat-fab class="add-button" *ngIf="(canComplete && active) || finished" (click)="completeRun()">
+    <mat-icon>done</mat-icon>
+  </button>
 </div>

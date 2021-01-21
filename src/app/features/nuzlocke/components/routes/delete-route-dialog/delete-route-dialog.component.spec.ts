@@ -1,21 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DeleteRouteDialogComponent } from './delete-route-dialog.component';
 
-describe('DeleteRouteDialogComponent', () => {
+describe('Nuzlocke: Routes > Delete Route Dialog Component', () => {
   let component: DeleteRouteDialogComponent;
-  let fixture: ComponentFixture<DeleteRouteDialogComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DeleteRouteDialogComponent]
-    }).compileComponents();
-  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteRouteDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new DeleteRouteDialogComponent({} as any, {} as any);
   });
 
   it('should create', () => {

@@ -1,21 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TeamBuilderComponent } from './container.component';
 
-import { ContainerComponent } from './container.component';
-
-describe('ContainerComponent', () => {
-  let component: ContainerComponent;
-  let fixture: ComponentFixture<ContainerComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ContainerComponent]
-    }).compileComponents();
-  });
+describe('TeamBuilderComponent', () => {
+  let component: TeamBuilderComponent;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContainerComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new TeamBuilderComponent();
   });
 
   it('should create', () => {

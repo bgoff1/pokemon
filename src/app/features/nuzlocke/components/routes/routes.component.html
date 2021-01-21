@@ -13,18 +13,21 @@
     <mat-divider></mat-divider>
   </button>
 </mat-action-list>
-<button mat-fab class="add-button" (click)="addRoute()">
+<button mat-fab class="add-button" *ngIf="active" (click)="addRoute()">
   <mat-icon>add</mat-icon>
 </button>
 <button mat-fab class="filter" [matMenuTriggerFor]="routeMenu">
   <mat-icon>filter_list</mat-icon>
 </button>
 <mat-menu #routeMenu="matMenu">
-  <button mat-menu-item (click)="updateAvailableRoutes(false)">
+  <!-- <button mat-menu-item (click)="updateAvailableRoutes(false)">
     Show All
   </button>
   <button mat-menu-item (click)="updateAvailableRoutes()">
     Only Available
+  </button> -->
+  <button mat-menu-item (click)="toggleAvailableRoutes()">
+    {{ opposingFilterMethod }}
   </button>
   <button mat-menu-item (click)="toggleSortingMethod()">
     {{ opposingSortingMethod }}

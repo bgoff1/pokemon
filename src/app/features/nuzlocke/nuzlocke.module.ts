@@ -30,6 +30,7 @@ import { SaveDialogComponent } from './components/saves/save-dialog/save-dialog.
 import { SavesComponent } from './components/saves/saves.component';
 import { CreateGuard } from './guards/create.guard';
 import { NuzlockeResolverService } from './resolvers/nuzlocke-resolver.service';
+import { CompleteDialogComponent } from './components/overview/complete-dialog/complete-dialog.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'saves', pathMatch: 'full' },
@@ -81,7 +82,8 @@ const materialModules = [
     SaveDialogComponent,
     DeleteRouteDialogComponent,
     EvolveDialogComponent,
-    PickerComponent
+    PickerComponent,
+    CompleteDialogComponent
   ],
   imports: [
     CommonModule,

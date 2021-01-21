@@ -27,7 +27,7 @@ export class FooterComponent implements OnInit {
     return this.routerService.isCurrentRoute(path);
   }
 
-  get disabledTabs(): boolean {
-    return this.routerService.sidebarOpen;
+  get areTabsDisabled(): boolean {
+    return this.routerService.open;
   }
 }

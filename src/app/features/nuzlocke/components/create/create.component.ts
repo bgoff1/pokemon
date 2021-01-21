@@ -4,7 +4,6 @@ import { RouterService } from '@services/router/router.service';
 import { DisplayGame } from '@features/nuzlocke/models/display-game.model';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
 import { Game } from '@models/pokemon/game.model';
-import { environment } from '@environment';
 
 @Component({
   selector: 'app-create',
@@ -41,26 +40,15 @@ export class CreateComponent {
     }
   }
 
-  async generateTestRoutes(): Promise<void> {
-    if (this.development) {
-      await this.nuzlockeService.generateTestSaves();
-      this.routerService.redirect('/nuzlocke');
-    }
-  }
-
-  get runName(): string {
+  private get runName(): string {
     return this.formGroup.controls.runName.value;
   }
 
-  get game(): Game {
+  private get game(): Game {
     return this.formGroup.controls.game.value;
   }
 
-  get random(): boolean {
+  private get random(): boolean {
     return this.formGroup.controls.random.value;
-  }
-
-  get development(): boolean {
-    return !environment.production;
   }
 }

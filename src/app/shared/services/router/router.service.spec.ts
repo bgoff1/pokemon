@@ -1,13 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-
+import { of } from 'rxjs';
 import { RouterService } from './router.service';
 
 describe('RouterService', () => {
   let service: RouterService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(RouterService);
+    service = new RouterService({ events: of([]) } as any);
   });
 
   it('should be created', () => {

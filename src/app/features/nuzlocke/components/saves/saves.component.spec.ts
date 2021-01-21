@@ -1,21 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SavesComponent } from './saves.component';
 
-describe('SavesComponent', () => {
+describe('Nuzlocke: Saves Component', () => {
   let component: SavesComponent;
-  let fixture: ComponentFixture<SavesComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SavesComponent]
-    }).compileComponents();
-  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SavesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new SavesComponent({} as any, {} as any, {} as any);
   });
 
   it('should create', () => {

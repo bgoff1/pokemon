@@ -1,0 +1,24 @@
+<div class="text-center">
+  <h1 mat-dialog-title>Complete Run - {{name}}</h1>
+  <div mat-dialog-content>
+    <div *ngIf="finished">
+      <h3>Nuzlocke Complete! Congratulations!</h3>
+      Would you like to breed your party and continue into another run?
+    </div>
+    <div *ngIf="!finished">
+      <h3>Nuzlocke Failed!</h3>
+      Would you like to move this run to a failed state?
+    </div>
+  </div>
+  <div mat-dialog-actions class="center-buttons">
+    <button mat-raised-button color="warn" (click)="onClose('cancel')">
+      No
+    </button>
+    <button *ngIf="finished && !finishedBefore" mat-raised-button color="primary" (click)="onlyFinish()">
+      Only Finish
+    </button>
+    <button mat-raised-button color="accent" (click)="onClose('ok')">
+      Yes
+    </button>
+  </div>
+</div>

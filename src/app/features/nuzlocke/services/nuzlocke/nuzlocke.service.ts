@@ -17,6 +17,7 @@ export class NuzlockeService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   currentRun?: Nuzlocke;
+  dataForNextRun?: { pokemon: Pokemon[]; previousRun: Game };
 
   private update = new Subject<Nuzlocke>();
   get update$(): Observable<Nuzlocke> {
@@ -36,6 +37,21 @@ export class NuzlockeService {
     await this.databaseService.nuzlockes.add(game).then((res) => {
       game.id = res;
     });
+    if (this.dataForNextRun) {
+      this.currentRun = game;
+      for (const pokemon of this.dataForNextRun.pokemon) {
+        const route = `Import from ${Game[this.dataForNextRun.previousRun]} - ${
+          pokemon.routeName
+        }`;
+        await this.addRouteToCurrentGame({
+          route,
+          current: true
+        });
+        pokemon.routeName = route;
+        await this.addEncounter(pokemon, true);
+      }
+      this.dataForNextRun = undefined;
+    }
     return game;
   }
 
@@ -54,6 +70,22 @@ export class NuzlockeService {
         runName: res.name,
         random: res.random
       });
+    }
+  }
+
+  async completeNuzlocke(
+    run: Nuzlocke,
+    finished = false,
+    pokemonForNextRun: Pokemon[] = []
+  ): Promise<void> {
+    if (run.id) {
+      await this.databaseService.nuzlockes.update(run.id, {
+        status: finished ? NuzlockeStatus.Success : NuzlockeStatus.Failed
+      });
+      this.dataForNextRun = {
+        pokemon: pokemonForNextRun,
+        previousRun: run.game
+      };
     }
   }
 
@@ -97,12 +129,13 @@ export class NuzlockeService {
     }
   }
 
-  async addRouteToCurrentGame(input: CreateRouteDialogResult): Promise<void> {
+  async addRouteToCurrentGame(input: CreateRouteDialogResult): Promise<Route> {
     const route = await this.convertDialogToRoute(input);
     if (this.currentRun) {
       this.currentRun.extraRoutes.push(route);
       await this.databaseService.nuzlockes.put(this.currentRun);
     }
+    return route;
   }
 
   async removeRouteFromRun(route: Route): Promise<void> {
@@ -112,17 +145,19 @@ export class NuzlockeService {
     }
   }
 
-  async addEncounter(pokemon: Pokemon): Promise<void> {
+  async addEncounter(pokemon: Pokemon, retainStatus = false): Promise<void> {
     if (this.currentRun) {
-      const partyCount = this.currentRun.pokemon.filter(
-        (mon) => mon.status === Status.Party
-      ).length;
-      if (partyCount < 6 && pokemon.status !== Status.Missed) {
-        pokemon.status = Status.Party;
+      if (!retainStatus) {
+        const partyCount = this.currentRun.pokemon.filter(
+          (mon) => mon.status === Status.Party
+        ).length;
+        if (partyCount < 6 && pokemon.status !== Status.Missed) {
+          pokemon.status = Status.Party;
+        }
       }
       this.currentRun.pokemon = [
         ...this.currentRun.pokemon.filter(
-          (mon) => mon.routeId !== pokemon.routeId
+          (mon) => mon.routeName !== pokemon.routeName
         ),
         pokemon
       ];
@@ -158,7 +193,7 @@ export class NuzlockeService {
           pokemonEntry.name = updatedData.name;
         }
         if (
-          updatedData.nickname !== undefined &&
+          updatedData.nickname &&
           updatedData.nickname !== pokemonEntry?.nickname
         ) {
           changed = true;

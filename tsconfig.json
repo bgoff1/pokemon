@@ -27,7 +27,7 @@
       "@pipes/*": ["src/app/shared/pipes/*"],
       "@util/*": ["src/app/shared/util/*"],
       "@shared/*": ["src/app/shared/*"],
-      "@mocks/*": ["src/mocks/*"],
+      "@mock/*": ["src/mock/*"],
       "@environment": ["src/environments/environment"]
     },
     "noImplicitReturns": true,

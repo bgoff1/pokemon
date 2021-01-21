@@ -1,21 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SelectRouteDialogComponent } from './select-route-dialog.component';
 
-describe('SelectRouteDialogComponent', () => {
+describe('Nuzlocke: Routes > Select Route Dialog Component', () => {
   let component: SelectRouteDialogComponent;
-  let fixture: ComponentFixture<SelectRouteDialogComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SelectRouteDialogComponent]
-    }).compileComponents();
-  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectRouteDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new SelectRouteDialogComponent({} as any, {} as any);
   });
 
   it('should create', () => {

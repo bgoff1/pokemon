@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { BadgeService } from '@features/nuzlocke/services/badge/badge.service';
 import { Badge } from '@nuzlocke/models/badge.model';
 import { Group } from '@nuzlocke/models/group.model';
-import { Nuzlocke } from '@nuzlocke/models/nuzlocke.model';
+import { Nuzlocke, NuzlockeStatus } from '@nuzlocke/models/nuzlocke.model';
 import { Pokemon, Status } from '@nuzlocke/models/pokemon.model';
 import { RouteData } from '@nuzlocke/models/route-data.model';
 import { NuzlockeService } from '@nuzlocke/services/nuzlocke/nuzlocke.service';
@@ -12,6 +13,7 @@ import { RouterService } from '@shared/services/router/router.service';
 import { TeamService } from '@team/services/team/team.service';
 import { enumValues } from '@util/enum/enum';
 import { Observable } from 'rxjs';
+import { CompleteDialogComponent } from './complete-dialog/complete-dialog.component';
 
 @Component({
   selector: 'app-nuzlocke-overview',
@@ -29,7 +31,8 @@ export class OverviewComponent implements OnInit {
     private readonly pokemonImageService: PokemonImageService,
     private readonly badgeService: BadgeService,
     private readonly nuzlockeService: NuzlockeService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -55,8 +58,11 @@ export class OverviewComponent implements OnInit {
   }
 
   earnBadge(badge: Badge, badgeNumber: number, secondRow: boolean): void {
-    badge.earned = !badge.earned;
-    this.nuzlockeService.earnBadge(secondRow ? badgeNumber + 8 : badgeNumber);
+    if (this.active) {
+      badge.earned = !badge.earned;
+      alert(badge.earned);
+      this.nuzlockeService.earnBadge(secondRow ? badgeNumber + 8 : badgeNumber);
+    }
   }
 
   async exportToTeamBuilder(): Promise<void> {
@@ -66,6 +72,58 @@ export class OverviewComponent implements OnInit {
 
     await this.teamService.exportToTeamBuilder(members);
     this.router.redirect('/team-builder');
+  }
+
+  completeRun(): void {
+    const dialog = this.dialog.open(CompleteDialogComponent, {
+      width: '80%',
+      data: {
+        finished: this.hasAllBadges() && this.alive > 0,
+        name: this.nuzlocke.runName,
+        alreadyFinished: this.finished
+      }
+    });
+    dialog.afterClosed().subscribe((val: 'ok' | 'finish-only') => {
+      if (val) {
+        const finished = this.hasAllBadges() && this.alive > 0;
+        if (finished) {
+          this.nuzlockeService.completeNuzlocke(
+            this.nuzlocke,
+            finished,
+            val === 'ok' ? this.nuzlocke.pokemon : []
+          );
+        } else {
+          this.nuzlockeService.completeNuzlocke(this.nuzlocke);
+        }
+        if (val === 'ok') {
+          this.router.redirect('/nuzlocke/create');
+        } else {
+          this.router.redirect('/nuzlocke/saves');
+        }
+      }
+    });
+  }
+
+  get active(): boolean {
+    return this.nuzlocke.status === NuzlockeStatus.Started;
+  }
+
+  get finished(): boolean {
+    return this.nuzlocke.status === NuzlockeStatus.Success;
+  }
+
+  hasAllBadges(): boolean {
+    return this.earnedBadges === this.badges.length;
+  }
+
+  get canComplete(): boolean {
+    return (
+      this.groupData.length > 0 && (this.hasAllBadges() || this.alive === 0)
+    );
+  }
+
+  get earnedBadges(): number {
+    return this.badges.filter((badge) => badge.earned).length;
   }
 
   get rows(): Badge[][] {
@@ -84,19 +142,11 @@ export class OverviewComponent implements OnInit {
     return result;
   }
 
-  private count(status: Status | null, notList?: Status[]): number {
+  private count(status: Status): number {
     let i = 0;
-    if (status !== null) {
-      for (const item of this.groupData) {
-        if (item.status === status) {
-          ++i;
-        }
-      }
-    } else {
-      for (const item of this.groupData) {
-        if (notList?.every((notItem) => notItem !== item.status)) {
-          ++i;
-        }
+    for (const item of this.groupData) {
+      if (item.status === status) {
+        ++i;
       }
     }
     return i;
@@ -110,7 +160,7 @@ export class OverviewComponent implements OnInit {
   }
 
   get alive(): number {
-    return this.count(null, [Status.Heaven, Status.Missed]);
+    return this.count(Status.Boxed) + this.count(Status.Party);
   }
 
   get dead(): number {

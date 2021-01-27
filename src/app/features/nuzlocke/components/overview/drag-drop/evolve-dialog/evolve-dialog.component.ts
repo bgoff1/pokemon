@@ -30,9 +30,13 @@ export class EvolveDialogComponent {
     }
   }
 
+  get nickname(): string {
+    return this.pokemon.nickname?.trim() ?? '';
+  }
+
   get evolutionName(): string {
     return (
-      this.pokemon.nickname ||
+      this.pokemon.nickname?.trim() ||
       this.titleCaseService.titlecase(this.pokemon.name)
     );
   }

@@ -176,6 +176,7 @@ export class NuzlockeService {
           mon.nickname === pokemon.nickname &&
           mon.routeName === pokemon.routeName
       );
+      console.log(pokemon, pokemonEntry, updatedData);
       if (pokemonEntry) {
         let changed = false;
         if (
@@ -185,15 +186,12 @@ export class NuzlockeService {
           changed = true;
           pokemonEntry.status = pokemon.status;
         }
-        if (
-          updatedData.name !== undefined &&
-          updatedData.name !== pokemonEntry?.name
-        ) {
+        if (updatedData.name && updatedData.name !== pokemonEntry?.name) {
           changed = true;
           pokemonEntry.name = updatedData.name;
         }
         if (
-          updatedData.nickname &&
+          (updatedData.nickname || updatedData.nickname === '') &&
           updatedData.nickname !== pokemonEntry?.nickname
         ) {
           changed = true;

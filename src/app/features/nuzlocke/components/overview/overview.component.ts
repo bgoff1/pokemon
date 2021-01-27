@@ -60,7 +60,6 @@ export class OverviewComponent implements OnInit {
   earnBadge(badge: Badge, badgeNumber: number, secondRow: boolean): void {
     if (this.active) {
       badge.earned = !badge.earned;
-      alert(badge.earned);
       this.nuzlockeService.earnBadge(secondRow ? badgeNumber + 8 : badgeNumber);
     }
   }

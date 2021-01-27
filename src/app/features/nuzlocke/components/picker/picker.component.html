@@ -1,5 +1,8 @@
 <img class="pokemon-big" *ngIf="showImage" [src]="imageValue | image" [alt]="imageValue">
 <form [formGroup]="formGroup">
+  <mat-form-field *ngIf="!hideNickname">
+    <input #nickname autocomplete="off" matInput formControlName="nickname" placeholder="Nickname">
+  </mat-form-field>
   <mat-form-field>
     <input matInput formControlName="pokemon" #pokemon placeholder="Pokemon" (click)="onInputClick()"
       [matAutocomplete]="auto">
@@ -11,7 +14,4 @@
       <img class="pokemon" [src]="option | image" [alt]="option">
     </mat-option>
   </mat-autocomplete>
-  <mat-form-field *ngIf="!hideNickname">
-    <input #nickname autocomplete="off" matInput formControlName="nickname" placeholder="Nickname">
-  </mat-form-field>
 </form>

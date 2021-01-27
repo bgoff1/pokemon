@@ -63,6 +63,9 @@ export class PickerComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.allNames = await this.pokemonService.getPokemonNames();
+    if (this.nickname) {
+      this.formGroup.controls.nickname.setValue(this.nickname);
+    }
 
     await this.setAutoCompleteOptions();
 

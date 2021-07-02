@@ -1,6 +1,7 @@
 {
   "name": "pokemon",
-  "version": "1.4.0",
+  "version": "1.4.1",
+  "main": "build",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +10,7 @@
     "test:watch": "jest --watch",
     "lint": "ng lint",
     "format": "pretty-quick --staged",
-    "static-serve": "npm run build && npx http-server build",
+    "static-serve": "npm run build && npx http-server -c-1 build",
     "release": "standard-version && git add package.json package-lock.json"
   },
   "private": true,
@@ -43,7 +44,7 @@
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
-    "standard-version": "^9.1.0",
+    "standard-version": "^9.3.0",
     "ts-jest": "^26.4.4",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",

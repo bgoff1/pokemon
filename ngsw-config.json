@@ -16,14 +16,19 @@
       }
     },
     {
+      "name": "image-assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/assets/**"]
+      }
+    },
+    {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
-        "files": [
-          "/assets/**",
-          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
-        ]
+        "files": ["/*.(eot|svg|cur|jpg|webp|gif|otf|ttf|woff|woff2|ani)"]
       }
     }
   ]
